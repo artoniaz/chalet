@@ -1,13 +1,23 @@
+import 'package:chalet/config/chalet_image_slider_phases.dart';
+import 'package:chalet/models/image_model_file.dart';
+import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/models/index.dart';
-import 'package:chalet/services/cloud_storage_service.dart';
 import 'package:chalet/styles/index.dart';
-import 'package:chalet/widgets/photo_carusel/image_slider.dart';
+import 'package:chalet/widgets/index.dart';
+import 'package:chalet/widgets/photo_carusel/image_slider_presentational.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class ChaletPhotoCarusel extends StatefulWidget {
-  final ChaletModel chalet;
-  const ChaletPhotoCarusel({Key? key, required this.chalet}) : super(key: key);
+  final ChaletModel? chalet;
+  final List<ImageModelFile>? chaletImagesList;
+  final String chaletImageSliderPhase;
+  const ChaletPhotoCarusel({
+    Key? key,
+    this.chalet,
+    this.chaletImagesList,
+    required this.chaletImageSliderPhase,
+  }) : super(key: key);
 
   @override
   _ChaletPhotoCaruselState createState() => _ChaletPhotoCaruselState();
@@ -15,33 +25,71 @@ class ChaletPhotoCarusel extends StatefulWidget {
 
 class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
   int _currentImgIndex = 0;
-  List<String> imgList = [
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-    'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-    'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
-  ];
+  CarouselController caruselController = new CarouselController();
+
+  List<Widget> getImgSliders() => widget.chaletImageSliderPhase == ChaletImageSliderPhases.ChaletList
+      ? imagesToMapPresentational(widget.chalet!.images)
+      : imagesToMapEditFile(widget.chaletImagesList);
+
+  List<ImageSliderPresentational> imagesToMapPresentational(List images) => images
+      .asMap()
+      .map((i, item) => MapEntry(
+            i,
+            ImageSliderPresentational(
+              itemUrl: item.imageUrlMinSize,
+            ),
+          ))
+      .values
+      .toList();
+
+  List<ImageSliderEditFile> imagesToMapEditFile(List<ImageModelFile>? chaletImagesList) => chaletImagesList!
+      .asMap()
+      .map((i, item) => MapEntry(
+            i,
+            ImageSliderEditFile(
+              itemFile: item,
+              currentImgIndex: _currentImgIndex,
+              imageIndex: i,
+              handleOnPageChaged: handleOnPageChaged,
+            ),
+          ))
+      .values
+      .toList();
+
+  List<Widget> getImgIndicators() {
+    List<dynamic> images = widget.chaletImageSliderPhase == ChaletImageSliderPhases.ChaletList
+        ? widget.chalet!.images
+        : widget.chaletImagesList ?? [];
+    return images.map((el) {
+      int index = images.indexOf(el);
+      return Container(
+        width: 8.0,
+        height: 8.0,
+        margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: _currentImgIndex == index ? Palette.goldLeaf : Palette.darkBlue,
+        ),
+      );
+    }).toList();
+  }
+
+  void handleOnPageChaged(int index) {
+    // setState(() => _currentImgIndex = index);
+    // caruselController.jumpToPage(index);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<ImageSlider> imageSliders = imgList
-        .asMap()
-        .map((i, item) => MapEntry(
-            i,
-            ImageSlider(
-              item: item,
-            )))
-        .values
-        .toList();
+    bool isImageFromUrl = widget.chaletImageSliderPhase == ChaletImageSliderPhases.ChaletList;
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      borderRadius: BorderRadius.all(Radius.circular(isImageFromUrl ? 5.0 : 0.0)),
       child: Container(
-        margin: EdgeInsets.only(bottom: Dimentions.big),
+        margin: EdgeInsets.only(bottom: isImageFromUrl ? Dimentions.big : 0.0),
         child: Stack(alignment: Alignment.bottomCenter, children: [
           CarouselSlider(
-              items: imageSliders,
+              carouselController: caruselController,
+              items: getImgSliders(),
               options: CarouselOptions(
                 viewportFraction: 1.0,
                 height: Dimentions.pictureHeight,
@@ -49,26 +97,14 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
                   setState(() => _currentImgIndex = index);
                 },
               )),
-          Positioned(
-            bottom: 4.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imgList.map((url) {
-                int index = imgList.indexOf(url);
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentImgIndex == index
-                        ? Palette.goldLeaf
-                        : Palette.darkBlue,
-                  ),
-                );
-              }).toList(),
+          if (getImgIndicators().length > 1)
+            Positioned(
+              bottom: 4.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: getImgIndicators(),
+              ),
             ),
-          ),
         ]),
       ),
     );

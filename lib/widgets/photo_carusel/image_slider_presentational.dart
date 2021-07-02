@@ -4,13 +4,13 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
-class ImageSlider extends StatelessWidget {
-  final String item;
-  const ImageSlider({
-    Key? key,
-    required this.item,
-  }) : super(key: key);
+class ImageSliderPresentational extends StatelessWidget {
+  final String itemUrl;
 
+  const ImageSliderPresentational({
+    Key? key,
+    required this.itemUrl,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -18,15 +18,12 @@ class ImageSlider extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             CachedNetworkImage(
-              imageUrl: item,
-              placeholder: (context, url) => Loading(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
-            Image.network(
-              item,
               fit: BoxFit.cover,
+              imageUrl: itemUrl,
               width: MediaQuery.of(context).size.width - 2 * Dimentions.big,
               height: Dimentions.pictureHeight,
+              placeholder: (context, url) => Loading(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             Positioned(
               bottom: 0.0,
@@ -43,8 +40,7 @@ class ImageSlider extends StatelessWidget {
                       end: Alignment.topCenter,
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      vertical: Dimentions.medium, horizontal: Dimentions.big),
+                  padding: EdgeInsets.symmetric(vertical: Dimentions.medium, horizontal: Dimentions.big),
                   child: Container()),
             ),
           ],

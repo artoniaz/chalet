@@ -1,0 +1,47 @@
+import 'dart:io';
+
+import 'package:chalet/models/image_model_file.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
+
+class ImageFileListModel extends ChangeNotifier {
+  final List<ImageModelFile> _images = [];
+
+  List<ImageModelFile> get images => _images;
+
+  void addImage(ImageModelFile img) {
+    _images.add(img);
+    notifyListeners();
+  }
+
+  void changeDefaultImage(int indexToChage) {
+    _images.forEach((el) => el.isDefault = false);
+    _images[indexToChage].isDefault = true;
+    notifyListeners();
+  }
+
+  void removeImage(int indexToRemove) {
+    _images.removeAt(indexToRemove);
+    notifyListeners();
+  }
+
+  getImageCamera() async {
+    EasyLoading.show(maskType: EasyLoadingMaskType.black, status: '');
+    final _picker = ImagePicker();
+    PickedFile? pickedImage =
+        await _picker.getImage(source: ImageSource.camera, imageQuality: 100, maxHeight: 1800, maxWidth: 1800);
+    var img = ImageModelFile(
+      imageFile: File(pickedImage?.path ?? ''),
+      isDefault: _images.isEmpty,
+    );
+    if (pickedImage != null) {
+      addImage(img);
+      EasyLoading.dismiss();
+      notifyListeners();
+    } else {
+      EasyLoading.dismiss();
+      EasyLoading.showError('Nie wybrano zdjecia');
+    }
+  }
+}
