@@ -35,6 +35,7 @@ class ImageSliderEditFile extends StatelessWidget {
               top: Dimentions.medium,
               child: StarIcon(
                 isDefault: itemFile.isDefault,
+                imageIndex: imageIndex,
               ),
             ),
             Positioned(
