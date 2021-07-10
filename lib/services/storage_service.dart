@@ -20,17 +20,21 @@ class StorageService {
             quality: 100,
             percentage: 50,
           );
-          TaskSnapshot uploadOriginalImageTask =
-              await storageRef.child('chalet_images/$chaletId/0/chalet_${chaletId}_0_orignal').putFile(el.imageFile);
-          TaskSnapshot uploadMinImageTask =
-              await storageRef.child('chalet_images/$chaletId/0/chalet_${chaletId}_0_min').putFile(imageMinFile);
+          int imgIndex = imageFileList.indexOf(el);
+          TaskSnapshot uploadOriginalImageTask = await storageRef
+              .child('chalet_images/$chaletId/$imgIndex/chalet_${chaletId}_${imgIndex}_orignal')
+              .putFile(el.imageFile);
+          TaskSnapshot uploadMinImageTask = await storageRef
+              .child('chalet_images/$chaletId/$imgIndex/chalet_${chaletId}_${imgIndex}_min')
+              .putFile(imageMinFile);
           if (uploadOriginalImageTask.state == TaskState.success && uploadMinImageTask.state == TaskState.success) {
             final String downloadUrlOriginal = await uploadOriginalImageTask.ref.getDownloadURL();
             final String downloadUrlMin = await uploadMinImageTask.ref.getDownloadURL();
             final image = ImageModelUrl(
-                imageUrlOriginalSize: downloadUrlOriginal,
-                imageUrlMinSize: downloadUrlMin,
-                isDefault: imagesUrlList.isEmpty);
+              imageUrlOriginalSize: downloadUrlOriginal,
+              imageUrlMinSize: downloadUrlMin,
+              isDefault: imageFileList[imgIndex].isDefault,
+            );
             imagesUrlList.add(image);
           }
         }

@@ -9,14 +9,12 @@ class ImageSliderEditFile extends StatelessWidget {
   final ImageModelFile itemFile;
   final int currentImgIndex;
   final int imageIndex;
-  final Function(int) handleOnPageChaged;
 
   const ImageSliderEditFile({
     Key? key,
     required this.itemFile,
     required this.currentImgIndex,
     required this.imageIndex,
-    required this.handleOnPageChaged,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -44,12 +42,7 @@ class ImageSliderEditFile extends StatelessWidget {
                 child: TrashIcon(
                   imageIndex: imageIndex,
                 )),
-            Positioned(
-                right: Dimentions.medium,
-                bottom: Dimentions.medium,
-                child: AddIcon(
-                  handleOnPageChaged: handleOnPageChaged,
-                )),
+            Positioned(right: Dimentions.medium, bottom: Dimentions.medium, child: AddIcon()),
           ],
         ));
   }

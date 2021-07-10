@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddIcon extends StatelessWidget {
-  final Function(int) handleOnPageChaged;
   const AddIcon({
     Key? key,
-    required this.handleOnPageChaged,
   }) : super(key: key);
 
   @override
@@ -23,7 +21,6 @@ class AddIcon extends StatelessWidget {
               handleGalleryImg: () {},
               handleCameraImg: () async {
                 await imageFileList.getImageCamera();
-                handleOnPageChaged(imageFileList.images.length - 1);
               },
             ));
   }

@@ -50,7 +50,6 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
               itemFile: item,
               currentImgIndex: _currentImgIndex,
               imageIndex: i,
-              handleOnPageChaged: handleOnPageChaged,
             ),
           ))
       .values
@@ -72,11 +71,6 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
         ),
       );
     }).toList();
-  }
-
-  void handleOnPageChaged(int index) {
-    // setState(() => _currentImgIndex = index);
-    // caruselController.jumpToPage(index);
   }
 
   @override
