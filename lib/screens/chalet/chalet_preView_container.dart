@@ -1,3 +1,4 @@
+import 'package:chalet/config/chalet_image_slider_phases.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
@@ -7,8 +8,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 class ChaletPreviewContainer extends StatelessWidget {
   final ChaletModel chalet;
 
-  const ChaletPreviewContainer({Key? key, required this.chalet})
-      : super(key: key);
+  const ChaletPreviewContainer({Key? key, required this.chalet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +18,7 @@ class ChaletPreviewContainer extends StatelessWidget {
       children: [
         ChaletPhotoCarusel(
           chalet: chalet,
+          chaletImageSliderPhase: ChaletImageSliderPhases.ChaletList,
         ),
         Positioned(
           width: MediaQuery.of(context).size.width - 2 * Dimentions.big,

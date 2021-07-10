@@ -1,4 +1,5 @@
 import 'package:chalet/models/index.dart';
+import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
@@ -20,7 +21,7 @@ class _HomeState extends State<Home> {
     Center(
       child: Text('mapa'),
     ),
-    AddChalet(),
+    ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
   ];
 
   void handleTabChange(int index) => setState(() => _currentIndex = index);

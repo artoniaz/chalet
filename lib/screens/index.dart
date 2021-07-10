@@ -15,3 +15,4 @@ export 'package:chalet/screens/chalet/chalet_preView_container.dart';
 
 export 'package:chalet/screens/add_chalet/add_chalet.dart';
 export 'package:chalet/screens/add_chalet/chalet_image_picker.dart';
+export 'package:chalet/screens/add_chalet/image_source_bottom_sheet.dart';
