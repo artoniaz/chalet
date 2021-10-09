@@ -1,5 +1,5 @@
 export 'package:chalet/screens/auth_wrapper.dart';
-export 'package:chalet/screens/screen_arg.dart';
+export 'package:chalet/models/screen_arg.dart';
 
 export 'package:chalet/screens/authenticate/authenticate.dart';
 export 'package:chalet/screens/authenticate/sign_in.dart';
@@ -16,3 +16,7 @@ export 'package:chalet/screens/chalet/chalet_preView_container.dart';
 export 'package:chalet/screens/add_chalet/add_chalet.dart';
 export 'package:chalet/screens/add_chalet/chalet_image_picker.dart';
 export 'package:chalet/screens/add_chalet/image_source_bottom_sheet.dart';
+
+export 'package:chalet/screens/chalet_map/chalet_map.dart';
+export 'package:chalet/screens/chalet_map/add_chalet_map.dart';
+export 'package:chalet/screens/chalet_map/address_input_screen.dart';

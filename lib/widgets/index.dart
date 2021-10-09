@@ -15,3 +15,5 @@ export 'package:chalet/widgets/rating_bar_row.dart';
 export 'package:chalet/widgets/star_icon.dart';
 export 'package:chalet/widgets/add_icon.dart';
 export 'package:chalet/widgets/trash_icon.dart';
+export 'package:chalet/widgets/navigation_icon_btn.dart';
+export 'package:chalet/widgets/custom_text_button_rounded.dart';
