@@ -1,17 +1,24 @@
 import 'dart:io';
 
 import 'package:chalet/config/index.dart';
+import 'package:chalet/models/add_chalet_nav_pass_args.dart';
+import 'package:chalet/models/custom_geo_point.dart';
 import 'package:chalet/models/image_model_file.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
+import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/services/storage_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AddChalet extends StatefulWidget {
@@ -25,8 +32,19 @@ class _AddChaletState extends State<AddChalet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   ChaletModel _chalet = new ChaletModel(
-      id: '', name: '', rating: 0.0, quality: 0.0, clean: 0.0, paper: 0.0, privacy: 0.0, description: '', images: []);
+    // id: '',
+    name: '',
+    rating: 0.0,
+    quality: 0.0,
+    clean: 0.0,
+    paper: 0.0,
+    privacy: 0.0,
+    description: '',
+    images: [],
+    position: GeoFirePoint(0, 0),
+  );
 
+  String? _chaletLocalizationAddress;
   bool isFormAllowed = true;
   bool isCreatBtnActive = true;
 
@@ -38,6 +56,20 @@ class _AddChaletState extends State<AddChalet> {
   double calcRating(ChaletModel chaletModel) {
     List ratings = [chaletModel.quality, chaletModel.clean, chaletModel.paper, chaletModel.privacy];
     return ratings.reduce((value, element) => value + element) / ratings.length;
+  }
+
+  void _navigateToLocalizationAndGetChaletLocalization(BuildContext context) async {
+    AddChaletNavigationPassingArgs? chaletLocalizationArgs =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) => AddChaletMap()));
+    if (chaletLocalizationArgs != null) {
+      setState(() {
+        _chaletLocalizationAddress = chaletLocalizationArgs.chaletAddress.street;
+        _chalet.position = Geoflutterfire().point(
+          latitude: chaletLocalizationArgs.chaletLocalization.latitude,
+          longitude: chaletLocalizationArgs.chaletLocalization.longitude,
+        );
+      });
+    }
   }
 
   Future<void> createChalet() async {
@@ -69,7 +101,6 @@ class _AddChaletState extends State<AddChalet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppBars.customAppBarDark(context, 'Dodaj szalet'),
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () => dissmissCurrentFocus(context),
@@ -115,6 +146,11 @@ class _AddChaletState extends State<AddChalet> {
                         onChanged: (val) => setState(() => _chalet.description = val),
                       ),
                       VerticalSizedBox8(),
+                      CustomElevatedButton(
+                        label: 'Lokalizacja',
+                        onPressed: () => _navigateToLocalizationAndGetChaletLocalization(context),
+                      ),
+                      if (_chaletLocalizationAddress != null) Text(_chaletLocalizationAddress ?? ''),
                       CustomElevatedButtonIcon(
                         onPressed: isCreatBtnActive ? createChalet : null,
                         label: 'Dodaj szalet',

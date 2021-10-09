@@ -1,36 +1,34 @@
-import 'dart:convert';
+import 'dart:async';
 
+import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/models/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ChaletService {
   // collection reference
   final CollectionReference chaletCollection = FirebaseFirestore.instance.collection("chalets");
 
-  // chalet list from snapshot
-  List<ChaletModel> _chaletListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs
-        .map((doc) => ChaletModel(
-            id: (doc.data() as dynamic)['id'] ?? '',
-            name: (doc.data() as dynamic)['name'] ?? '',
-            rating: (doc.data() as dynamic)['rating'].toDouble() ?? 0.0,
-            quality: (doc.data() as dynamic)['quality'].toDouble() ?? 0.0,
-            clean: (doc.data() as dynamic)['clean'].toDouble() ?? 0.0,
-            paper: (doc.data() as dynamic)['paper'].toDouble() ?? 0.0,
-            privacy: (doc.data() as dynamic)['privacy'].toDouble() ?? 0.0,
-            images: (doc.data() as dynamic)['images'].toList() ?? [],
-            description: (doc.data() as dynamic)['description'] ?? ''))
-        .toList();
+  Geoflutterfire geo = Geoflutterfire();
+
+  StreamSubscription<List<ChaletModel>> getChaletStream(
+      BehaviorSubject<LatLng> subject, void Function(List<ChaletModel>) updateMarkers) {
+    return subject
+        .switchMap((center) {
+          return geo
+              .collection(collectionRef: chaletCollection)
+              .within(center: getGeoFirePointFromLatLng(center), radius: 50.0, field: 'position', strictMode: true);
+        })
+        .map((documentSnapshotList) => documentSnapshotList
+            .map((documentSnapshot) => ChaletModel.fromJson(documentSnapshot.data() as Map<String, dynamic>))
+            .toList())
+        .listen(updateMarkers);
   }
 
-  // get chalet stream
-  Stream<List<ChaletModel>> get chalets {
-    return chaletCollection.snapshots().map(_chaletListFromSnapshot);
-  }
-
-  // get chalet paginated list
-  Future<List<ChaletModel>>? getChaletList(ChaletModel? lastChalet) {
+  Future<List<ChaletModel>>? getChaletList({ChaletModel? lastChalet, GeoFirePoint? center}) {
     final data = lastChalet == null
         ? chaletCollection.orderBy('rating', descending: true).limit(1).get()
         : chaletCollection
@@ -41,13 +39,14 @@ class ChaletService {
             .get();
     return data.then((snapshot) => snapshot.docs
         .map((doc) => ChaletModel(
-            id: (doc.data() as dynamic)['id'] ?? '',
+            // id: (doc.data() as dynamic)['id'] ?? '',
             name: (doc.data() as dynamic)['name'] ?? '',
             rating: (doc.data() as dynamic)['rating'].toDouble() ?? 0.0,
             quality: (doc.data() as dynamic)['quality']?.toDouble() ?? 0.0,
             clean: (doc.data() as dynamic)['clean']?.toDouble() ?? 0.0,
             paper: (doc.data() as dynamic)['paper']?.toDouble() ?? 0.0,
             privacy: (doc.data() as dynamic)['privacy']?.toDouble() ?? 0.0,
+            position: (doc.data() as dynamic)['position'] ?? GeoFirePoint(0, 0),
             images: List<ImageModelUrl>.from(
               (doc.data() as dynamic)["images"].map((item) {
                 return new ImageModelUrl(
@@ -70,6 +69,7 @@ class ChaletService {
         'paper': chalet.paper,
         'privacy': chalet.privacy,
         'description': chalet.description,
+        'position': chalet.position.data,
       });
       return res.id;
     } catch (e) {
