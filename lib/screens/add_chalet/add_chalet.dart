@@ -2,23 +2,16 @@ import 'dart:io';
 
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
-import 'package:chalet/models/custom_geo_point.dart';
-import 'package:chalet/models/image_model_file.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/services/storage_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AddChalet extends StatefulWidget {
@@ -32,7 +25,7 @@ class _AddChaletState extends State<AddChalet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   ChaletModel _chalet = new ChaletModel(
-    // id: '',
+    id: '',
     name: '',
     rating: 0.0,
     quality: 0.0,
