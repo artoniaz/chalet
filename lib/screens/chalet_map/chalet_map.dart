@@ -32,11 +32,10 @@ class _ChaletMapState extends State<ChaletMap> {
 
   void _addMarker(ChaletModel chalet) {
     var _marker = Marker(
-      //TODO: zmienić name na id
-      markerId: MarkerId(chalet.name),
+      markerId: MarkerId(chalet.id),
       position: getLatLngFromGeoPoint(chalet.position['geopoint']),
       infoWindow: InfoWindow(
-        title: chalet.name,
+        title: '${chalet.name} ${chalet.id}',
         snippet: chalet.rating.toString(),
       ),
     );

@@ -23,54 +23,37 @@ class ChaletService {
               .within(center: getGeoFirePointFromLatLng(center), radius: 50.0, field: 'position', strictMode: true);
         })
         .map((documentSnapshotList) => documentSnapshotList
-            .map((documentSnapshot) => ChaletModel.fromJson(documentSnapshot.data() as Map<String, dynamic>))
+            .map((documentSnapshot) => ChaletModel.fromJson(documentSnapshot.data(), documentSnapshot.id))
             .toList())
         .listen(updateMarkers);
   }
 
-  Future<List<ChaletModel>>? getChaletList({ChaletModel? lastChalet, GeoFirePoint? center}) {
+  Future<List<ChaletModel>>? getChaletList({ChaletModel? lastChalet, GeoFirePoint? center}) async {
     final data = lastChalet == null
-        ? chaletCollection.orderBy('rating', descending: true).limit(1).get()
-        : chaletCollection
+        ? await chaletCollection.orderBy('rating', descending: true).limit(1).get()
+        : await chaletCollection
             // .where('rating', isGreaterThan: 4)
             .orderBy('rating', descending: true)
             .startAfter([lastChalet.rating])
             .limit(1)
             .get();
-    return data.then((snapshot) => snapshot.docs
-        .map((doc) => ChaletModel(
-            // id: (doc.data() as dynamic)['id'] ?? '',
-            name: (doc.data() as dynamic)['name'] ?? '',
-            rating: (doc.data() as dynamic)['rating'].toDouble() ?? 0.0,
-            quality: (doc.data() as dynamic)['quality']?.toDouble() ?? 0.0,
-            clean: (doc.data() as dynamic)['clean']?.toDouble() ?? 0.0,
-            paper: (doc.data() as dynamic)['paper']?.toDouble() ?? 0.0,
-            privacy: (doc.data() as dynamic)['privacy']?.toDouble() ?? 0.0,
-            position: (doc.data() as dynamic)['position'] ?? GeoFirePoint(0, 0),
-            images: List<ImageModelUrl>.from(
-              (doc.data() as dynamic)["images"].map((item) {
-                return new ImageModelUrl(
-                    imageUrlOriginalSize: item['imageUrlOriginalSize'] ?? '',
-                    imageUrlMinSize: item['imageUrlMinSize'] ?? '',
-                    isDefault: item['isDefault'] ?? false);
-              }),
-            ),
-            description: (doc.data() as dynamic)['description'] ?? ''))
-        .toList());
+    return data.docs.map((doc) => ChaletModel.fromJson(doc.data(), doc.id)).toList();
   }
 
   Future<String?> createChalet(ChaletModel chalet) async {
     try {
-      DocumentReference<Object?> res = await chaletCollection.add({
-        'name': chalet.name,
-        'rating': chalet.rating,
-        'quality': chalet.quality,
-        'clean': chalet.clean,
-        'paper': chalet.paper,
-        'privacy': chalet.privacy,
-        'description': chalet.description,
-        'position': chalet.position.data,
-      });
+      DocumentReference<Object?> res = await chaletCollection.add(ChaletModel(
+              id: '',
+              images: [],
+              name: chalet.name,
+              rating: chalet.rating,
+              quality: chalet.quality,
+              clean: chalet.clean,
+              paper: chalet.paper,
+              privacy: chalet.privacy,
+              description: chalet.description,
+              position: chalet.position.data)
+          .toJson());
       return res.id;
     } catch (e) {
       print(e);
