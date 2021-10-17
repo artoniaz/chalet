@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/index.dart';
+import 'package:chalet/screens/chalet/chalet_sliding_up_panel/chalet_sliding_up_panel.dart';
 import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
@@ -9,6 +10,7 @@ import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ChaletMap extends StatefulWidget {
   const ChaletMap({
@@ -26,19 +28,29 @@ class _ChaletMapState extends State<ChaletMap> {
   late StreamSubscription<List<ChaletModel>> _chaletStreamSubscribtion;
 
   List<Marker> markers = [];
+  bool _isPanelDraggagle = true;
+  ChaletModel? _activeChalet;
+
+  final _panelController = PanelController();
+
   bool _isScreenLoading = true;
+
+  void _toggleIsPanelDraggableValue() => setState(() => _isPanelDraggagle = !_isPanelDraggagle);
 
   void _onCameraMove(CameraPosition position) => _cameraCenterPosition = position.target;
 
   void _addMarker(ChaletModel chalet) {
     var _marker = Marker(
-      markerId: MarkerId(chalet.id),
-      position: getLatLngFromGeoPoint(chalet.position['geopoint']),
-      infoWindow: InfoWindow(
-        title: '${chalet.name} ${chalet.id}',
-        snippet: chalet.rating.toString(),
-      ),
-    );
+        markerId: MarkerId(chalet.id),
+        position: getLatLngFromGeoPoint(chalet.position['geopoint']),
+        infoWindow: InfoWindow(
+          title: '${chalet.name} ${chalet.id}',
+          snippet: chalet.rating.toString(),
+        ),
+        onTap: () {
+          if (_activeChalet == null) _panelController.show();
+          setState(() => _activeChalet = chalet);
+        });
     setState(() => markers.add(_marker));
   }
 
@@ -48,6 +60,13 @@ class _ChaletMapState extends State<ChaletMap> {
 
   void _updateQuery(LatLng value) {
     setState(() => _cameraPositionBehaviourSubject.add(value));
+  }
+
+  void _onMapTap(LatLng latlng) {
+    if (_activeChalet != null) {
+      _panelController.hide();
+      setState(() => _activeChalet = null);
+    }
   }
 
   void _updateMarkers(List<ChaletModel> chaletlist) {
@@ -80,20 +99,36 @@ class _ChaletMapState extends State<ChaletMap> {
 
   @override
   Widget build(BuildContext context) {
+    final _panelHeightClosed = _activeChalet == null ? 0.0 : MediaQuery.of(context).size.height * 0.2;
+    final _panelHeightOpen = MediaQuery.of(context).size.height * 0.6;
     return _isScreenLoading
         ? Loading()
         : Scaffold(
             body: Stack(
               alignment: Alignment.center,
               children: [
-                GoogleMap(
-                  initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                  onMapCreated: _onMapCreated,
-                  onCameraMove: (pos) => _onCameraMove(pos),
-                  myLocationEnabled: true,
-                  markers: markers.toSet(),
+                SlidingUpPanel(
+                  isDraggable: _isPanelDraggagle,
+                  controller: _panelController,
+                  minHeight: _panelHeightClosed,
+                  maxHeight: _panelHeightOpen,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(Dimentions.big)),
+                  parallaxEnabled: true,
+                  parallaxOffset: 0.5,
+                  panelBuilder: (controller) => ChaletSlidingUpPanel(
+                    controller: controller,
+                    chalet: _activeChalet,
+                  ),
+                  body: GoogleMap(
+                    initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    onMapCreated: _onMapCreated,
+                    onCameraMove: (pos) => _onCameraMove(pos),
+                    myLocationEnabled: true,
+                    markers: markers.toSet(),
+                    onTap: _onMapTap,
+                  ),
                 ),
                 Positioned(
                   top: Dimentions.large,

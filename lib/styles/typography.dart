@@ -26,7 +26,7 @@ TextTheme textTheme() => TextTheme(
       fontWeight: FontWeight.w400,
     ),
     bodyText1: TextStyle(
-      fontSize: 16.0,
+      fontSize: 14.0,
       fontWeight: FontWeight.w400,
       fontFamily: 'Roboto',
       color: Palette.ivoryBlack,
