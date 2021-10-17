@@ -17,16 +17,49 @@ class CustomElevatedButton extends StatelessWidget {
     return ElevatedButton(
         onPressed: onPressed != null ? () => onPressed!() : null,
         style: ButtonStyle(
+            elevation: MaterialStateProperty.all(0.0),
             splashFactory: InkSplash.splashFactory,
-            backgroundColor: MaterialStateProperty.all(onPressed == null
-                ? Colors.grey[400]
-                : backgroundColor ?? Palette.goldLeaf)),
+            backgroundColor:
+                MaterialStateProperty.all(onPressed == null ? Colors.grey[400] : backgroundColor ?? Palette.goldLeaf)),
         child: Text(
           label,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1!
-              .copyWith(color: Palette.white),
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.white),
+        ));
+  }
+}
+
+class CustomElevatedButtonMinor extends StatelessWidget {
+  final Function? onPressed;
+  final String label;
+  final Color? backgroundColor;
+  const CustomElevatedButtonMinor({
+    Key? key,
+    this.onPressed,
+    required this.label,
+    this.backgroundColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        onPressed: onPressed != null ? () => onPressed!() : null,
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all(0.0),
+          side: MaterialStateProperty.all<BorderSide>(BorderSide(
+            width: 2.0,
+            color: Palette.goldLeaf,
+          )),
+          splashFactory: InkSplash.splashFactory,
+          backgroundColor: MaterialStateProperty.all(
+            Colors.transparent,
+          ),
+          foregroundColor: MaterialStateProperty.all(
+            Colors.transparent,
+          ),
+        ),
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.goldLeaf),
         ));
   }
 }

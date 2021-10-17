@@ -17,13 +17,10 @@ class ImageSliderPresentational extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Stack(
           children: <Widget>[
-            CachedNetworkImage(
-              fit: BoxFit.cover,
-              imageUrl: itemUrl,
+            CustomCachedNetworkImage(
+              itemUrl: itemUrl,
               width: MediaQuery.of(context).size.width - 2 * Dimentions.big,
               height: Dimentions.pictureHeight,
-              placeholder: (context, url) => Loading(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             Positioned(
               bottom: 0.0,
