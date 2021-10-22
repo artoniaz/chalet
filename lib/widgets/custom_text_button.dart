@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 class CustomTextButton extends StatelessWidget {
   final Function onPressed;
   final String label;
-  const CustomTextButton(
-      {Key? key, required this.onPressed, required this.label})
-      : super(key: key);
+  final Color color;
+  const CustomTextButton({
+    Key? key,
+    required this.onPressed,
+    required this.label,
+    this.color = Palette.white,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +18,7 @@ class CustomTextButton extends StatelessWidget {
         onPressed: () => onPressed(),
         child: Text(
           label,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-              color: Palette.white, decoration: TextDecoration.underline),
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(color: color, decoration: TextDecoration.underline),
         ));
   }
 }

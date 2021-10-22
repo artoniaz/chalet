@@ -21,3 +21,7 @@ export 'package:chalet/screens/add_chalet/image_source_bottom_sheet.dart';
 export 'package:chalet/screens/chalet_map/chalet_map.dart';
 export 'package:chalet/screens/chalet_map/add_chalet_map.dart';
 export 'package:chalet/screens/chalet_map/address_input_screen.dart';
+
+export 'package:chalet/screens/review/add_review_module.dart';
+export 'package:chalet/screens/review/chalet_review_list.dart';
+export 'package:chalet/screens/review/review_container.dart';

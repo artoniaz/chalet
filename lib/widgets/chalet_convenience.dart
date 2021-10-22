@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 class ChaletConvenience extends StatelessWidget {
   final ConvenienceType convenienceType;
   final double convenienceScore;
+  final double? size;
+  final bool isMainDisplay;
   const ChaletConvenience({
     Key? key,
     required this.convenienceType,
     required this.convenienceScore,
+    this.size = 56.0,
+    this.isMainDisplay = true,
   }) : super(key: key);
 
   @override
@@ -17,12 +21,12 @@ class ChaletConvenience extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Image(
-          width: 56.0,
-          height: 56.0,
+          width: size,
+          height: size,
           image: AssetImage('assets/chaletIcons/${convenienceType.type}.png'),
         ),
-        VerticalSizedBox8(),
-        Text(convenienceType.name, style: Theme.of(context).textTheme.bodyText2),
+        if (isMainDisplay) VerticalSizedBox8(),
+        if (isMainDisplay) Text(convenienceType.name, style: Theme.of(context).textTheme.bodyText2),
         Text(convenienceScore.toString(), style: Theme.of(context).textTheme.bodyText2),
       ],
     );

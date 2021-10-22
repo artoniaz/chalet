@@ -115,10 +115,12 @@ class _ChaletMapState extends State<ChaletMap> {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(Dimentions.big)),
                   parallaxEnabled: true,
                   parallaxOffset: 0.5,
-                  panelBuilder: (controller) => ChaletSlidingUpPanel(
-                    controller: controller,
-                    chalet: _activeChalet,
-                  ),
+                  panelBuilder: (controller) => _activeChalet == null
+                      ? Container()
+                      : ChaletSlidingUpPanel(
+                          controller: controller,
+                          chalet: _activeChalet,
+                        ),
                   body: GoogleMap(
                     initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
                     myLocationButtonEnabled: false,
