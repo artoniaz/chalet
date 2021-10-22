@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatelessWidget {
-  const Loading({Key? key}) : super(key: key);
+  final Color spinnerColor;
+  final Color backgroundColor;
+  const Loading({
+    Key? key,
+    this.spinnerColor = Palette.skyBlue,
+    this.backgroundColor = Palette.goldLeaf,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Palette.skyBlue,
+      color: backgroundColor,
       child: Center(
         child: SpinKitChasingDots(
-          color: Palette.goldLeaf,
+          color: spinnerColor,
           size: 50,
         ),
       ),

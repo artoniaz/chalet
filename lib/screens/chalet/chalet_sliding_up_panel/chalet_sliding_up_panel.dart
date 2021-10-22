@@ -1,10 +1,11 @@
 import 'package:chalet/models/chalet_model.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
+import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
-class ChaletSlidingUpPanel extends StatelessWidget {
+class ChaletSlidingUpPanel extends StatefulWidget {
   final ChaletModel? chalet;
   final ScrollController controller;
   const ChaletSlidingUpPanel({
@@ -14,11 +15,26 @@ class ChaletSlidingUpPanel extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _ChaletSlidingUpPanelState createState() => _ChaletSlidingUpPanelState();
+}
+
+class _ChaletSlidingUpPanelState extends State<ChaletSlidingUpPanel> {
+  bool _isReviewsActive = false;
+
+  @override
+  void didUpdateWidget(covariant ChaletSlidingUpPanel oldWidget) {
+    if (oldWidget.chalet?.id != widget.chalet?.id) {
+      setState(() => _isReviewsActive = false);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Dimentions.big, vertical: Dimentions.small),
       child: ListView(
-        controller: controller,
+        controller: widget.controller,
         padding: EdgeInsets.zero,
         children: [
           DragHandle(),
@@ -28,7 +44,7 @@ class ChaletSlidingUpPanel extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  chalet!.name,
+                  widget.chalet!.name,
                   style: Theme.of(context).textTheme.headline3,
                 ),
               ),
@@ -36,12 +52,11 @@ class ChaletSlidingUpPanel extends StatelessWidget {
                 children: [
                   CustomElevatedButtonMinor(
                     label: 'Nawiguj',
-                    onPressed: () => print('fsbggd'),
+                    onPressed: () => print('nawiguj'),
                   ),
                   HorizontalSizedBox8(),
-                  CustomElevatedButton(
-                    label: 'Oceń',
-                    onPressed: () {},
+                  AddReviewModule(
+                    chaletId: widget.chalet!.id,
                   ),
                 ],
               ),
@@ -51,7 +66,7 @@ class ChaletSlidingUpPanel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                chalet!.rating.toString(),
+                widget.chalet!.rating.toString(),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               HorizontalSizedBox4(),
@@ -66,7 +81,7 @@ class ChaletSlidingUpPanel extends StatelessWidget {
           Container(
               height: 180,
               child: ImagesHorizontalListView(
-                chalet: chalet!,
+                chalet: widget.chalet!,
               )),
           VerticalSizedBox16(),
           Text(
@@ -77,22 +92,22 @@ class ChaletSlidingUpPanel extends StatelessWidget {
             children: [
               ChaletConvenience(
                 convenienceType: ConveniencesTypes.paper,
-                convenienceScore: chalet!.paper,
+                convenienceScore: widget.chalet!.paper,
               ),
               HorizontalSizedBox16(),
               ChaletConvenience(
                 convenienceType: ConveniencesTypes.clean,
-                convenienceScore: chalet!.clean,
+                convenienceScore: widget.chalet!.clean,
               ),
               HorizontalSizedBox16(),
               ChaletConvenience(
                 convenienceType: ConveniencesTypes.quality,
-                convenienceScore: chalet!.quality,
+                convenienceScore: widget.chalet!.quality,
               ),
               HorizontalSizedBox16(),
               ChaletConvenience(
                 convenienceType: ConveniencesTypes.privacy,
-                convenienceScore: chalet!.privacy,
+                convenienceScore: widget.chalet!.privacy,
               ),
             ],
           ),
@@ -102,9 +117,28 @@ class ChaletSlidingUpPanel extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
           ),
           Text(
-            chalet!.description!,
+            widget.chalet!.description!,
             style: Theme.of(context).textTheme.bodyText2,
           ),
+          VerticalSizedBox16(),
+          if (!_isReviewsActive)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomElevatedButton(label: 'Pokaż oceny', onPressed: () => setState(() => _isReviewsActive = true)),
+              ],
+            ),
+          if (_isReviewsActive)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Oceny',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                ChaletReviewList(chaletId: widget.chalet!.id),
+              ],
+            ),
         ],
       ),
     );

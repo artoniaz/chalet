@@ -2,6 +2,7 @@ import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 
 const textInputDecoration = InputDecoration(
+    contentPadding: EdgeInsets.all(Dimentions.small),
     fillColor: Palette.white,
     filled: true,
     border: OutlineInputBorder(
