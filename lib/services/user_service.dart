@@ -20,10 +20,4 @@ class UserService {
   Stream<UserDataModel>? get userData {
     userCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
-
-  Future updateUserData(String email, List<String> favChalets) async {
-    return await userCollection
-        .doc(uid)
-        .set({'email': email, 'favChalets': favChalets});
-  }
 }

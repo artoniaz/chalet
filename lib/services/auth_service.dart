@@ -3,8 +3,7 @@ import 'package:chalet/services/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 
 class AuthService {
-  final firebaseAuth.FirebaseAuth _firebaseAuth =
-      firebaseAuth.FirebaseAuth.instance;
+  final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
 
   //create UserModel based on FirebaseUser
   UserModel? _userModelFromFirebaseUser(firebaseAuth.User? firebaseUser) {
@@ -19,8 +18,7 @@ class AuthService {
   //sign in anon
   Future signInAnon() async {
     try {
-      firebaseAuth.UserCredential authResult =
-          await _firebaseAuth.signInAnonymously();
+      firebaseAuth.UserCredential authResult = await _firebaseAuth.signInAnonymously();
       return _userModelFromFirebaseUser(authResult.user);
     } catch (e) {
       print(e.toString());
@@ -31,8 +29,8 @@ class AuthService {
   //sing in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      firebaseAuth.UserCredential result = await _firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password);
+      firebaseAuth.UserCredential result =
+          await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return _userModelFromFirebaseUser(result.user);
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
@@ -50,12 +48,8 @@ class AuthService {
   //register with email and password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      firebaseAuth.UserCredential result = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
-
-      // create a new document for the user with the uid
-      await UserService(uid: result.user!.uid).updateUserData(email, []);
-
+      firebaseAuth.UserCredential result =
+          await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       return _userModelFromFirebaseUser(result.user);
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
