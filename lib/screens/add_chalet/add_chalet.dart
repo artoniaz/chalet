@@ -28,6 +28,8 @@ class _AddChaletState extends State<AddChalet> {
     id: '',
     name: '',
     rating: 0.0,
+    numberRating: 1,
+    numberDetailedRating: 1,
     quality: 0.0,
     clean: 0.0,
     paper: 0.0,

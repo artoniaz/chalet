@@ -47,6 +47,8 @@ class ChaletService {
               images: [],
               name: chalet.name,
               rating: chalet.rating,
+              numberRating: chalet.numberRating,
+              numberDetailedRating: chalet.numberDetailedRating,
               quality: chalet.quality,
               clean: chalet.clean,
               paper: chalet.paper,
