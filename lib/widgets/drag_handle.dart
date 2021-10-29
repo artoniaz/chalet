@@ -10,10 +10,10 @@ class DragHandle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 30.0,
+        width: 40.0,
         height: 5.0,
         decoration: BoxDecoration(
-            color: Colors.grey[300],
+            color: Palette.lightGrey,
             borderRadius: BorderRadius.all(
               Radius.circular(Dimentions.big),
             )),

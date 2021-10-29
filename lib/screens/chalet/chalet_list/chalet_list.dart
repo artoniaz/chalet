@@ -80,7 +80,7 @@ class _ChaletListState extends State<ChaletList> {
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Najwyżej oceniane',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.white),
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.backgroundWhite),
                 ),
               ),
             ),

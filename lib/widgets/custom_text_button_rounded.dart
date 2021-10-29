@@ -15,7 +15,7 @@ class CustomTextButtonRounded extends StatelessWidget {
     return TextButton(
       onPressed: () => onPressed(),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Palette.white),
+        backgroundColor: MaterialStateProperty.all(Palette.backgroundWhite),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0))),
       ),
       child: Text(label),

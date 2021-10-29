@@ -55,7 +55,7 @@ class QuickRatingDialogConfirm extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(24.0),
                 decoration: BoxDecoration(
-                  color: Palette.white,
+                  color: Palette.backgroundWhite,
                   shape: BoxShape.circle,
                 ),
                 child: Image(

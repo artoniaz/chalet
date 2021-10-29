@@ -24,7 +24,7 @@ class ImagesHorizontalListView extends StatelessWidget {
                       initialPage: index,
                     ))),
         child: Container(
-          width: 200,
+          width: 160,
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
             child: CustomCachedNetworkImage(

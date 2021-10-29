@@ -7,7 +7,7 @@ class Loading extends StatelessWidget {
   final Color backgroundColor;
   const Loading({
     Key? key,
-    this.spinnerColor = Palette.skyBlue,
+    this.spinnerColor = Palette.chaletBlue,
     this.backgroundColor = Palette.goldLeaf,
   }) : super(key: key);
 

@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 const textInputDecoration = InputDecoration(
     contentPadding: EdgeInsets.all(Dimentions.small),
-    fillColor: Palette.white,
+    fillColor: Palette.backgroundWhite,
     filled: true,
     border: OutlineInputBorder(
         borderSide: BorderSide(
-      color: Palette.white,
+      color: Palette.backgroundWhite,
       width: 2.0,
     )),
     enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-      color: Palette.white,
+      color: Palette.backgroundWhite,
       width: 2.0,
     )),
     focusedBorder: OutlineInputBorder(

@@ -21,15 +21,11 @@ class CustomElevatedButtonIcon extends StatelessWidget {
       onPressed: onPressed != null ? () => onPressed!() : null,
       style: ButtonStyle(
           splashFactory: InkSplash.splashFactory,
-          backgroundColor: MaterialStateProperty.all(onPressed == null
-              ? Colors.grey[400]
-              : backgroundColor ?? Palette.goldLeaf)),
+          backgroundColor:
+              MaterialStateProperty.all(onPressed == null ? Colors.grey[400] : backgroundColor ?? Palette.goldLeaf)),
       label: Text(
         label,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText1!
-            .copyWith(color: Palette.white),
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
       ),
     );
   }

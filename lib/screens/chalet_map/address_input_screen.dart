@@ -42,7 +42,7 @@ class _AddressInputScreenState extends State<AddressInputScreen> {
       appBar: AppBar(
         title: Text(
           'Wybierz lokalizację',
-          style: Theme.of(context).textTheme.headline2!.copyWith(color: Palette.white),
+          style: Theme.of(context).textTheme.headline2!.copyWith(color: Palette.backgroundWhite),
         ),
         centerTitle: true,
       ),

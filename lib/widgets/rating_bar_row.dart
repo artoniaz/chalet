@@ -19,7 +19,7 @@ class RatingBarRow extends StatelessWidget {
       children: [
         Text(label,
             style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                  color: Palette.white,
+                  color: Palette.backgroundWhite,
                 )),
         RatingBarItem(
           handleRatingUpdate: handleRatingUpdate,

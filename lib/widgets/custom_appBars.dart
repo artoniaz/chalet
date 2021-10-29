@@ -9,7 +9,7 @@ class CustomAppBars {
       AppBar(
         title: Text(
           label,
-          style: Theme.of(context).textTheme.headline3!.copyWith(color: Palette.white),
+          style: Theme.of(context).textTheme.headline3!.copyWith(color: Palette.backgroundWhite),
         ),
       );
 
@@ -23,7 +23,7 @@ class CustomAppBars {
         elevation: 5.0,
         title: Text(
           label,
-          style: Theme.of(context).textTheme.headline3!.copyWith(color: Palette.white),
+          style: Theme.of(context).textTheme.headline3!.copyWith(color: Palette.backgroundWhite),
         ),
       );
 
