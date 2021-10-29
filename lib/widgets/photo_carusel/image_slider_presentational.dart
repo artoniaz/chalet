@@ -32,7 +32,7 @@ class ImageSliderPresentational extends StatelessWidget {
                   height: Dimentions.pictureHeight,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Palette.skyBlue, Colors.transparent],
+                      colors: [Palette.chaletBlue, Colors.transparent],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                     ),

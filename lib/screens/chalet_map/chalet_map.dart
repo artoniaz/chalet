@@ -35,7 +35,7 @@ class _ChaletMapState extends State<ChaletMap> {
 
   bool _isScreenLoading = true;
 
-  void _toggleIsPanelDraggableValue() => setState(() => _isPanelDraggagle = !_isPanelDraggagle);
+  // void _toggleIsPanelDraggableValue() => setState(() => _isPanelDraggagle = !_isPanelDraggagle);
 
   void _onCameraMove(CameraPosition position) => _cameraCenterPosition = position.target;
 
@@ -112,9 +112,10 @@ class _ChaletMapState extends State<ChaletMap> {
                   controller: _panelController,
                   minHeight: _panelHeightClosed,
                   maxHeight: _panelHeightOpen,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(Dimentions.big)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
                   parallaxEnabled: true,
                   parallaxOffset: 0.5,
+                  color: Palette.backgroundWhite,
                   panelBuilder: (controller) => _activeChalet == null
                       ? Container()
                       : ChaletSlidingUpPanel(
@@ -145,14 +146,14 @@ class _ChaletMapState extends State<ChaletMap> {
                 ),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.black,
-              onPressed: () => _googleMapController.animateCamera(
-                CameraUpdate.newCameraPosition(CameraPosition(target: _cameraCenterPosition, zoom: 15.0)),
-              ),
-              child: Icon(Icons.center_focus_strong),
-            ),
+            // floatingActionButton: FloatingActionButton(
+            //   backgroundColor: Theme.of(context).primaryColor,
+            //   foregroundColor: Colors.black,
+            //   onPressed: () => _googleMapController.animateCamera(
+            //     CameraUpdate.newCameraPosition(CameraPosition(target: _cameraCenterPosition, zoom: 15.0)),
+            //   ),
+            //   child: Icon(Icons.center_focus_strong),
+            // ),
           );
   }
 }

@@ -21,10 +21,7 @@ class RatingIconLabel extends StatelessWidget {
         HorizontalSizedBox4(),
         Text(
           ratingLabel.toString(),
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1!
-              .copyWith(color: Palette.white),
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
         )
       ],
     );

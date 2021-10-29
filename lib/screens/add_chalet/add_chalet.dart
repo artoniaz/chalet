@@ -96,6 +96,7 @@ class _AddChaletState extends State<AddChalet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Palette.darkBlue,
       body: SingleChildScrollView(
         child: GestureDetector(
           onTap: () => dissmissCurrentFocus(context),
@@ -120,7 +121,7 @@ class _AddChaletState extends State<AddChalet> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
-                              .copyWith(color: isFormAllowed ? Palette.white : Palette.errorRed)),
+                              .copyWith(color: isFormAllowed ? Palette.backgroundWhite : Palette.errorRed)),
                       VerticalSizedBox8(),
                       RatingBarRow(
                         label: 'Jakość',

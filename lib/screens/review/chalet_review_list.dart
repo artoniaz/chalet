@@ -9,9 +9,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ChaletReviewList extends StatefulWidget {
   final String chaletId;
+  final Function(GlobalKey) scrollReviewList;
   const ChaletReviewList({
     Key? key,
     required this.chaletId,
+    required this.scrollReviewList,
   }) : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
   bool isLoading = true;
   bool isError = false;
   bool _displayShowMoreReviewsButton = false;
+  GlobalKey _itemKey = GlobalKey();
 
   Future<void> getMoreReviewsForChalet() async {
     try {
@@ -44,6 +47,9 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
         _reviewList = reviews;
         _displayShowMoreReviewsButton = reviews.length == 5;
         isLoading = false;
+      });
+      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+        widget.scrollReviewList(_itemKey);
       });
     } catch (e) {
       EasyLoading.showError(e.toString());
@@ -80,6 +86,7 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
                 ],
               )
             : Column(
+                key: _itemKey,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _reviewList.isEmpty
                     ? [Text('Brak ocen')]

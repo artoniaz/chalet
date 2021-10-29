@@ -28,7 +28,7 @@ class ChaletPreviewContainer extends StatelessWidget {
             child: Text(
               chalet.name,
               style: Theme.of(context).textTheme.headline3!.copyWith(
-                    color: Palette.white,
+                    color: Palette.backgroundWhite,
                     fontWeight: FontWeight.w700,
                   ),
             ),

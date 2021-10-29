@@ -15,7 +15,7 @@ class ChaletImagePicker extends StatelessWidget {
       return Container(
         height: Dimentions.pictureHeight,
         width: MediaQuery.of(context).size.width,
-        color: Palette.white,
+        color: Palette.backgroundWhite,
         //TODO: finish
         child: imageFileList.images.isEmpty
             ? Center(
