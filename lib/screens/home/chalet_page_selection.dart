@@ -17,7 +17,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
 
   @override
   void initState() {
-    _tabController = new TabController(vsync: this, length: 2);
+    _tabController = new TabController(vsync: this, length: 2, initialIndex: 1);
     super.initState();
   }
 
@@ -36,9 +36,9 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
         top: Dimentions.small,
         child: SafeArea(
           child: FlutterToggleTab(
-            width: 100 - Dimentions.small,
-            borderRadius: 30,
-            height: 35,
+            width: 100.0 - Dimentions.small,
+            borderRadius: 30.0,
+            height: 35.0,
             selectedIndex: _tabController.index,
             selectedTextStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
             unSelectedTextStyle: TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
@@ -48,7 +48,6 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
               "Mapa",
             ],
             selectedLabelIndex: (index) {
-              print("Selected Index $index");
               setState(() {
                 _tabController.animateTo(index);
               });

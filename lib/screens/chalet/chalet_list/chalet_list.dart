@@ -21,7 +21,7 @@ class ChaletList extends StatefulWidget {
   _ChaletListState createState() => _ChaletListState();
 }
 
-class _ChaletListState extends State<ChaletList> {
+class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMixin<ChaletList> {
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   List<ChaletModel> chaletList = [];
   bool isLoading = true;
@@ -66,7 +66,11 @@ class _ChaletListState extends State<ChaletList> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SmartRefresher(
         controller: _refreshController,

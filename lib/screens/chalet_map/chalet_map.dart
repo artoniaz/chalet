@@ -22,7 +22,7 @@ class ChaletMap extends StatefulWidget {
   _ChaletMapState createState() => _ChaletMapState();
 }
 
-class _ChaletMapState extends State<ChaletMap> {
+class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixin<ChaletMap> {
   late LatLng _cameraCenterPosition;
   late GoogleMapController _googleMapController;
   late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
@@ -123,7 +123,11 @@ class _ChaletMapState extends State<ChaletMap> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final _panelHeightClosed = _activeChalet == null ? 0.0 : MediaQuery.of(context).size.height * 0.2;
     final _panelHeightOpen = MediaQuery.of(context).size.height * 0.6;
     return _isScreenLoading

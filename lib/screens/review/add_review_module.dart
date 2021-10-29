@@ -47,7 +47,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
           createReview: () async {
             if (_chaletRating > 0 && _chaletDescController.text.length > 0) {
               await _createReview(userId, userName);
-              innerSetState(() => _currentRatingType = DialogTypes.quickRatingDialogConfirm);
+              innerSetState(() => _currentRatingType = DialogTypes.fullRatingDialog);
             } else
               innerSetState(() => _validateQuickReview = true);
           });
@@ -64,6 +64,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
         key: ValueKey(DialogTypes.fullRatingDialog),
         chaletId: widget.chaletId,
         reviewId: _currentReviewId,
+        chaletRating: _chaletRating,
         handleCloseDialog: () {
           innerSetState(() => _currentRatingType = DialogTypes.notAllowedDialog);
           Navigator.of(context).pop();
