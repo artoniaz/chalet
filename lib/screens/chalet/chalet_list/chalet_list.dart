@@ -3,6 +3,7 @@ import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/services/index.dart';
+import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,6 @@ class _ChaletListState extends State<ChaletList> {
 
   @override
   Widget build(BuildContext context) {
-    // final chaletList = Provider.of<List<ChaletModel>>(context);
     return Scaffold(
       body: SmartRefresher(
         controller: _refreshController,
@@ -74,13 +74,17 @@ class _ChaletListState extends State<ChaletList> {
         onRefresh: refetchData,
         child: CustomScrollView(
           slivers: [
-            CustomAppBars.customSliverAppBarDark(context, 'Chalet list'),
             SliverPadding(
-              padding: EdgeInsets.all(Dimentions.verticalPadding),
+              padding: EdgeInsets.fromLTRB(
+                Dimentions.verticalPadding,
+                Dimentions.large + 45,
+                Dimentions.verticalPadding,
+                Dimentions.verticalPadding,
+              ),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Najwyżej oceniane',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.backgroundWhite),
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.ivoryBlack),
                 ),
               ),
             ),

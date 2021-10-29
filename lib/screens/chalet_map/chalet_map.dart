@@ -53,11 +53,13 @@ class _ChaletMapState extends State<ChaletMap> {
   }
 
   void _onCameraIdle() {
-    if (_cameraCenterPosition.latitude.toStringAsFixed(5) == _userLocation.latitude.toStringAsFixed(5) &&
-        _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5))
-      setState(() => _isSearchThisAreaButtonActive = false);
-    else
-      setState(() => _isSearchThisAreaButtonActive = true);
+    if (_activeChalet == null) {
+      if (_cameraCenterPosition.latitude.toStringAsFixed(5) == _userLocation.latitude.toStringAsFixed(5) &&
+          _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5))
+        setState(() => _isSearchThisAreaButtonActive = false);
+      else
+        setState(() => _isSearchThisAreaButtonActive = true);
+    }
   }
 
   void _onCameraMove(CameraPosition position) => _cameraCenterPosition = position.target;
@@ -165,7 +167,8 @@ class _ChaletMapState extends State<ChaletMap> {
                 ),
                 if (_isSearchThisAreaButtonActive)
                   Positioned(
-                    top: Dimentions.large,
+                    // 35 is the height value of tab bar
+                    top: Dimentions.large + 35,
                     left: MediaQuery.of(context).size.width / 2,
                     child: FractionalTranslation(
                       translation: Offset(-0.5, 0),

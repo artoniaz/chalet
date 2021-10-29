@@ -76,14 +76,9 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
     return isError
         ? Spacer()
         : isLoading
-            ? Row(
-                children: [
-                  Loading(
-                    spinnerColor: Palette.darkBlue,
-                    backgroundColor: Colors.transparent,
-                  ),
-                  Spacer(),
-                ],
+            ? Loading(
+                spinnerColor: Palette.darkBlue,
+                backgroundColor: Colors.transparent,
               )
             : Column(
                 key: _itemKey,

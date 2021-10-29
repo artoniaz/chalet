@@ -11,17 +11,12 @@ class BottomNavBar extends StatelessWidget {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Palette.ivoryBlack,
-      unselectedItemColor: Palette.chaletBlue,
-      selectedItemColor: Palette.goldLeaf,
+      unselectedItemColor: Palette.white,
+      selectedItemColor: Palette.chaletBlue,
       currentIndex: currentIndex,
       onTap: (index) => handleTabChange(index),
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.wc), label: 'Szalety'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.map_sharp,
-            ),
-            label: 'Mapa'),
         BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Dodaj szalet'),
       ],
     );

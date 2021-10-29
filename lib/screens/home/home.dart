@@ -16,12 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> tabs = [
-    ChaletList(),
-    StreamBuilder<Object>(
-        stream: null,
-        builder: (context, snapshot) {
-          return ChaletMap();
-        }),
+    ChaletPageSelection(),
     ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
   ];
 

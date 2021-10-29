@@ -22,11 +22,14 @@ class _ChaletSlidingUpPanelState extends State<ChaletSlidingUpPanel> {
   bool _isReviewsActive = false;
 
   void scrollReviewList(GlobalKey itemKey) async {
-    await Scrollable.ensureVisible(itemKey.currentContext!,
-        alignment: 1,
-        duration: Duration(
-          milliseconds: 400,
-        ));
+    await Scrollable.ensureVisible(
+      itemKey.currentContext!,
+      alignment: 1,
+      duration: Duration(
+        milliseconds: 400,
+      ),
+      alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+    );
   }
 
   @override
@@ -39,8 +42,7 @@ class _ChaletSlidingUpPanelState extends State<ChaletSlidingUpPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final chalet_convenience_width =
-        (MediaQuery.of(context).size.width - 2 * Dimentions.big - 2 * Dimentions.medium) / 3;
+    final chaletConvenienceWidth = (MediaQuery.of(context).size.width - 2 * Dimentions.big - 2 * Dimentions.medium) / 3;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -105,19 +107,19 @@ class _ChaletSlidingUpPanelState extends State<ChaletSlidingUpPanel> {
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.paper,
                   convenienceScore: widget.chalet!.paper,
-                  width: chalet_convenience_width,
+                  width: chaletConvenienceWidth,
                 ),
                 HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.clean,
                   convenienceScore: widget.chalet!.clean,
-                  width: chalet_convenience_width,
+                  width: chaletConvenienceWidth,
                 ),
                 HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.privacy,
                   convenienceScore: widget.chalet!.privacy,
-                  width: chalet_convenience_width,
+                  width: chaletConvenienceWidth,
                 ),
               ],
             ),
