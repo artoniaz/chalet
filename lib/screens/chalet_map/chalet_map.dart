@@ -5,6 +5,7 @@ import 'package:chalet/screens/chalet/chalet_sliding_up_panel/chalet_sliding_up_
 import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:chalet/styles/palette.dart';
 import 'package:chalet/widgets/custom_text_button_rounded.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -26,16 +27,40 @@ class _ChaletMapState extends State<ChaletMap> {
   late GoogleMapController _googleMapController;
   late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
   late StreamSubscription<List<ChaletModel>> _chaletStreamSubscribtion;
+  late LatLng _userLocation;
 
   List<Marker> markers = [];
   bool _isPanelDraggagle = true;
   ChaletModel? _activeChalet;
 
   final _panelController = PanelController();
+  static const _centerButtonPrimaryHeight = Dimentions.medium;
+  double _centerButtonHeight = _centerButtonPrimaryHeight;
 
+  bool _isSearchThisAreaButtonActive = false;
   bool _isScreenLoading = true;
 
-  // void _toggleIsPanelDraggableValue() => setState(() => _isPanelDraggagle = !_isPanelDraggagle);
+  void _centerCamera() {
+    _googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(CameraPosition(target: _userLocation, zoom: 15.0)),
+    );
+    setState(() => _isSearchThisAreaButtonActive = false);
+  }
+
+  void _handleSearchThisAreaButton() {
+    _updateQuery(_cameraCenterPosition);
+    setState(() => _isSearchThisAreaButtonActive = false);
+  }
+
+  void _onCameraIdle() {
+    if (_activeChalet == null) {
+      if (_cameraCenterPosition.latitude.toStringAsFixed(5) == _userLocation.latitude.toStringAsFixed(5) &&
+          _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5))
+        setState(() => _isSearchThisAreaButtonActive = false);
+      else
+        setState(() => _isSearchThisAreaButtonActive = true);
+    }
+  }
 
   void _onCameraMove(CameraPosition position) => _cameraCenterPosition = position.target;
 
@@ -75,8 +100,8 @@ class _ChaletMapState extends State<ChaletMap> {
   }
 
   void _getInitData() async {
-    LatLng userLocation = await GeolocationService().getUserLocation();
-    _cameraCenterPosition = userLocation;
+    _userLocation = await GeolocationService().getUserLocation();
+    _cameraCenterPosition = _userLocation;
     _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(_cameraCenterPosition);
     _chaletStreamSubscribtion = ChaletService().getChaletStream(_cameraPositionBehaviourSubject, _updateMarkers);
     setState(() {
@@ -105,7 +130,7 @@ class _ChaletMapState extends State<ChaletMap> {
         ? Loading()
         : Scaffold(
             body: Stack(
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
               children: [
                 SlidingUpPanel(
                   isDraggable: _isPanelDraggagle,
@@ -122,38 +147,49 @@ class _ChaletMapState extends State<ChaletMap> {
                           controller: controller,
                           chalet: _activeChalet,
                         ),
+                  onPanelSlide: (pos) {
+                    final panelMaxScrollExtend = _panelHeightOpen - MediaQuery.of(context).size.height * 0.2;
+                    double btnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight;
+                    if (_activeChalet != null) btnHeight += MediaQuery.of(context).size.height * 0.2;
+                    setState(() => _centerButtonHeight = btnHeight);
+                  },
                   body: GoogleMap(
                     initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
                     onMapCreated: _onMapCreated,
                     onCameraMove: (pos) => _onCameraMove(pos),
+                    onCameraIdle: _onCameraIdle,
                     myLocationEnabled: true,
                     markers: markers.toSet(),
                     onTap: _onMapTap,
                   ),
                 ),
-                Positioned(
-                  top: Dimentions.large,
-                  left: MediaQuery.of(context).size.width / 2,
-                  child: FractionalTranslation(
-                    translation: Offset(-0.5, 0),
-                    child: CustomTextButtonRounded(
-                      onPressed: () => _updateQuery(_cameraCenterPosition),
-                      label: 'Szukaj na tym obszarze',
+                if (_isSearchThisAreaButtonActive)
+                  Positioned(
+                    // 35 is the height value of tab bar
+                    top: Dimentions.large + 35,
+                    left: MediaQuery.of(context).size.width / 2,
+                    child: FractionalTranslation(
+                      translation: Offset(-0.5, 0),
+                      child: CustomTextButtonRounded(
+                        onPressed: _handleSearchThisAreaButton,
+                        label: 'Szukaj na tym obszarze',
+                      ),
                     ),
+                  ),
+                Positioned(
+                  right: Dimentions.medium,
+                  bottom: _centerButtonHeight,
+                  child: FloatingActionButton(
+                    backgroundColor: Palette.chaletBlue,
+                    foregroundColor: Palette.white,
+                    onPressed: _centerCamera,
+                    child: Icon(Icons.center_focus_strong),
                   ),
                 ),
               ],
             ),
-            // floatingActionButton: FloatingActionButton(
-            //   backgroundColor: Theme.of(context).primaryColor,
-            //   foregroundColor: Colors.black,
-            //   onPressed: () => _googleMapController.animateCamera(
-            //     CameraUpdate.newCameraPosition(CameraPosition(target: _cameraCenterPosition, zoom: 15.0)),
-            //   ),
-            //   child: Icon(Icons.center_focus_strong),
-            // ),
           );
   }
 }

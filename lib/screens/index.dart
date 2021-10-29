@@ -6,6 +6,7 @@ export 'package:chalet/screens/authenticate/sign_in.dart';
 export 'package:chalet/screens/authenticate/register.dart';
 
 export 'package:chalet/screens/home/home.dart';
+export 'package:chalet/screens/home/chalet_page_selection.dart';
 
 export 'package:chalet/screens/chalet/chalet_list/chalet_list.dart';
 
