@@ -1,9 +1,15 @@
+import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
+import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/palette.dart';
+import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ChaletPageSelection extends StatefulWidget {
   const ChaletPageSelection({Key? key}) : super(key: key);
@@ -14,47 +20,75 @@ class ChaletPageSelection extends StatefulWidget {
 
 class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
+  late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
+
+  bool isScreenLoading = true;
+
+  void _updateCameraPositionBehaviourSubject(LatLng value) {
+    setState(() {
+      _cameraPositionBehaviourSubject.add(value);
+    });
+  }
+
+  void _getInitData() async {
+    LatLng _userLocation = context.read<LatLng>();
+    _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(_userLocation);
+    setState(() {
+      isScreenLoading = false;
+    });
+  }
 
   @override
   void initState() {
-    _tabController = new TabController(vsync: this, length: 2, initialIndex: 1);
+    _tabController = new TabController(vsync: this, length: 2, initialIndex: 0);
+    _getInitData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(alignment: Alignment.topCenter, children: [
-      TabBarView(
-        controller: _tabController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          ChaletList(),
-          ChaletMap(),
-        ],
-      ),
-      Positioned(
-        top: Dimentions.small,
-        child: SafeArea(
-          child: FlutterToggleTab(
-            width: 100.0 - Dimentions.small,
-            borderRadius: 30.0,
-            height: 35.0,
-            selectedIndex: _tabController.index,
-            selectedTextStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-            unSelectedTextStyle: TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
-            selectedBackgroundColors: [Palette.chaletBlue],
-            labels: [
-              "Lista",
-              "Mapa",
-            ],
-            selectedLabelIndex: (index) {
-              setState(() {
-                _tabController.animateTo(index);
-              });
-            },
-          ),
-        ),
-      ),
-    ]);
+    return isScreenLoading
+        ? Loading()
+        : StreamProvider<List<ChaletModel>>(
+            initialData: [],
+            create: (context) => ChaletService().getChaletStream(_cameraPositionBehaviourSubject),
+            builder: (context, snapshot) {
+              return Stack(alignment: Alignment.topCenter, children: [
+                TabBarView(
+                  controller: _tabController,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    ChaletList(),
+                    ChaletMap(
+                      updateQuery: _updateCameraPositionBehaviourSubject,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: Dimentions.small,
+                  child: SafeArea(
+                    child: FlutterToggleTab(
+                      width: 100.0 - Dimentions.small,
+                      borderRadius: 30.0,
+                      height: 35.0,
+                      selectedIndex: _tabController.index,
+                      selectedTextStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                      unSelectedTextStyle:
+                          TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
+                      selectedBackgroundColors: [Palette.chaletBlue],
+                      labels: [
+                        "Lista",
+                        "Mapa",
+                      ],
+                      selectedLabelIndex: (index) {
+                        setState(() {
+                          _tabController.animateTo(index);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ]);
+            });
   }
 }

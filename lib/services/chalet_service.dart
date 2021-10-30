@@ -14,18 +14,14 @@ class ChaletService {
 
   Geoflutterfire geo = Geoflutterfire();
 
-  StreamSubscription<List<ChaletModel>> getChaletStream(
-      BehaviorSubject<LatLng> subject, void Function(List<ChaletModel>) updateMarkers) {
-    return subject
-        .switchMap((center) {
-          return geo
-              .collection(collectionRef: chaletCollection)
-              .within(center: getGeoFirePointFromLatLng(center), radius: 50.0, field: 'position', strictMode: true);
-        })
-        .map((documentSnapshotList) => documentSnapshotList
-            .map((documentSnapshot) => ChaletModel.fromJson(documentSnapshot.data(), documentSnapshot.id))
-            .toList())
-        .listen(updateMarkers);
+  Stream<List<ChaletModel>> getChaletStream(BehaviorSubject<LatLng> subject) {
+    return subject.switchMap((center) {
+      return geo
+          .collection(collectionRef: chaletCollection)
+          .within(center: getGeoFirePointFromLatLng(center), radius: 50.0, field: 'position', strictMode: true);
+    }).map((documentSnapshotList) => documentSnapshotList
+        .map((documentSnapshot) => ChaletModel.fromJson(documentSnapshot.data(), documentSnapshot.id))
+        .toList());
   }
 
   Future<List<ChaletModel>>? getChaletList({ChaletModel? lastChalet, GeoFirePoint? center}) async {

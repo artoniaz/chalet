@@ -9,9 +9,7 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ChaletList extends StatefulWidget {
@@ -28,7 +26,6 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
 
   void handleLoadMoreData() async {
     List<ChaletModel> chalets = await ChaletService().getChaletList(lastChalet: chaletList.last) ?? [];
-    print(chalets.length);
     setState(() => chaletList += chalets);
   }
 

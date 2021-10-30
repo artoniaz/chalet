@@ -15,6 +15,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+  late LatLng _userLocation;
+  bool _isScreenLoading = true;
+
   final List<Widget> tabs = [
     ChaletPageSelection(),
     ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
@@ -22,14 +25,40 @@ class _HomeState extends State<Home> {
 
   void handleTabChange(int index) => setState(() => _currentIndex = index);
 
+  void getInitData() async {
+    try {
+      final _location = await GeolocationService().getUserLocation();
+      setState(() {
+        _userLocation = _location;
+        _isScreenLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _userLocation = LatLng(52.23749905, 21.018166594);
+        _isScreenLoading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    getInitData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: tabs[_currentIndex],
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        handleTabChange: handleTabChange,
-      ),
-    );
+    return _isScreenLoading
+        ? Loading()
+        : Provider<LatLng>(
+            create: (context) => _userLocation,
+            child: Scaffold(
+              body: tabs[_currentIndex],
+              bottomNavigationBar: BottomNavBar(
+                currentIndex: _currentIndex,
+                handleTabChange: handleTabChange,
+              ),
+            ),
+          );
   }
 }
