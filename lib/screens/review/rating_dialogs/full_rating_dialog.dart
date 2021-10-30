@@ -4,17 +4,18 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class FullRatingDialog extends StatefulWidget {
   final String reviewId;
   final String chaletId;
   final Function handleCloseDialog;
+  final double chaletRating;
   const FullRatingDialog({
     Key? key,
     required this.chaletId,
     required this.reviewId,
     required this.handleCloseDialog,
+    required this.chaletRating,
   }) : super(key: key);
 
   @override
@@ -56,62 +57,69 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
-      content: Container(
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
-        padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Oceń szczegóły szaletu',
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              VerticalSizedBox8(),
-              Text(
-                'Oceń szczegóły Twojego pobytu w tym szalecie',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-              VerticalSizedBox24(),
-              RatingBarCol(
-                label: 'Papier',
-                handleRatingUpdate: _handlePaperRatingUpdate,
-              ),
-              VerticalSizedBox8(),
-              RatingBarCol(
-                label: 'Czystość',
-                handleRatingUpdate: _handleCleanRatingUpdate,
-              ),
-              VerticalSizedBox8(),
-              RatingBarCol(
-                label: 'Prywatność',
-                handleRatingUpdate: _handlePrivacyRatingUpdate,
-              ),
-              VerticalSizedBox8(),
-              TextField(
-                  minLines: 2,
-                  maxLines: 4,
-                  onChanged: _handleDetailsExtendedUpdate,
-                  decoration: textInputDecoration.copyWith(
-                    hintText: 'Dokładny opis. Podziel się szczegółami!',
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 0.5,
-                    )),
-                  )),
-              if (!_isFormValidated)
+      content: SingleChildScrollView(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
+          padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 Text(
-                  'Uzupełnij wszystkie oceny',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.red),
+                  'Twoja ogólna ocena',
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.center,
                 ),
-              VerticalSizedBox24(),
-              ButtonsPopUpRow(
-                approveButtonLabel: 'Zapisz ocenę',
-                onPressedApproveButton: _addDetailsReviewToQuickReview,
-              ),
-            ],
+                CustomRatingBarIndicator(
+                  rating: widget.chaletRating,
+                  itemSize: 30.0,
+                ),
+                VerticalSizedBox16(),
+                Text(
+                  'Oceń szczegóły szaletu',
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+                VerticalSizedBox16(),
+                RatingBarCol(
+                  label: 'Papier',
+                  handleRatingUpdate: _handlePaperRatingUpdate,
+                ),
+                VerticalSizedBox8(),
+                RatingBarCol(
+                  label: 'Czystość',
+                  handleRatingUpdate: _handleCleanRatingUpdate,
+                ),
+                VerticalSizedBox8(),
+                RatingBarCol(
+                  label: 'Prywatność',
+                  handleRatingUpdate: _handlePrivacyRatingUpdate,
+                ),
+                VerticalSizedBox8(),
+                TextField(
+                    minLines: 2,
+                    maxLines: 4,
+                    onChanged: _handleDetailsExtendedUpdate,
+                    decoration: textInputDecoration.copyWith(
+                      hintText: 'Dokładny opis. Podziel się szczegółami!',
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Colors.grey,
+                        width: 0.5,
+                      )),
+                    )),
+                if (!_isFormValidated)
+                  Text(
+                    'Uzupełnij wszystkie oceny',
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.red),
+                  ),
+                VerticalSizedBox24(),
+                ButtonsPopUpRow(
+                  approveButtonLabel: 'Zapisz ocenę',
+                  onPressedApproveButton: _addDetailsReviewToQuickReview,
+                ),
+              ],
+            ),
           ),
         ),
       ),
