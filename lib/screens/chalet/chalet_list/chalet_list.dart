@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ChaletList extends StatefulWidget {
@@ -22,38 +23,23 @@ class ChaletList extends StatefulWidget {
 class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMixin<ChaletList> {
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   List<ChaletModel> chaletList = [];
-  bool isLoading = true;
-
-  void handleLoadMoreData() async {
-    List<ChaletModel> chalets = await ChaletService().getChaletList(lastChalet: chaletList.last) ?? [];
-    setState(() => chaletList += chalets);
-  }
 
   void refetchData() {
-    getInitData();
+    getInitData(false);
     _refreshController.refreshCompleted();
   }
 
-  void getInitData() async {
-    try {
-      LatLng userPosition = await GeolocationService().getUserLocation();
-      List<ChaletModel> chalets = await ChaletService()
-              .getChaletList(lastChalet: null, center: GeoFirePoint(userPosition.latitude, userPosition.longitude)) ??
-          [];
-      setState(() {
-        chaletList = chalets;
-        isLoading = false;
-      });
-    } catch (e) {
-      print(e);
-      EasyLoading.showError('Błąd pobierania danych');
-    }
+  void getInitData(bool listen) async {
+    List<ChaletModel> chalets = Provider.of<List<ChaletModel>>(context, listen: listen);
+    setState(() {
+      chaletList = chalets;
+    });
   }
 
   @override
-  void initState() {
-    getInitData();
-    super.initState();
+  void didChangeDependencies() {
+    getInitData(true);
+    super.didChangeDependencies();
   }
 
   @override
@@ -102,12 +88,6 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
                   ),
                   childCount: chaletList.length,
                 ))),
-            SliverToBoxAdapter(
-              child: CustomElevatedButton(
-                label: 'więcej',
-                onPressed: handleLoadMoreData,
-              ),
-            ),
           ],
         ),
       ),
