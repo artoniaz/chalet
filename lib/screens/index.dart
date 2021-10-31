@@ -11,9 +11,10 @@ export 'package:chalet/screens/home/chalet_page_selection.dart';
 export 'package:chalet/screens/chalet/chalet_list/chalet_list.dart';
 
 export 'package:chalet/screens/chalet/chalet_details/chalet_details.dart';
+export 'package:chalet/screens/chalet/chalet_details/chalet_details_image_carusel.dart';
 
 export 'package:chalet/screens/chalet/chalet_preView_container.dart';
-export 'package:chalet/screens/chalet/chalet_sliding_up_panel/chalet_sliding_up_panel.dart';
+export 'package:chalet/screens/chalet/chalet_card/chalet_card.dart';
 
 export 'package:chalet/screens/add_chalet/add_chalet.dart';
 export 'package:chalet/screens/add_chalet/chalet_image_picker.dart';

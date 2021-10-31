@@ -5,20 +5,20 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
-class ChaletSlidingUpPanel extends StatefulWidget {
+class ChaletCard extends StatefulWidget {
   final ChaletModel? chalet;
   final ScrollController controller;
-  const ChaletSlidingUpPanel({
+  const ChaletCard({
     Key? key,
     required this.controller,
     required this.chalet,
   }) : super(key: key);
 
   @override
-  _ChaletSlidingUpPanelState createState() => _ChaletSlidingUpPanelState();
+  _ChaletCardState createState() => _ChaletCardState();
 }
 
-class _ChaletSlidingUpPanelState extends State<ChaletSlidingUpPanel> {
+class _ChaletCardState extends State<ChaletCard> {
   bool _isReviewsActive = false;
 
   void scrollReviewList(GlobalKey itemKey) async {
@@ -33,7 +33,7 @@ class _ChaletSlidingUpPanelState extends State<ChaletSlidingUpPanel> {
   }
 
   @override
-  void didUpdateWidget(covariant ChaletSlidingUpPanel oldWidget) {
+  void didUpdateWidget(covariant ChaletCard oldWidget) {
     if (oldWidget.chalet?.id != widget.chalet?.id) {
       setState(() => _isReviewsActive = false);
     }

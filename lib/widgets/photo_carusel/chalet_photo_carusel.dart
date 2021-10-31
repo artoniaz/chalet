@@ -12,11 +12,13 @@ class ChaletPhotoCarusel extends StatefulWidget {
   final ChaletModel? chalet;
   final List<ImageModelFile>? chaletImagesList;
   final String chaletImageSliderPhase;
+  final double? pictureHeight;
   const ChaletPhotoCarusel({
     Key? key,
     this.chalet,
     this.chaletImagesList,
     required this.chaletImageSliderPhase,
+    this.pictureHeight,
   }) : super(key: key);
 
   @override
@@ -27,15 +29,31 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
   int _currentImgIndex = 0;
   CarouselController caruselController = new CarouselController();
 
-  List<Widget> getImgSliders() => widget.chaletImageSliderPhase == ChaletImageSliderPhases.ChaletList
-      ? imagesToMapPresentational(widget.chalet!.images)
-      : imagesToMapEditFile(widget.chaletImagesList);
+  List<Widget> getImgSliders() {
+    if (widget.chaletImageSliderPhase == ChaletImageSliderPhases.ChaletList)
+      return imagesToMapPresentational(widget.chalet!.images);
+    else if (widget.chaletImageSliderPhase == ChaletImageSliderPhases.AddChalet)
+      return imagesToMapEditFile(widget.chaletImagesList);
+    else
+      return imagesToMapDetails(widget.chalet!.images);
+  }
 
   List<ImageSliderPresentational> imagesToMapPresentational(List images) => images
       .asMap()
       .map((i, item) => MapEntry(
             i,
             ImageSliderPresentational(
+              itemUrl: item.imageUrlMinSize,
+            ),
+          ))
+      .values
+      .toList();
+
+  List<ImageSliderDetails> imagesToMapDetails(List images) => images
+      .asMap()
+      .map((i, item) => MapEntry(
+            i,
+            ImageSliderDetails(
               itemUrl: item.imageUrlMinSize,
             ),
           ))
@@ -56,9 +74,14 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
       .toList();
 
   List<Widget> getImgIndicators() {
-    List<dynamic> images = widget.chaletImageSliderPhase == ChaletImageSliderPhases.ChaletList
-        ? widget.chalet!.images
-        : widget.chaletImagesList ?? [];
+    late List<dynamic> images;
+    if (widget.chaletImageSliderPhase == ChaletImageSliderPhases.ChaletList)
+      images = widget.chalet!.images;
+    else if (widget.chaletImageSliderPhase == ChaletImageSliderPhases.AddChalet)
+      images = widget.chaletImagesList ?? [];
+    else
+      images = widget.chalet!.images;
+
     return images.map((el) {
       int index = images.indexOf(el);
       return Container(
@@ -86,7 +109,7 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
               items: getImgSliders(),
               options: CarouselOptions(
                 viewportFraction: 1.0,
-                height: Dimentions.pictureHeight,
+                height: widget.pictureHeight ?? Dimentions.pictureHeight,
                 onPageChanged: (index, reason) {
                   setState(() => _currentImgIndex = index);
                 },
