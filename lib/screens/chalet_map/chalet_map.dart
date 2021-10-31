@@ -1,6 +1,6 @@
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/index.dart';
-import 'package:chalet/screens/chalet/chalet_sliding_up_panel/chalet_sliding_up_panel.dart';
+import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/palette.dart';
 import 'package:chalet/widgets/custom_text_button_rounded.dart';
@@ -138,7 +138,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
             color: Palette.backgroundWhite,
             panelBuilder: (controller) => _activeChalet == null
                 ? Container()
-                : ChaletSlidingUpPanel(
+                : ChaletCard(
                     controller: controller,
                     chalet: _activeChalet,
                   ),
