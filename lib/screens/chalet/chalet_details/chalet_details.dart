@@ -36,7 +36,11 @@ class _ChaletDetailsState extends State<ChaletDetails> {
         slivers: [
           CustomAppBars.customImageSliderSliverAppBar(_chalet!, _pictureHeight),
           SliverToBoxAdapter(
-            child: ChaletCard(controller: _controller, chalet: _chalet),
+            child: ChaletCard(
+              controller: _controller,
+              chalet: _chalet,
+              isMapEnabled: true,
+            ),
           ),
         ],
       ),

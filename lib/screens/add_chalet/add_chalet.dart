@@ -30,26 +30,26 @@ class _AddChaletState extends State<AddChalet> {
     rating: 0.0,
     numberRating: 1,
     numberDetailedRating: 1,
-    quality: 0.0,
+    descriptionHowToGet: '',
     clean: 0.0,
     paper: 0.0,
     privacy: 0.0,
     description: '',
     images: [],
     position: GeoFirePoint(0, 0),
+    isVerified: false,
   );
 
   String? _chaletLocalizationAddress;
   bool isFormAllowed = true;
   bool isCreatBtnActive = true;
 
-  void handleQualityRatingUpdate(double rating) => setState(() => _chalet.quality = rating);
   void handleCleanRatingUpdate(double rating) => setState(() => _chalet.clean = rating);
   void handlePaperRatingUpdate(double rating) => setState(() => _chalet.paper = rating);
   void handlePrivacyRatingUpdate(double rating) => setState(() => _chalet.privacy = rating);
 
   double calcRating(ChaletModel chaletModel) {
-    List ratings = [chaletModel.quality, chaletModel.clean, chaletModel.paper, chaletModel.privacy];
+    List ratings = [chaletModel.clean, chaletModel.paper, chaletModel.privacy];
     return ratings.reduce((value, element) => value + element) / ratings.length;
   }
 
@@ -71,7 +71,7 @@ class _AddChaletState extends State<AddChalet> {
     setState(() => isCreatBtnActive = false);
 
     if (_formKey.currentState!.validate()) {
-      if (_chalet.quality > 0 && _chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0) {
+      if (_chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0) {
         EasyLoading.show(status: '', maskType: EasyLoadingMaskType.black);
         try {
           ImageFileListModel imageListModel = Provider.of<ImageFileListModel>(context, listen: false);
@@ -124,10 +124,6 @@ class _AddChaletState extends State<AddChalet> {
                               .copyWith(color: isFormAllowed ? Palette.backgroundWhite : Palette.errorRed)),
                       VerticalSizedBox8(),
                       RatingBarRow(
-                        label: 'Jakość',
-                        handleRatingUpdate: handleQualityRatingUpdate,
-                      ),
-                      RatingBarRow(
                         label: 'Czystość',
                         handleRatingUpdate: handleCleanRatingUpdate,
                       ),
@@ -139,6 +135,22 @@ class _AddChaletState extends State<AddChalet> {
                       VerticalSizedBox8(),
                       TextFormField(
                         decoration: textInputDecoration.copyWith(hintText: 'Opis'),
+                        onChanged: (val) => setState(() => _chalet.description = val),
+                      ),
+                      VerticalSizedBox8(),
+                      Text(
+                        'Dokładny opis jak trafić',
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      VerticalSizedBox8(),
+                      TextFormField(
+                        decoration: textInputDecoration.copyWith(
+                            hintText:
+                                'Pole, które pomoże trafić do szaletu. Podaj: nazwa budynku (np. stacja), piętro.'),
+                        minLines: 3,
+                        maxLines: 4,
                         onChanged: (val) => setState(() => _chalet.description = val),
                       ),
                       VerticalSizedBox8(),

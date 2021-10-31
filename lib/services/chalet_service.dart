@@ -39,19 +39,20 @@ class ChaletService {
   Future<String?> createChalet(ChaletModel chalet) async {
     try {
       DocumentReference<Object?> res = await chaletCollection.add(ChaletModel(
-              id: '',
-              images: [],
-              name: chalet.name,
-              rating: chalet.rating,
-              numberRating: chalet.numberRating,
-              numberDetailedRating: chalet.numberDetailedRating,
-              quality: chalet.quality,
-              clean: chalet.clean,
-              paper: chalet.paper,
-              privacy: chalet.privacy,
-              description: chalet.description,
-              position: chalet.position.data)
-          .toJson());
+        id: '',
+        images: [],
+        name: chalet.name,
+        rating: chalet.rating,
+        numberRating: chalet.numberRating,
+        numberDetailedRating: chalet.numberDetailedRating,
+        descriptionHowToGet: chalet.descriptionHowToGet,
+        clean: chalet.clean,
+        paper: chalet.paper,
+        privacy: chalet.privacy,
+        description: chalet.description,
+        position: chalet.position.data,
+        isVerified: chalet.isVerified,
+      ).toJson());
       return res.id;
     } catch (e) {
       print(e);

@@ -1,17 +1,21 @@
+import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/chalet_model.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChaletCard extends StatefulWidget {
   final ChaletModel? chalet;
   final ScrollController controller;
+  final bool isMapEnabled;
   const ChaletCard({
     Key? key,
     required this.controller,
     required this.chalet,
+    required this.isMapEnabled,
   }) : super(key: key);
 
   @override
@@ -53,7 +57,6 @@ class _ChaletCardState extends State<ChaletCard> {
         controller: widget.controller,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          // padding: EdgeInsets.zero,
           children: [
             DragHandle(),
             VerticalSizedBox8(),
@@ -61,11 +64,23 @@ class _ChaletCardState extends State<ChaletCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Text(
-                    widget.chalet!.name,
-                    style: Theme.of(context).textTheme.headline3!.copyWith(
-                          fontWeight: FontWeight.w700,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.chalet!.name,
+                        style: Theme.of(context).textTheme.headline3!.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      HorizontalSizedBox4(),
+                      if (widget.chalet!.isVerified)
+                        Icon(
+                          Icons.verified,
+                          size: 16.0,
+                          color: Palette.chaletBlue,
                         ),
+                    ],
                   ),
                 ),
                 AddReviewModule(
@@ -108,30 +123,79 @@ class _ChaletCardState extends State<ChaletCard> {
                   convenienceType: ConveniencesTypes.paper,
                   convenienceScore: widget.chalet!.paper,
                   width: chaletConvenienceWidth,
+                  size: 36.0,
                 ),
                 HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.clean,
                   convenienceScore: widget.chalet!.clean,
                   width: chaletConvenienceWidth,
+                  size: 36.0,
                 ),
                 HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.privacy,
                   convenienceScore: widget.chalet!.privacy,
                   width: chaletConvenienceWidth,
+                  size: 36.0,
                 ),
               ],
             ),
             VerticalSizedBox16(),
             Text(
-              'Opis',
-              style: Theme.of(context).textTheme.headline6,
+              'Dokładny opis jak trafić',
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
             ),
+            VerticalSizedBox8(),
             Text(
               widget.chalet!.description!,
               style: Theme.of(context).textTheme.bodyText2,
             ),
+            VerticalSizedBox16(),
+            Text(
+              'Opis',
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            VerticalSizedBox8(),
+            Text(
+              widget.chalet!.description!,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+            VerticalSizedBox16(),
+            if (widget.isMapEnabled)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mapa',
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  VerticalSizedBox8(),
+                  Container(
+                    width: double.infinity,
+                    height: 200.0,
+                    child: GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                            target: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']), zoom: 15.0),
+                        markers: <Marker>{
+                          Marker(
+                            markerId: MarkerId(widget.chalet!.id),
+                            position: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']),
+                            infoWindow: InfoWindow(
+                              title: '${widget.chalet?.name} ${widget.chalet?.id}',
+                              snippet: widget.chalet?.rating.toString(),
+                            ),
+                          )
+                        }),
+                  ),
+                ],
+              ),
             VerticalSizedBox16(),
             if (!_isReviewsActive)
               Column(
@@ -146,7 +210,9 @@ class _ChaletCardState extends State<ChaletCard> {
                 children: [
                   Text(
                     'Oceny',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                   ChaletReviewList(
                     chaletId: widget.chalet!.id,
