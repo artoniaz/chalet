@@ -22,7 +22,7 @@ class ChaletConvenience extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      padding: EdgeInsets.all(Dimentions.medium),
+      padding: EdgeInsets.all(Dimentions.small),
       decoration: BoxDecoration(
         color: Palette.white,
         borderRadius: BorderRadius.circular(
