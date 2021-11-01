@@ -3,6 +3,7 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -31,8 +32,7 @@ class _SignInState extends State<SignIn> {
       email = email.trim();
       passwordController.text = passwordController.text.trim();
       try {
-        await _authService.signInWithEmailAndPassword(
-            email, passwordController.text);
+        await _authService.signInWithEmailAndPassword(email, passwordController.text);
       } catch (e) {
         setState(() {
           passwordController.clear();
@@ -56,36 +56,27 @@ class _SignInState extends State<SignIn> {
                 body: SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: Dimentions.horizontalPadding,
-                        vertical: Dimentions.large),
+                        horizontal: Dimentions.horizontalPadding, vertical: Dimentions.large),
                     child: Form(
                         key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             TextFormField(
-                              decoration: textInputDecoration.copyWith(
-                                  hintText: 'Email'),
+                              decoration: textInputDecoration.copyWith(hintText: 'Email'),
                               validator: (val) =>
-                                  val!.isEmpty || !val.contains('@')
-                                      ? 'Podaj poprawny adres email'
-                                      : null,
-                              onChanged: (String val) =>
-                                  setState(() => email = val),
+                                  val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
+                              onChanged: (String val) => setState(() => email = val),
                               onEditingComplete: () => node.nextFocus(),
                               keyboardType: TextInputType.emailAddress,
                             ),
                             VerticalSizedBox16(),
                             TextFormField(
                               controller: passwordController,
-                              decoration: textInputDecoration.copyWith(
-                                  hintText: 'Hasło'),
+                              decoration: textInputDecoration.copyWith(hintText: 'Hasło'),
                               obscureText: true,
-                              validator: (val) => val!.length < 6
-                                  ? 'Hasło musi zawierać minimum 6 znaków'
-                                  : null,
-                              onEditingComplete: () =>
-                                  signUpWIthEmailAndPassword(),
+                              validator: (val) => val!.length < 6 ? 'Hasło musi zawierać minimum 6 znaków' : null,
+                              onEditingComplete: () => signUpWIthEmailAndPassword(),
                             ),
                             VerticalSizedBox16(),
                             CustomElevatedButton(
@@ -95,10 +86,13 @@ class _SignInState extends State<SignIn> {
                             if (error.isNotEmpty) VerticalSizedBox16(),
                             Text(
                               error,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(color: Palette.errorRed),
+                              style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.errorRed),
+                            ),
+                            VerticalSizedBox16(),
+                            SignInButton(
+                              Buttons.Facebook,
+                              text: 'Zaloguj przez Facebook',
+                              onPressed: () => AuthService().facebookAuth(),
                             ),
                             if (error.isNotEmpty) VerticalSizedBox16(),
                             CustomTextButton(

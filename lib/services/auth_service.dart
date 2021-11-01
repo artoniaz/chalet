@@ -1,9 +1,11 @@
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/services/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 class AuthService {
   final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
+  final fb = FacebookLogin();
 
   //create UserModel based on FirebaseUser
   UserModel? _userModelFromFirebaseUser(firebaseAuth.User? firebaseUser) {
@@ -61,6 +63,25 @@ class AuthService {
           throw 'Niepoprawne dane do rejestracji';
         }
       }
+    }
+  }
+
+  Future facebookAuth() async {
+    final response = await fb.logIn(permissions: [
+      FacebookPermission.publicProfile,
+      FacebookPermission.email,
+    ]);
+
+    switch (response.status) {
+      case FacebookLoginStatus.success:
+        final FacebookAccessToken fbToken = response.accessToken!;
+        final firebaseAuth.AuthCredential credential = firebaseAuth.FacebookAuthProvider.credential(fbToken.token);
+        final result = await _firebaseAuth.signInWithCredential(credential);
+        break;
+      case FacebookLoginStatus.cancel:
+        break;
+      case FacebookLoginStatus.error:
+        break;
     }
   }
 
