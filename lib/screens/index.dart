@@ -27,3 +27,5 @@ export 'package:chalet/screens/chalet_map/address_input_screen.dart';
 export 'package:chalet/screens/review/add_review_module.dart';
 export 'package:chalet/screens/review/chalet_review_list.dart';
 export 'package:chalet/screens/review/review_container.dart';
+
+export 'package:chalet/screens/my_profile/profile_card.dart';

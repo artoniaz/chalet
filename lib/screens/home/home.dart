@@ -21,6 +21,7 @@ class _HomeState extends State<Home> {
   final List<Widget> tabs = [
     ChaletPageSelection(),
     ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
+    ProfileCard(),
   ];
 
   void handleTabChange(int index) => setState(() => _currentIndex = index);
