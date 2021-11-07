@@ -5,8 +5,10 @@ admin.initializeApp();
 // auth trigger (new user signup)
 exports.newUserSignup = functions.auth.user().onCreate(user => {
     return admin.firestore().collection('users').doc(user.uid).set({
+        uid: user.uid,
         email: user.email,
-        favouriteChaletIds: []
+        displayName: user.displayName,
+        photoURL: user.photoURL,
     });
 });
 
