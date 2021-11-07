@@ -5,9 +5,11 @@ import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/services/chalet_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 
 class StorageService {
   Reference storageRef = FirebaseStorage.instance.ref();
+  final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
 
   Future<void> addImagesToStorage(String chaletId, List<ImageModelFile> imageFileList) async {
     try {
@@ -45,6 +47,19 @@ class StorageService {
       ChaletService().updateChaletImages(chaletId, images);
     } catch (e) {
       throw 'Blad zapisu zdjec';
+    }
+  }
+
+  Future<void> editUserPhotoURL(String userUid, File imageFile) async {
+    try {
+      TaskSnapshot uploadImageTask = await storageRef.child('user_images/$userUid').putFile(imageFile);
+      if (uploadImageTask.state == TaskState.success) {
+        final String downloadUrlOriginal = await uploadImageTask.ref.getDownloadURL();
+        await _firebaseAuth.currentUser!.updateProfile(photoURL: downloadUrlOriginal);
+      }
+    } catch (e) {
+      print(e);
+      throw 'Nie udało się zaktualizować zdjęcia profilowego';
     }
   }
 }

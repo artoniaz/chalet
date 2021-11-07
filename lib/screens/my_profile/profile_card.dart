@@ -1,9 +1,12 @@
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:package_info/package_info.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({Key? key}) : super(key: key);
@@ -13,98 +16,130 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
-  late UserModel? _userProfile;
+  final _panelController = PanelController();
+  PackageInfo? _packageInfo;
+
+  TextEditingController _userDisplayNameController = TextEditingController();
+
+  void _updateDisplayname() async {
+    try {
+      await AuthService().editUserData(_userDisplayNameController.text);
+      _panelController.close();
+    } catch (e) {
+      EasyLoading.showError(e.toString());
+    }
+  }
+
+  void _getPackageInfo() async {
+    PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() => _packageInfo = info);
+  }
 
   @override
   void initState() {
-    final _user = Provider.of<UserModel?>(context, listen: false);
-    setState(() => _userProfile = _user ?? null);
+    _getPackageInfo();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
-    print(_userProfile?.email ?? 'null');
 
-    return Scaffold(
-      body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Palette.chaletBlue,
-            elevation: 0,
-            expandedHeight: MediaQuery.of(context).size.height * 0.3,
-            floating: false,
-            pinned: false,
-            snap: false,
-            stretch: true,
-            flexibleSpace: FlexibleSpaceBar(
-              centerTitle: false,
-              stretchModes: [StretchMode.zoomBackground],
-              background: SafeArea(
-                  child: Padding(
-                padding: const EdgeInsets.all(Dimentions.small),
-                child: CircleAvatar(),
-              )),
-            ),
-          ),
-          SliverFillRemaining(
-              child: GestureDetector(
-            onTap: () => dissmissCurrentFocus(context),
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Nazwa użytkownika'),
-                  onChanged: (String val) => setState(() => _userProfile!.displayName = val),
-                  onEditingComplete: () => node.nextFocus(),
-                  keyboardType: TextInputType.text,
-                ),
-                VerticalSizedBox16(),
-                TextFormField(
-                  initialValue: _userProfile!.email,
-                  decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                  validator: (val) => val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
-                  onChanged: (String val) => setState(() => _userProfile!.email = val),
-                  onEditingComplete: () => node.nextFocus(),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                VerticalSizedBox16(),
-                CustomElevatedButton(
-                  label: 'Zapisz dane',
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          )),
-        ],
-      ),
-      // body: Padding(
-      //   padding: const EdgeInsets.all(
-      //     Dimentions.medium,
-      //   ),
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //     crossAxisAlignment: CrossAxisAlignment.stretch,
-      //     children: [
-      //       Column(
-      //         children: [
-      //           CircleAvatar(),
-      //           Text(_userProfile!.uid),
-      //         ],
-      //       ),
-      //       Column(
-      //         children: [
-      //           CustomTextButton(
-      //             onPressed: () {},
-      //             label: 'Edytuj konto',
-      //             color: Palette.ivoryBlack,
-      //           ),
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
-    );
+    return StreamBuilder<UserModel?>(
+        stream: AuthService().user,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final user = snapshot.data;
+            return Scaffold(
+              body: Stack(
+                children: [
+                  CustomScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: SafeArea(
+                          child: CustomCircleAvatar(
+                            photoURL: user!.photoURL ?? '',
+                          ),
+                        ),
+                      ),
+                      SliverFillRemaining(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                child: Column(
+                              children: [
+                                Divider(),
+                                Text(
+                                  user.displayName ?? '',
+                                  style: Theme.of(context).textTheme.headline2,
+                                ),
+                                VerticalSizedBox8(),
+                                Text(
+                                  user.email,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
+                            )),
+                            Container(
+                              padding: EdgeInsets.all(Dimentions.small),
+                              child: Column(
+                                children: [
+                                  CustomElevatedButton(
+                                    label: 'Edytuj dane',
+                                    onPressed: () => _panelController.open(),
+                                  ),
+                                  CustomTextButton(
+                                    label: 'Wyloguj',
+                                    color: Palette.ivoryBlack,
+                                    onPressed: () => AuthService().signOut(),
+                                  ),
+                                  _packageInfo != null
+                                      ? Text('wersja aplikacji: ${_packageInfo!.version}')
+                                      : CircularProgressIndicator(
+                                          strokeWidth: 2.0,
+                                        ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SlidingUpPanel(
+                    padding: EdgeInsets.fromLTRB(Dimentions.small, 24, Dimentions.small, Dimentions.small),
+                    backdropEnabled: true,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
+                    minHeight: 0.0,
+                    maxHeight: MediaQuery.of(context).size.height * 0.4,
+                    onPanelClosed: () => dissmissCurrentFocus(context),
+                    controller: _panelController,
+                    panel: GestureDetector(
+                      onTap: () => dissmissCurrentFocus(context),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: textInputDecoration.copyWith(hintText: 'Nazwa użytkownika'),
+                            controller: _userDisplayNameController,
+                            onEditingComplete: () => node.nextFocus(),
+                            keyboardType: TextInputType.text,
+                          ),
+                          VerticalSizedBox16(),
+                          CustomElevatedButton(
+                            label: 'Zapisz dane',
+                            onPressed: _updateDisplayname,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else
+            return Container();
+        });
   }
 }

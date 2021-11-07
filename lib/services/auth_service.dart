@@ -9,7 +9,8 @@ class AuthService {
   //auth change user stream
   Stream<UserModel?> get user {
     return _firebaseAuth
-        .authStateChanges()
+        .userChanges()
+        // .authStateChanges()
         .map((firebseUser) => firebseUser != null ? UserModel.userModelFromFirebaseUser(firebseUser) : null);
   }
 
@@ -73,6 +74,15 @@ class AuthService {
         break;
       case FacebookLoginStatus.error:
         break;
+    }
+  }
+
+  Future<void> editUserData(String displayName) async {
+    try {
+      await _firebaseAuth.currentUser!.updateProfile(displayName: displayName);
+    } catch (e) {
+      print(e);
+      throw 'Nie udało się zaktualizować danych użytkownika';
     }
   }
 
