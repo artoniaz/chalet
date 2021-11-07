@@ -18,6 +18,7 @@ class BottomNavBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.wc), label: 'Szalety'),
         BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Dodaj szalet'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Mój profil'),
       ],
     );
   }

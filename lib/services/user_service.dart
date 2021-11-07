@@ -2,22 +2,25 @@ import 'package:chalet/models/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserService {
-  final String uid;
-  UserService({required this.uid});
   // collection reference
-  final CollectionReference userCollection =
-      FirebaseFirestore.instance.collection("users");
+  final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
 
-  // userData from snapshot
-  UserDataModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return UserDataModel(
-      uid: uid,
-      favourites: (snapshot.data() as dynamic)['favourites'] ?? [],
-    );
+  Future<UserModel> getUserData(String uid) async {
+    try {
+      final userSnapshot = await userCollection.doc(uid).get();
+      return UserModel.fromJson(userSnapshot.data());
+    } catch (e) {
+      throw 'Nie udało się pobrać danych użytkownika';
+    }
   }
 
-  // get user doc stream
-  Stream<UserDataModel>? get userData {
-    userCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  Future<void> updateUserData(UserModel user) async {
+    try {
+      userCollection.doc(user.uid).update({
+        "displayName": user.displayName,
+      });
+    } catch (e) {
+      throw 'Nie udało się zapisać nowych danych';
+    }
   }
 }

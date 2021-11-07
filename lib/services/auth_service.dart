@@ -1,5 +1,4 @@
 import 'package:chalet/models/user_model.dart';
-import 'package:chalet/services/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
@@ -7,21 +6,17 @@ class AuthService {
   final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
   final fb = FacebookLogin();
 
-  //create UserModel based on FirebaseUser
-  UserModel? _userModelFromFirebaseUser(firebaseAuth.User? firebaseUser) {
-    return firebaseUser != null ? UserModel(uid: firebaseUser.uid) : null;
-  }
-
   //auth change user stream
   Stream<UserModel?> get user {
-    return _firebaseAuth.authStateChanges().map(_userModelFromFirebaseUser);
+    return _firebaseAuth
+        .authStateChanges()
+        .map((firebseUser) => firebseUser != null ? UserModel.userModelFromFirebaseUser(firebseUser) : null);
   }
 
   //sign in anon
   Future signInAnon() async {
     try {
       firebaseAuth.UserCredential authResult = await _firebaseAuth.signInAnonymously();
-      return _userModelFromFirebaseUser(authResult.user);
     } catch (e) {
       print(e.toString());
       return null;
@@ -29,11 +24,9 @@ class AuthService {
   }
 
   //sing in with email and password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
-      firebaseAuth.UserCredential result =
-          await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return _userModelFromFirebaseUser(result.user);
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
@@ -48,11 +41,9 @@ class AuthService {
   }
 
   //register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future<void> registerWithEmailAndPassword(String email, String password) async {
     try {
-      firebaseAuth.UserCredential result =
-          await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return _userModelFromFirebaseUser(result.user);
+      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
