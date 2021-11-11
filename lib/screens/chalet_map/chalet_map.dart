@@ -142,6 +142,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                     controller: controller,
                     chalet: _activeChalet,
                     isMapEnabled: false,
+                    isGalleryEnabled: true,
                   ),
             onPanelSlide: (pos) {
               final panelMaxScrollExtend = _panelHeightOpen - MediaQuery.of(context).size.height * 0.2;

@@ -40,6 +40,7 @@ class _ChaletDetailsState extends State<ChaletDetails> {
               controller: _controller,
               chalet: _chalet,
               isMapEnabled: true,
+              isGalleryEnabled: false,
             ),
           ),
         ],

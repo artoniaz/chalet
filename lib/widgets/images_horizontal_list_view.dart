@@ -1,6 +1,8 @@
 import 'package:chalet/models/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class ImagesHorizontalListView extends StatelessWidget {
   final ChaletModel chalet;
@@ -25,10 +27,13 @@ class ImagesHorizontalListView extends StatelessWidget {
                     ))),
         child: Container(
           width: 160,
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            child: CustomCachedNetworkImage(
-              itemUrl: chalet.images[index].imageUrlMinSize,
+          child: Hero(
+            tag: chalet.images[index].imageUrlMinSize,
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              child: CustomCachedNetworkImage(
+                itemUrl: chalet.images[index].imageUrlMinSize,
+              ),
             ),
           ),
         ),

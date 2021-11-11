@@ -19,7 +19,7 @@ class ReviewContainer extends StatelessWidget {
       children: [
         VerticalSizedBox16(),
         Text(
-          review.userId,
+          review.userName != '' ? review.userName : 'Anonimowy użytkownik',
           style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w700),
         ),
         Row(

@@ -11,11 +11,13 @@ class ChaletCard extends StatefulWidget {
   final ChaletModel? chalet;
   final ScrollController controller;
   final bool isMapEnabled;
+  final bool isGalleryEnabled;
   const ChaletCard({
     Key? key,
     required this.controller,
     required this.chalet,
     required this.isMapEnabled,
+    required this.isGalleryEnabled,
   }) : super(key: key);
 
   @override
@@ -102,12 +104,17 @@ class _ChaletCardState extends State<ChaletCard> {
                 ),
               ],
             ),
-            VerticalSizedBox16(),
-            Container(
-                height: 140,
-                child: ImagesHorizontalListView(
-                  chalet: widget.chalet!,
-                )),
+            if (widget.isGalleryEnabled)
+              Column(
+                children: [
+                  VerticalSizedBox16(),
+                  Container(
+                      height: 140,
+                      child: ImagesHorizontalListView(
+                        chalet: widget.chalet!,
+                      )),
+                ],
+              ),
             VerticalSizedBox16(),
             Text(
               'Udogodnienia',
