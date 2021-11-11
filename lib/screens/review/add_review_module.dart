@@ -149,7 +149,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
-    return CustomElevatedButton(label: 'Oceń', onPressed: () => _initDialogModule(user!.uid, ''));
+    return CustomElevatedButton(label: 'Oceń', onPressed: () => _initDialogModule(user!.uid, user.displayName ?? ''));
   }
 
   Future<dynamic> _ratingPopUp(BuildContext context, String userId, String userName) async => showDialog(

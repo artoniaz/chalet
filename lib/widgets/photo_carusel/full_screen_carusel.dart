@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:chalet/widgets/custom_cached_network_image.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenImageCarusel extends StatelessWidget {
@@ -21,18 +23,22 @@ class FullScreenImageCarusel extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
+        alignment: Alignment.topLeft,
         children: [
           Container(
             width: _screenWidth,
             height: _screenHeight,
             child: Padding(
-              padding: EdgeInsets.all(_padding),
+              padding: EdgeInsets.zero,
               child: CarouselSlider(
                   items: chaletModelUrlList
-                      .map((el) => CustomCachedNetworkImage(
-                            itemUrl: el.imageUrlOriginalSize,
-                            width: _screenWidth - _padding,
-                            height: _screenHeight - _padding,
+                      .map((el) => Hero(
+                            tag: el.imageUrlMinSize,
+                            child: CustomCachedNetworkImage(
+                              itemUrl: el.imageUrlMinSize,
+                              width: _screenWidth - _padding,
+                              height: _screenHeight - _padding,
+                            ),
                           ))
                       .toList(),
                   options: CarouselOptions(
@@ -43,16 +49,14 @@ class FullScreenImageCarusel extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: 24.0,
-              right: 0,
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.close,
-                  size: 50.0,
-                  color: Colors.white,
-                ),
-              ))
+            top: 0,
+            child: SafeArea(
+              child: SizedBox(
+                width: 72.0,
+                child: CustomBackLeadingButton(),
+              ),
+            ),
+          ),
         ],
       ),
     );
