@@ -1,24 +1,3 @@
-def mapsProperties = new Properties()
-def localMapsPropertiesFile = rootProject.file('local_maps.properties')
-if (localMapsPropertiesFile.exists()) {
-    project.logger.info('Load maps properties from local file')
-    localMapsPropertiesFile.withReader('UTF-8') { reader ->
-        mapsProperties.load(reader)
-    }
-} else {
-    project.logger.info('Load maps properties from environment')
-    try {
-        mapsProperties['MAPS_API_KEY'] = System.getenv('MAPS_API_KEY')
-    } catch(NullPointerException e) {
-        project.logger.warn('Failed to load MAPS_API_KEY from environment.', e)
-    }
-}
-def mapsApiKey = mapsProperties.getProperty('MAPS_API_KEY')
-if(mapsApiKey == null){
-    mapsApiKey = ""
-    project.logger.error('Google Maps Api Key not configured. Set it in `local_maps.properties` or in the environment variable `MAPS_API_KEY`')
-}
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -46,6 +25,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def MAPS_API_KEY = properties.getProperty('segment.writeKey') // Notice we get the property we the exact same name we wrote in the local.properties file
+
 android {
     compileSdkVersion 30
 
@@ -60,7 +43,7 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders = [MAPS_API_KEY: mapsApiKey]
+        manifestPlaceholders = [MAPS_API_KEY: MAPS_API_KEY]
     }
 
     buildTypes {
