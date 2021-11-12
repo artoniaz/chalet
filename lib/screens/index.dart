@@ -29,3 +29,4 @@ export 'package:chalet/screens/review/chalet_review_list.dart';
 export 'package:chalet/screens/review/review_container.dart';
 
 export 'package:chalet/screens/my_profile/profile_card.dart';
+export 'package:chalet/screens/my_profile/remove_account_dialog.dart';

@@ -95,4 +95,18 @@ class AuthService {
       return null;
     }
   }
+
+  Future<bool> deleteUser(String email, String password) async {
+    try {
+      firebaseAuth.User user = _firebaseAuth.currentUser!;
+      firebaseAuth.AuthCredential credentials =
+          firebaseAuth.EmailAuthProvider.credential(email: email, password: password);
+      firebaseAuth.UserCredential result = await user.reauthenticateWithCredential(credentials);
+      await result.user?.delete();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      throw 'Nie udało się usunąć konta';
+    }
+  }
 }

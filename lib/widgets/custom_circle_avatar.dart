@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
-  final String photoURL;
+  final String? photoURL;
   const CustomCircleAvatar({
     Key? key,
     required this.photoURL,
@@ -34,7 +34,7 @@ class CustomCircleAvatar extends StatelessWidget {
             height: MediaQuery.of(context).size.height * .3,
             width: MediaQuery.of(context).size.width,
             child: CircleAvatar(
-              backgroundImage: NetworkImage(photoURL),
+              backgroundImage: photoURL != null ? NetworkImage(photoURL!) : null,
               backgroundColor: Palette.chaletBlue,
             ),
           ),

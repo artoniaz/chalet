@@ -14,7 +14,7 @@ class ButtonsPopUpRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      alignment: WrapAlignment.spaceBetween,
+      alignment: WrapAlignment.start,
       crossAxisAlignment: WrapCrossAlignment.end,
       children: [
         CustomTextButton(

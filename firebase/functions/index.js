@@ -12,6 +12,10 @@ exports.newUserSignup = functions.auth.user().onCreate(user => {
     });
 });
 
+exports.userDeleteAccount = functions.auth.user().onDelete((user) => {
+    return admin.firestore().collection('users').doc(user.uid).delete();
+});
+
 exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/reviews/{chaletId}/chalet_reviews/{reviewId}')
     .onCreate((snapshot, context) => {
         const chaletId = snapshot.data().chaletId;
