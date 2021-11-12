@@ -1,10 +1,12 @@
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:package_info/package_info.dart';
 
@@ -43,6 +45,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
     final node = FocusScope.of(context);
 
     return StreamBuilder<UserModel?>(
@@ -51,6 +54,7 @@ class _ProfileCardState extends State<ProfileCard> {
           if (snapshot.hasData) {
             final user = snapshot.data;
             return Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Stack(
                 children: [
                   CustomScrollView(
@@ -59,11 +63,13 @@ class _ProfileCardState extends State<ProfileCard> {
                       SliverToBoxAdapter(
                         child: SafeArea(
                           child: CustomCircleAvatar(
-                            photoURL: user!.photoURL ?? '',
+                            photoURL: user!.photoURL,
                           ),
                         ),
                       ),
                       SliverFillRemaining(
+                        hasScrollBody: true,
+                        fillOverscroll: true,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -94,6 +100,16 @@ class _ProfileCardState extends State<ProfileCard> {
                                     label: 'Wyloguj',
                                     color: Palette.ivoryBlack,
                                     onPressed: () => AuthService().signOut(),
+                                  ),
+                                  CustomTextButton(
+                                    label: 'Usuń profil',
+                                    color: Palette.ivoryBlack,
+                                    onPressed: () => showDialog(
+                                      context: context,
+                                      builder: (context) => RemoveAccountDialog(
+                                        userEmail: user.email,
+                                      ),
+                                    ),
                                   ),
                                   _packageInfo != null
                                       ? Text('wersja aplikacji: ${_packageInfo!.version}')
