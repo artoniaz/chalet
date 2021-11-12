@@ -1,8 +1,6 @@
 import 'package:chalet/models/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 
 class ImagesHorizontalListView extends StatelessWidget {
   final ChaletModel chalet;
