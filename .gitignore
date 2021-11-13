@@ -30,7 +30,6 @@
 .pub-cache/
 .pub/
 /build/
-/android/local_maps.properties
 /lib/.env.dart
 
 # Web related
