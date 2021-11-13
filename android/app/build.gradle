@@ -30,7 +30,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 def MAPS_API_KEY = properties.getProperty('segment.writeKey') // Notice we get the property we the exact same name we wrote in the local.properties file
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
