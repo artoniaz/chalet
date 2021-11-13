@@ -17,6 +17,7 @@ class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordRepeatController = TextEditingController();
   String email = '';
   String error = '';
 
@@ -28,8 +29,7 @@ class _RegisterState extends State<Register> {
       email = email.trim();
       passwordController.text = passwordController.text.trim();
       try {
-        await _authService.registerWithEmailAndPassword(
-            email, passwordController.text);
+        await _authService.registerWithEmailAndPassword(email, passwordController.text);
       } catch (e) {
         setState(() {
           passwordController.clear();
@@ -37,6 +37,10 @@ class _RegisterState extends State<Register> {
           isLoading = false;
         });
       }
+    } else {
+      setState(() {
+        error = '';
+      });
     }
   }
 
@@ -49,60 +53,60 @@ class _RegisterState extends State<Register> {
             onTap: () => dissmissCurrentFocus(context),
             child: Scaffold(
                 appBar: CustomAppBars.customAppBarDark(context, 'Rejestracja'),
-                body: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Dimentions.horizontalPadding,
-                        vertical: Dimentions.large),
-                    child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(
-                                  hintText: 'Email'),
-                              validator: (val) =>
-                                  val!.isEmpty || !val.contains('@')
-                                      ? 'Podaj poprawny adres email'
-                                      : null,
-                              onChanged: (String val) =>
-                                  setState(() => email = val),
-                              onEditingComplete: () => node.nextFocus(),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                            VerticalSizedBox16(),
-                            TextFormField(
-                              controller: passwordController,
-                              decoration: textInputDecoration.copyWith(
-                                  hintText: 'Hasło'),
-                              obscureText: true,
-                              validator: (val) => val!.length < 6
-                                  ? 'Hasło musi zawierać minimum 6 znaków'
-                                  : null,
-                              onEditingComplete: () =>
-                                  registerWithEmailAndPassword(),
-                            ),
-                            VerticalSizedBox16(),
-                            CustomElevatedButton(
-                              label: 'Rejestracja',
-                              onPressed: registerWithEmailAndPassword,
-                            ),
-                            if (error.isNotEmpty) VerticalSizedBox16(),
-                            Text(
-                              error,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(color: Palette.errorRed),
-                            ),
-                            if (error.isNotEmpty) VerticalSizedBox16(),
-                            CustomTextButton(
-                              onPressed: widget.toggleView,
-                              label: 'Masz już konto? Zaloguj się.',
-                            )
-                          ],
-                        )),
+                body: SingleChildScrollView(
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimentions.horizontalPadding, vertical: Dimentions.large),
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                                validator: (val) =>
+                                    val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
+                                onChanged: (String val) => setState(() => email = val),
+                                onEditingComplete: () => node.nextFocus(),
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+                              VerticalSizedBox16(),
+                              TextFormField(
+                                controller: passwordController,
+                                decoration: textInputDecoration.copyWith(hintText: 'Hasło'),
+                                obscureText: true,
+                                validator: (val) => val!.length < 6 ? 'Hasło musi zawierać minimum 6 znaków' : null,
+                                onEditingComplete: () => registerWithEmailAndPassword(),
+                              ),
+                              VerticalSizedBox16(),
+                              TextFormField(
+                                controller: passwordRepeatController,
+                                decoration: textInputDecoration.copyWith(hintText: 'Powtórz hasło'),
+                                obscureText: true,
+                                validator: (val) =>
+                                    val != passwordController.text ? 'Podane hasła nie są zgodne' : null,
+                                onEditingComplete: () => registerWithEmailAndPassword(),
+                              ),
+                              VerticalSizedBox16(),
+                              CustomElevatedButton(
+                                label: 'Rejestracja',
+                                onPressed: registerWithEmailAndPassword,
+                              ),
+                              if (error.isNotEmpty) VerticalSizedBox16(),
+                              Text(
+                                error,
+                                style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.errorRed),
+                              ),
+                              if (error.isNotEmpty) VerticalSizedBox16(),
+                              CustomTextButton(
+                                onPressed: widget.toggleView,
+                                label: 'Masz już konto? Zaloguj się.',
+                                color: Palette.ivoryBlack,
+                              )
+                            ],
+                          )),
+                    ),
                   ),
                 )),
           );
