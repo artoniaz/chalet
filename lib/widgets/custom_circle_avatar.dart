@@ -17,8 +17,8 @@ class CustomCircleAvatar extends StatelessWidget {
   void _getImageFromGallery(BuildContext context) async {
     String userUid = Provider.of<UserModel?>(context, listen: false)!.uid;
     final _picker = ImagePicker();
-    PickedFile? pickedImage =
-        await _picker.getImage(source: ImageSource.gallery, imageQuality: 70, maxHeight: 300, maxWidth: 300);
+    XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70, maxHeight: 300, maxWidth: 300);
     var imageFile = File(pickedImage?.path ?? '');
     StorageService().editUserPhotoURL(userUid, imageFile);
   }

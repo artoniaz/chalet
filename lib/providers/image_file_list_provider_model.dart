@@ -29,8 +29,8 @@ class ImageFileListModel extends ChangeNotifier {
   getImageCamera() async {
     EasyLoading.show(maskType: EasyLoadingMaskType.black, status: '');
     final _picker = ImagePicker();
-    PickedFile? pickedImage =
-        await _picker.getImage(source: ImageSource.camera, imageQuality: 100, maxHeight: 1800, maxWidth: 1800);
+    XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 100, maxHeight: 1800, maxWidth: 1800);
     var img = ImageModelFile(
       imageFile: File(pickedImage?.path ?? ''),
       isDefault: _images.isEmpty,
