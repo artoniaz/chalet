@@ -4,6 +4,7 @@ export 'package:chalet/models/screen_arg.dart';
 export 'package:chalet/screens/authenticate/authenticate.dart';
 export 'package:chalet/screens/authenticate/sign_in.dart';
 export 'package:chalet/screens/authenticate/register.dart';
+export 'package:chalet/screens/authenticate/reset_password.dart';
 
 export 'package:chalet/screens/home/home.dart';
 export 'package:chalet/screens/home/chalet_page_selection.dart';
