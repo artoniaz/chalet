@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   late LatLng _userLocation;
   bool _isScreenLoading = true;
 
@@ -54,7 +54,10 @@ class _HomeState extends State<Home> {
         : Provider<LatLng>(
             create: (context) => _userLocation,
             child: Scaffold(
-              body: tabs[_currentIndex],
+              body: IndexedStack(
+                index: _currentIndex,
+                children: tabs,
+              ),
               bottomNavigationBar: BottomNavBar(
                 currentIndex: _currentIndex,
                 handleTabChange: handleTabChange,
