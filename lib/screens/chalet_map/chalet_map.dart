@@ -31,7 +31,9 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
 
   final _panelController = PanelController();
   static const _centerButtonPrimaryHeight = Dimentions.medium;
+  static const _navButtonPrimaryHeight = 80.0;
   double _centerButtonHeight = _centerButtonPrimaryHeight;
+  double _navigationHeight = _navButtonPrimaryHeight;
 
   bool _isSearchThisAreaButtonActive = false;
 
@@ -148,7 +150,12 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               final panelMaxScrollExtend = _panelHeightOpen - MediaQuery.of(context).size.height * 0.2;
               double btnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight;
               if (_activeChalet != null) btnHeight += MediaQuery.of(context).size.height * 0.2;
-              setState(() => _centerButtonHeight = btnHeight);
+              double navBtnHeight = pos * panelMaxScrollExtend + _navButtonPrimaryHeight;
+              if (_activeChalet != null) navBtnHeight += MediaQuery.of(context).size.height * 0.2;
+              setState(() {
+                _centerButtonHeight = btnHeight;
+                _navigationHeight = navBtnHeight;
+              });
             },
             body: GoogleMap(
               initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
@@ -183,6 +190,16 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               foregroundColor: Palette.white,
               onPressed: _centerCamera,
               child: Icon(Icons.center_focus_strong),
+            ),
+          ),
+          Positioned(
+            right: Dimentions.medium,
+            bottom: _navigationHeight,
+            child: FloatingActionButton(
+              backgroundColor: Palette.chaletBlue,
+              foregroundColor: Palette.white,
+              onPressed: _centerCamera,
+              child: Icon(Icons.navigation),
             ),
           ),
         ],
