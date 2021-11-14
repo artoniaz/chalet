@@ -3,6 +3,7 @@ import 'package:chalet/models/add_chalet_nav_pass_args.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/styles/dimentions.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -28,6 +29,7 @@ class _AddChaletMapState extends State<AddChaletMap> {
   bool _isCameraBackToUserLocationBtnActive = false;
   static const double _cameraZoom = 18.0;
   double middleMarkerSize = 50.0;
+  double _middleMarkerAnimationMove = 0.0;
 
   void navigateBackAndPassChaletLocalization() {
     AddChaletNavigationPassingArgs passingArgs = new AddChaletNavigationPassingArgs(
@@ -73,6 +75,13 @@ class _AddChaletMapState extends State<AddChaletMap> {
     setState(() {
       _isCameraBackToUserLocationBtnActive = !compareLatLng(_initialUserPosition, _chaletLatLngPosition);
       if (addresses[0].street!.toLowerCase() != 'unnamed road') _chaletAddressPlacemark = addresses[0];
+      _middleMarkerAnimationMove = 0.0;
+    });
+  }
+
+  void _onCameraMoveStarted() {
+    setState(() {
+      _middleMarkerAnimationMove = 20.0;
     });
   }
 
@@ -100,6 +109,7 @@ class _AddChaletMapState extends State<AddChaletMap> {
                 GoogleMap(
                   initialCameraPosition: CameraPosition(target: _initialUserPosition, zoom: _cameraZoom),
                   onMapCreated: (controller) => _googleMapController = controller,
+                  onCameraMoveStarted: _onCameraMoveStarted,
                   onCameraMove: _onCameraMove,
                   onCameraIdle: _onCameraIdle,
                   myLocationButtonEnabled: false,
@@ -109,16 +119,40 @@ class _AddChaletMapState extends State<AddChaletMap> {
                     if (_chaletMarker != null) _chaletMarker!,
                   },
                 ),
-                Positioned(
-                    top: MediaQuery.of(context).size.height / 2,
-                    left: MediaQuery.of(context).size.width / 2,
-                    child: Transform.translate(
-                      offset: Offset(-(middleMarkerSize / 2), -(middleMarkerSize * 0.8)),
-                      child: Icon(
-                        Icons.south,
-                        size: middleMarkerSize,
-                      ),
-                    )),
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 100),
+                  child: Positioned(
+                      top: MediaQuery.of(context).size.height / 2 - _middleMarkerAnimationMove,
+                      left: MediaQuery.of(context).size.width / 2,
+                      child: Transform.translate(
+                        offset: Offset(-(middleMarkerSize / 2), -(middleMarkerSize * 0.8)),
+                        child: Icon(
+                          Icons.south,
+                          size: middleMarkerSize,
+                        ),
+                      )),
+                ),
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 100),
+                  child: Positioned(
+                      top: MediaQuery.of(context).size.height / 2,
+                      left: MediaQuery.of(context).size.width / 2,
+                      child: FractionalTranslation(
+                          translation: Offset(-0.5, -0.5),
+                          child: Container(
+                            decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                              BoxShadow(
+                                color: Palette.ivoryBlack,
+                                blurRadius: 5.0,
+                              ),
+                            ]),
+                            child: Icon(
+                              Icons.circle,
+                              color: Palette.ivoryBlack,
+                              size: 10,
+                            ),
+                          ))),
+                ),
                 Positioned(
                     bottom: 0,
                     left: 0,

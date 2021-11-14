@@ -1,7 +1,9 @@
 import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:chalet/widgets/custom_elevated_button.dart';
 import 'package:chalet/widgets/horizontal_sized_boxes.dart';
+import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_place/google_place.dart';
 import 'package:chalet/.env.dart';
@@ -39,18 +41,18 @@ class _AddressInputScreenState extends State<AddressInputScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Wybierz lokalizację',
-          style: Theme.of(context).textTheme.headline2!.copyWith(color: Palette.backgroundWhite),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.all(Dimentions.medium),
-            child: Row(
+      appBar: CustomAppBars.customTransparentAppBar(context),
+      body: Padding(
+        padding: EdgeInsets.all(Dimentions.medium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Znajdź lokalizację',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            VerticalSizedBox16(),
+            Row(
               children: [
                 Flexible(
                   child: TextField(
@@ -68,10 +70,10 @@ class _AddressInputScreenState extends State<AddressInputScreen> {
                 ),
               ],
             ),
-          ),
-          Divider(),
-          if (_placePredictions!.isNotEmpty) ..._getPredictionsListTiles(),
-        ],
+            Divider(),
+            if (_placePredictions!.isNotEmpty) ..._getPredictionsListTiles(),
+          ],
+        ),
       ),
     );
   }
