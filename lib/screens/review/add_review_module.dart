@@ -29,6 +29,7 @@ class AddReviewModule extends StatefulWidget {
 class _AddReviewModuleState extends State<AddReviewModule> {
   double _chaletRating = 0.0;
   TextEditingController _chaletDescController = TextEditingController();
+  ScrollController _dialogController = ScrollController();
   FocusNode _chaletDescFocusNode = FocusNode();
 
   String _currentReviewId = '';
@@ -44,6 +45,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
           chaletDescController: _chaletDescController,
           chaletDescFocusNode: _chaletDescFocusNode,
           validateQuickReview: _validateQuickReview,
+          scrollController: _dialogController,
           createReview: () async {
             if (_chaletRating > 0 && _chaletDescController.text.length > 0) {
               await _createReview(userId, userName);
@@ -80,6 +82,9 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   void _handleRatingUpdate(double rating) {
     setState(() => _chaletRating = rating);
     if (_chaletDescController.text == '') _chaletDescFocusNode.requestFocus();
+    Future.delayed(Duration(milliseconds: 500)).then((value) {
+      _dialogController.jumpTo(_dialogController.position.maxScrollExtent);
+    });
   }
 
   Future<String> _validateLastReviewForChalet(String userId) async {

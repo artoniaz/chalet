@@ -2,31 +2,31 @@ import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 
 const textInputDecoration = InputDecoration(
-    contentPadding: EdgeInsets.all(Dimentions.small),
-    fillColor: Palette.backgroundWhite,
+    contentPadding: EdgeInsets.all(Dimentions.medium),
+    fillColor: Palette.veryLightGrey,
     filled: true,
-    border: OutlineInputBorder(
+    border: UnderlineInputBorder(
         borderSide: BorderSide(
       color: Palette.backgroundWhite,
-      width: 2.0,
+      width: 1.0,
     )),
-    enabledBorder: OutlineInputBorder(
+    enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(
-      color: Palette.backgroundWhite,
-      width: 2.0,
+      color: Palette.chaletBlue,
+      width: 1.0,
     )),
     focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
       color: Palette.goldLeaf,
-      width: 2.0,
+      width: 1.0,
     )),
     focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
       color: Palette.goldLeaf,
-      width: 2.0,
+      width: 1.0,
     )),
     errorBorder: OutlineInputBorder(
         borderSide: BorderSide(
       color: Palette.errorRed,
-      width: 2.0,
+      width: 1.0,
     )));

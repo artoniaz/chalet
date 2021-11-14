@@ -6,6 +6,7 @@ class Palette {
   static const Color goldLeaf = Color(0xFFD9B310);
   static const Color ivoryBlack = Color(0xFF1D2731);
   static const Color lightGrey = Color(0xFFdfdddf);
+  static const Color veryLightGrey = Color(0xFFF4F4F4);
   static const Color errorRed = Color(0xFFED4337);
   static const Color backgroundWhite = Color(0xFFfafcfe);
   static const Color white = Color(0xFFffffff);

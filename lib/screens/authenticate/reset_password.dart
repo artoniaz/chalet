@@ -42,7 +42,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     return GestureDetector(
       onTap: () => dissmissCurrentFocus(context),
       child: Scaffold(
-          appBar: CustomAppBars.customAppBarDark(context, 'Zapomniałem hasła'),
+          appBar: CustomAppBars.customTransparentAppBar(context),
           body: SingleChildScrollView(
             child: SafeArea(
               child: Padding(
@@ -53,6 +53,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Image(
+                          width: 80.0,
+                          height: 80.0,
+                          image: AssetImage('assets/poo/poo_happy.png'),
+                        ),
+                        VerticalSizedBox16(),
                         TextFormField(
                           controller: _emailController,
                           decoration: textInputDecoration.copyWith(hintText: 'Email'),

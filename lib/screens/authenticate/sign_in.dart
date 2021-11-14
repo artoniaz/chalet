@@ -53,66 +53,90 @@ class _SignInState extends State<SignIn> {
         : GestureDetector(
             onTap: () => dissmissCurrentFocus(context),
             child: Scaffold(
-                appBar: CustomAppBars.customAppBarDark(context, 'Zaloguj się'),
                 body: SingleChildScrollView(
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimentions.horizontalPadding, vertical: Dimentions.large),
-                      child: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              TextFormField(
-                                decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                                validator: (val) =>
-                                    val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
-                                onChanged: (String val) => setState(() => email = val),
-                                onEditingComplete: () => node.nextFocus(),
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                              VerticalSizedBox16(),
-                              TextFormField(
-                                controller: passwordController,
-                                decoration: textInputDecoration.copyWith(hintText: 'Hasło'),
-                                obscureText: true,
-                                validator: (val) => val!.length < 6 ? 'Hasło musi zawierać minimum 6 znaków' : null,
-                                onEditingComplete: () => signUpWIthEmailAndPassword(),
-                              ),
-                              VerticalSizedBox16(),
-                              CustomElevatedButton(
-                                label: 'Zaloguj się',
-                                onPressed: signUpWIthEmailAndPassword,
-                              ),
-                              if (error.isNotEmpty) VerticalSizedBox16(),
-                              Text(
-                                error,
-                                style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.errorRed),
-                              ),
-                              VerticalSizedBox16(),
-                              SignInButton(
-                                Buttons.Facebook,
-                                text: 'Zaloguj przez Facebook',
-                                onPressed: () => AuthService().facebookAuth(),
-                              ),
-                              if (error.isNotEmpty) VerticalSizedBox16(),
-                              CustomTextButton(
-                                onPressed: () => Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) => ResetPassword())),
-                                label: 'Zapomniałem hasła',
-                                color: Palette.ivoryBlack,
-                              ),
-                              CustomTextButton(
-                                onPressed: widget.toggleView,
-                                label: 'Nie masz konta? Zarejestruj się.',
-                                color: Palette.ivoryBlack,
-                              )
-                            ],
-                          )),
-                    ),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimentions.horizontalPadding, vertical: Dimentions.large),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Image(
+                              width: 80.0,
+                              height: 80.0,
+                              image: AssetImage('assets/poo/poo_happy.png'),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                TextFormField(
+                                  decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                                  validator: (val) =>
+                                      val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
+                                  onChanged: (String val) => setState(() => email = val),
+                                  onEditingComplete: () => node.nextFocus(),
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                                VerticalSizedBox16(),
+                                TextFormField(
+                                  controller: passwordController,
+                                  decoration: textInputDecoration.copyWith(hintText: 'Hasło'),
+                                  obscureText: true,
+                                  validator: (val) => val!.length < 6 ? 'Hasło musi zawierać minimum 6 znaków' : null,
+                                  onEditingComplete: () => signUpWIthEmailAndPassword(),
+                                ),
+                                VerticalSizedBox16(),
+                                CustomElevatedButton(
+                                  label: 'Zaloguj się',
+                                  onPressed: signUpWIthEmailAndPassword,
+                                ),
+                                Row(children: <Widget>[
+                                  Expanded(child: Divider()),
+                                  HorizontalSizedBox8(),
+                                  Text("lub"),
+                                  HorizontalSizedBox8(),
+                                  Expanded(child: Divider()),
+                                ]),
+                                CustomElevatedButton(
+                                  label: 'Utwórz nowe konto',
+                                  onPressed: widget.toggleView,
+                                ),
+                                if (error.isNotEmpty) VerticalSizedBox16(),
+                                Text(
+                                  error,
+                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.errorRed),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                SignInButton(
+                                  Buttons.Facebook,
+                                  text: 'Zaloguj przez Facebook',
+                                  onPressed: () => AuthService().facebookAuth(),
+                                ),
+                                if (error.isNotEmpty) VerticalSizedBox16(),
+                                CustomTextButton(
+                                  onPressed: () => Navigator.of(context)
+                                      .push(MaterialPageRoute(builder: (context) => ResetPassword())),
+                                  label: 'Zapomniałem hasła',
+                                  color: Palette.ivoryBlack,
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
                   ),
-                )),
+                ),
+              ),
+            )),
           );
   }
 }

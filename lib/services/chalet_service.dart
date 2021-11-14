@@ -46,12 +46,14 @@ class ChaletService {
         numberRating: chalet.numberRating,
         numberDetailedRating: chalet.numberDetailedRating,
         descriptionHowToGet: chalet.descriptionHowToGet,
+        venueDescription: chalet.venueDescription,
         clean: chalet.clean,
         paper: chalet.paper,
         privacy: chalet.privacy,
         description: chalet.description,
         position: chalet.position.data,
         isVerified: chalet.isVerified,
+        is24: chalet.is24,
       ).toJson());
       return res.id;
     } catch (e) {

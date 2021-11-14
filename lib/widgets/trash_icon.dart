@@ -14,11 +14,23 @@ class TrashIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final handleRemoveImage = Provider.of<ImageFileListModel>(context, listen: false).removeImage;
 
-    return IconButton(
-      icon: Icon(Icons.delete),
-      color: Palette.goldLeaf,
-      iconSize: 50.0,
-      onPressed: () => handleRemoveImage(imageIndex),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RawMaterialButton(
+        constraints: BoxConstraints(minWidth: 50),
+        onPressed: () => handleRemoveImage(imageIndex),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        elevation: 2.0,
+        fillColor: Palette.chaletBlue,
+        child: Center(
+          child: Icon(
+            Icons.delete,
+            size: 20.0,
+            color: Palette.backgroundWhite,
+          ),
+        ),
+        shape: CircleBorder(),
+      ),
     );
   }
 }

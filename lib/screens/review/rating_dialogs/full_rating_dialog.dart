@@ -25,6 +25,9 @@ class FullRatingDialog extends StatefulWidget {
 class _FullRatingDialogState extends State<FullRatingDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
+
   ReviewDetailsModel _reviewDetails = ReviewDetailsModel(
     paper: 0.0,
     clean: 0.0,
@@ -54,10 +57,23 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
   }
 
   @override
+  void initState() {
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        Future.delayed(Duration(milliseconds: 700)).then((value) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
       content: SingleChildScrollView(
+        controller: _scrollController,
         child: Container(
           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
           padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 24.0),
@@ -100,6 +116,7 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
                     minLines: 2,
                     maxLines: 4,
                     onChanged: _handleDetailsExtendedUpdate,
+                    focusNode: _focusNode,
                     decoration: textInputDecoration.copyWith(
                       hintText: 'Dokładny opis. Podziel się szczegółami!',
                       enabledBorder: OutlineInputBorder(

@@ -13,18 +13,20 @@ class ButtonsPopUpRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.start,
-      crossAxisAlignment: WrapCrossAlignment.end,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         CustomTextButton(
           onPressed: () => Navigator.of(context).pop(),
           label: 'zamknij',
           color: Palette.ivoryBlack,
         ),
-        CustomElevatedButton(
-          label: approveButtonLabel,
-          onPressed: onPressedApproveButton,
+        Expanded(
+          child: CustomElevatedButton(
+            label: approveButtonLabel,
+            onPressed: onPressedApproveButton,
+          ),
         ),
       ],
     );

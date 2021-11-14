@@ -9,6 +9,8 @@ class CustomBackLeadingButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RawMaterialButton(
+        padding: EdgeInsets.all(4.0),
+        constraints: BoxConstraints(minWidth: 0),
         onPressed: () => Navigator.of(context).pop(),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         elevation: 2.0,

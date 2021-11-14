@@ -17,7 +17,6 @@ class BottomNavBar extends StatelessWidget {
       onTap: (index) => handleTabChange(index),
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.wc), label: 'Szalety'),
-        BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Dodaj szalet'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Mój profil'),
       ],
     );

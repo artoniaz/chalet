@@ -24,6 +24,7 @@ class CustomElevatedButton extends StatelessWidget {
         child: Text(
           label,
           style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
+          textAlign: TextAlign.center,
         ));
   }
 }

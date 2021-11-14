@@ -28,3 +28,5 @@ export 'package:chalet/widgets/custom_rating_bar_indicator.dart';
 export 'package:chalet/widgets/buttons_popUp_row.dart';
 export 'package:chalet/widgets/custom_back_leading_button.dart';
 export 'package:chalet/widgets/custom_circle_avatar.dart';
+export 'package:chalet/widgets/custom_rounded_icon_button.dart';
+export 'package:chalet/widgets/switch_bar.dart';

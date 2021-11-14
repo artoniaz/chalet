@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> tabs = [
     ChaletPageSelection(),
-    ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
+    // ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
     ProfileCard(),
   ];
 
@@ -54,7 +54,10 @@ class _HomeState extends State<Home> {
         : Provider<LatLng>(
             create: (context) => _userLocation,
             child: Scaffold(
-              body: tabs[_currentIndex],
+              body: IndexedStack(
+                index: _currentIndex,
+                children: tabs,
+              ),
               bottomNavigationBar: BottomNavBar(
                 currentIndex: _currentIndex,
                 handleTabChange: handleTabChange,

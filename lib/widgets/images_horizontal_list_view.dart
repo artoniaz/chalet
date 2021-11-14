@@ -26,11 +26,11 @@ class ImagesHorizontalListView extends StatelessWidget {
         child: Container(
           width: 160,
           child: Hero(
-            tag: chalet.images[index].imageUrlMinSize,
+            tag: chalet.images[index].imageUrlOriginalSize,
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
               child: CustomCachedNetworkImage(
-                itemUrl: chalet.images[index].imageUrlMinSize,
+                itemUrl: chalet.images[index].imageUrlOriginalSize,
               ),
             ),
           ),

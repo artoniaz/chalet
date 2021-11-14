@@ -184,23 +184,23 @@ class _ChaletCardState extends State<ChaletCard> {
                         ),
                   ),
                   VerticalSizedBox8(),
-                  Container(
-                    width: double.infinity,
-                    height: 200.0,
-                    child: GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                            target: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']), zoom: 15.0),
-                        markers: <Marker>{
-                          Marker(
-                            markerId: MarkerId(widget.chalet!.id),
-                            position: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']),
-                            infoWindow: InfoWindow(
-                              title: '${widget.chalet?.name} ${widget.chalet?.id}',
-                              snippet: widget.chalet?.rating.toString(),
-                            ),
-                          )
-                        }),
-                  ),
+                  // Container(
+                  //   width: double.infinity,
+                  //   height: 200.0,
+                  //   child: GoogleMap(
+                  //       initialCameraPosition: CameraPosition(
+                  //           target: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']), zoom: 15.0),
+                  //       markers: <Marker>{
+                  //         Marker(
+                  //           markerId: MarkerId(widget.chalet!.id),
+                  //           position: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']),
+                  //           infoWindow: InfoWindow(
+                  //             title: '${widget.chalet?.name} ${widget.chalet?.id}',
+                  //             snippet: widget.chalet?.rating.toString(),
+                  //           ),
+                  //         )
+                  //       }),
+                  // ),
                 ],
               ),
             VerticalSizedBox16(),
