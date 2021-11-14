@@ -30,13 +30,32 @@ class ImageFileListModel extends ChangeNotifier {
     EasyLoading.show(maskType: EasyLoadingMaskType.black, status: '');
     final _picker = ImagePicker();
     XFile? pickedImage =
-        await _picker.pickImage(source: ImageSource.camera, imageQuality: 100, maxHeight: 1800, maxWidth: 1800);
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 60, maxHeight: 1800, maxWidth: 1800);
     var img = ImageModelFile(
       imageFile: File(pickedImage?.path ?? ''),
       isDefault: _images.isEmpty,
     );
     if (pickedImage != null) {
       addImage(img);
+      EasyLoading.dismiss();
+      notifyListeners();
+    } else {
+      EasyLoading.dismiss();
+      EasyLoading.showError('Nie wybrano zdjecia');
+    }
+  }
+
+  getImageGallery() async {
+    EasyLoading.show(maskType: EasyLoadingMaskType.black, status: '');
+    final _picker = ImagePicker();
+    final List<XFile>? _imagesFromGallery = await _picker.pickMultiImage();
+    List<ImageModelFile> imgs = [];
+    _imagesFromGallery?.asMap().forEach((i, el) => imgs.add(ImageModelFile(
+          imageFile: File(el.path),
+          isDefault: i == 0,
+        )));
+    if (imgs.isNotEmpty) {
+      imgs.forEach((el) => addImage(el));
       EasyLoading.dismiss();
       notifyListeners();
     } else {

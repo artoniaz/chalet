@@ -1,15 +1,11 @@
 import 'package:chalet/config/index.dart';
+import 'package:chalet/config/routes/routes_definitions.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/geolocation_service.dart';
-import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -55,6 +51,12 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
+        child: Icon(Icons.add, color: Palette.backgroundWhite),
+        backgroundColor: Palette.chaletBlue,
+        elevation: 2.0,
+      ),
       body: SmartRefresher(
         controller: _refreshController,
         enablePullDown: true,

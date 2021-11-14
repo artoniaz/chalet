@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> tabs = [
     ChaletPageSelection(),
-    ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
+    // ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
     ProfileCard(),
   ];
 

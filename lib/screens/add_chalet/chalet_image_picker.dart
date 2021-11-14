@@ -16,18 +16,16 @@ class ChaletImagePicker extends StatelessWidget {
         height: Dimentions.pictureHeight,
         width: MediaQuery.of(context).size.width,
         color: Palette.backgroundWhite,
-        //TODO: finish
         child: imageFileList.images.isEmpty
             ? Center(
                 child: CustomElevatedButton(
                   label: 'zrób zdjęcie',
-                  //TODO: implement functions
                   onPressed: () => imageSourceBottomSheet(
                     context,
-                    handleGalleryImg: () {},
-                    handleCameraImg: imageFileList.getImageCamera(),
+                    handleGalleryImg: imageFileList.getImageGallery,
+                    handleCameraImg: imageFileList.getImageCamera,
                   ),
-                  backgroundColor: Palette.darkBlue,
+                  backgroundColor: Palette.chaletBlue,
                 ),
               )
             : ChaletPhotoCarusel(

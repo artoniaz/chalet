@@ -43,7 +43,7 @@ class _ChaletDetailsImageCaruselState extends State<ChaletDetailsImageCarusel> {
             carouselController: caruselController,
             items: widget.chalet.images
                 .map((el) => CustomCachedNetworkImage(
-                      itemUrl: el.imageUrlMinSize,
+                      itemUrl: el.imageUrlOriginalSize,
                       width: MediaQuery.of(context).size.width,
                     ))
                 .toList(),

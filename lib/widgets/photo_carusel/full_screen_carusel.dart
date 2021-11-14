@@ -33,9 +33,9 @@ class FullScreenImageCarusel extends StatelessWidget {
               child: CarouselSlider(
                   items: chaletModelUrlList
                       .map((el) => Hero(
-                            tag: el.imageUrlMinSize,
+                            tag: el.imageUrlOriginalSize,
                             child: CustomCachedNetworkImage(
-                              itemUrl: el.imageUrlMinSize,
+                              itemUrl: el.imageUrlOriginalSize,
                               width: _screenWidth - _padding,
                               height: _screenHeight - _padding,
                             ),

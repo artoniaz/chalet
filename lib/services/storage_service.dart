@@ -11,30 +11,31 @@ class StorageService {
   Reference storageRef = FirebaseStorage.instance.ref();
   final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
 
-  Future<void> addImagesToStorage(String chaletId, List<ImageModelFile> imageFileList) async {
+  Future<List<ImageModelUrl>> addImagesToStorage(String chaletId, List<ImageModelFile> imageFileList) async {
     try {
       Future<List<ImageModelUrl>> addImages() async {
         List<ImageModelUrl> imagesUrlList = [];
 
         for (var el in imageFileList) {
-          File imageMinFile = await FlutterNativeImage.compressImage(
-            el.imageFile.path,
-            quality: 100,
-            percentage: 50,
-          );
+          // File imageMinFile = await FlutterNativeImage.compressImage(
+          //   el.imageFile.path,
+          //   quality: 100,
+          //   percentage: 50,
+          // );
           int imgIndex = imageFileList.indexOf(el);
           TaskSnapshot uploadOriginalImageTask = await storageRef
               .child('chalet_images/$chaletId/$imgIndex/chalet_${chaletId}_${imgIndex}_orignal')
               .putFile(el.imageFile);
-          TaskSnapshot uploadMinImageTask = await storageRef
-              .child('chalet_images/$chaletId/$imgIndex/chalet_${chaletId}_${imgIndex}_min')
-              .putFile(imageMinFile);
-          if (uploadOriginalImageTask.state == TaskState.success && uploadMinImageTask.state == TaskState.success) {
+          // TaskSnapshot uploadMinImageTask = await storageRef
+          //     .child('chalet_images/$chaletId/$imgIndex/chalet_${chaletId}_${imgIndex}_min')
+          //     .putFile(imageMinFile);
+          // if (uploadOriginalImageTask.state == TaskState.success && uploadMinImageTask.state == TaskState.success) {
+          if (uploadOriginalImageTask.state == TaskState.success) {
             final String downloadUrlOriginal = await uploadOriginalImageTask.ref.getDownloadURL();
-            final String downloadUrlMin = await uploadMinImageTask.ref.getDownloadURL();
+            // final String downloadUrlMin = await uploadMinImageTask.ref.getDownloadURL();
             final image = ImageModelUrl(
               imageUrlOriginalSize: downloadUrlOriginal,
-              imageUrlMinSize: downloadUrlMin,
+              // imageUrlMinSize: downloadUrlMin,
               isDefault: imageFileList[imgIndex].isDefault,
             );
             imagesUrlList.add(image);
@@ -44,7 +45,8 @@ class StorageService {
       }
 
       List<ImageModelUrl> images = await addImages();
-      ChaletService().updateChaletImages(chaletId, images);
+      await ChaletService().updateChaletImages(chaletId, images);
+      return images;
     } catch (e) {
       throw 'Blad zapisu zdjec';
     }

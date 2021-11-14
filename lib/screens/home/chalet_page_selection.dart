@@ -1,4 +1,5 @@
 import 'package:chalet/models/index.dart';
+import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/dimentions.dart';
@@ -59,6 +60,8 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
                   physics: NeverScrollableScrollPhysics(),
                   children: [
                     ChaletList(),
+
+                    // ChaletList(),
                     ChaletMap(
                       updateQuery: _updateCameraPositionBehaviourSubject,
                     ),

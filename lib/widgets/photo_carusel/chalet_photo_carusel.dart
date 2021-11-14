@@ -1,6 +1,5 @@
 import 'package:chalet/config/chalet_image_slider_phases.dart';
 import 'package:chalet/models/image_model_file.dart';
-import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
@@ -43,7 +42,7 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
       .map((i, item) => MapEntry(
             i,
             ImageSliderPresentational(
-              itemUrl: item.imageUrlMinSize,
+              itemUrl: item.imageUrlOriginalSize,
             ),
           ))
       .values
@@ -54,7 +53,7 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
       .map((i, item) => MapEntry(
             i,
             ImageSliderDetails(
-              itemUrl: item.imageUrlMinSize,
+              itemUrl: item.imageUrlOriginalSize,
             ),
           ))
       .values

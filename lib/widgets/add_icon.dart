@@ -12,16 +12,26 @@ class AddIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ImageFileListModel imageFileList = Provider.of<ImageFileListModel>(context);
-    return IconButton(
-        icon: Icon(Icons.add),
-        color: Palette.goldLeaf,
-        iconSize: 50.0,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RawMaterialButton(
         onPressed: () => imageSourceBottomSheet(
-              context,
-              handleGalleryImg: () {},
-              handleCameraImg: () async {
-                await imageFileList.getImageCamera();
-              },
-            ));
+          context,
+          handleGalleryImg: imageFileList.getImageGallery,
+          handleCameraImg: imageFileList.getImageCamera,
+        ),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        elevation: 2.0,
+        fillColor: Palette.chaletBlue,
+        child: Center(
+          child: Icon(
+            Icons.add,
+            size: 40.0,
+            color: Palette.backgroundWhite,
+          ),
+        ),
+        shape: CircleBorder(),
+      ),
+    );
   }
 }
