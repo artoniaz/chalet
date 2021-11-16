@@ -6,6 +6,8 @@ import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -19,14 +21,15 @@ class ChaletList extends StatefulWidget {
 class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMixin<ChaletList> {
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   List<ChaletModel> chaletList = [];
+  late LatLng _userLocation;
 
-  void refetchData() {
-    getInitData(false);
-    _refreshController.refreshCompleted();
-  }
+  void _sortChaletsByRatingDesc(List<ChaletModel> chalets) => chalets.sort((a, b) => b.rating.compareTo(a.rating));
 
   void getInitData(bool listen) async {
     List<ChaletModel> chalets = Provider.of<List<ChaletModel>>(context, listen: listen);
+    _userLocation = context.read<LatLng>();
+
+    _sortChaletsByRatingDesc(chalets);
     setState(() {
       chaletList = chalets;
     });
@@ -57,41 +60,54 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
         backgroundColor: Palette.chaletBlue,
         elevation: 2.0,
       ),
-      body: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        onRefresh: refetchData,
-        child: CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: EdgeInsets.fromLTRB(
-                Dimentions.verticalPadding,
-                Dimentions.large + 45,
-                Dimentions.verticalPadding,
-                Dimentions.verticalPadding,
-              ),
-              sliver: SliverToBoxAdapter(
-                child: Text(
-                  'Najwyżej oceniane',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.ivoryBlack),
-                ),
+      body: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(
+              Dimentions.verticalPadding,
+              Dimentions.large + 55,
+              Dimentions.verticalPadding,
+              Dimentions.small,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Najwyżej oceniane',
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          color: Palette.ivoryBlack,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  Divider(),
+                ],
               ),
             ),
-            SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
-                sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                  (context, index) => GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, RoutesDefinitions.CHALET_DETAILS,
-                        arguments: ChaletDetailsArgs(chalet: chaletList[index])),
-                    child: ChaletPreviewContainer(
-                      chalet: chaletList[index],
-                    ),
+          ),
+          SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
+              sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                (context, index) => GestureDetector(
+                  onTap: () => Navigator.push(
+                      context,
+                      PageTransition(
+                        child: Provider<LatLng>(
+                          create: (context) => _userLocation,
+                          child: ChaletDetails(
+                            chalet: chaletList[index],
+                          ),
+                        ),
+                        type: PageTransitionType.rightToLeft,
+                      )),
+                  child: ChaletPreviewContainer(
+                    chalet: chaletList[index],
                   ),
-                  childCount: chaletList.length,
-                ))),
-          ],
-        ),
+                ),
+                childCount: chaletList.length,
+              ))),
+        ],
       ),
     );
   }

@@ -1,11 +1,14 @@
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/chalet_model.dart';
+import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ChaletCard extends StatefulWidget {
   final ChaletModel? chalet;
@@ -26,6 +29,15 @@ class ChaletCard extends StatefulWidget {
 
 class _ChaletCardState extends State<ChaletCard> {
   bool _isReviewsActive = false;
+  String _distanceToChalet = '';
+
+  void _getDistanceToChalet() {
+    LatLng _userLocation = context.read<LatLng>();
+    LatLng chaletLatLng = getLatLngFromGeoPoint(widget.chalet!.position['geopoint']);
+    double distance = GeolocatorPlatform.instance.distanceBetween(
+        _userLocation.latitude, _userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+    setState(() => _distanceToChalet = distance.toStringAsFixed(1));
+  }
 
   void scrollReviewList(GlobalKey itemKey) async {
     await Scrollable.ensureVisible(
@@ -47,8 +59,14 @@ class _ChaletCardState extends State<ChaletCard> {
   }
 
   @override
+  void initState() {
+    if (widget.chalet != null) _getDistanceToChalet();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final chaletConvenienceWidth = (MediaQuery.of(context).size.width - 2 * Dimentions.big - 2 * Dimentions.medium) / 3;
+    final chaletConvenienceWidth = (MediaQuery.of(context).size.width - 2 * Dimentions.big - 3 * Dimentions.medium) / 4;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -82,6 +100,7 @@ class _ChaletCardState extends State<ChaletCard> {
                           size: 16.0,
                           color: Palette.chaletBlue,
                         ),
+                      Text('Odległość $_distanceToChalet m'),
                     ],
                   ),
                 ),
@@ -102,6 +121,17 @@ class _ChaletCardState extends State<ChaletCard> {
                   '(${widget.chalet!.numberRating} ocen)',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
+              ],
+            ),
+            Divider(),
+            VerticalSizedBox16(),
+            Row(
+              children: [
+                Icon(Icons.location_on, color: Colors.grey),
+                Text(
+                  widget.chalet!.venueDescription,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey),
+                )
               ],
             ),
             if (widget.isGalleryEnabled)
@@ -126,6 +156,13 @@ class _ChaletCardState extends State<ChaletCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ChaletConvenienceIcon(
+                  convenienceType: ConveniencesTypes.is24,
+                  width: chaletConvenienceWidth,
+                  size: 36.0,
+                  iconColor: widget.chalet!.is24 ? Palette.confirmGreen : Palette.errorRed,
+                ),
+                HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.paper,
                   convenienceScore: widget.chalet!.paper,
@@ -149,61 +186,39 @@ class _ChaletCardState extends State<ChaletCard> {
               ],
             ),
             VerticalSizedBox16(),
-            Text(
-              'Dokładny opis jak trafić',
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            VerticalSizedBox8(),
-            Text(
-              widget.chalet!.description!,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
+            DescriptionCard(title: 'Dokładny opis jak trafić', description: widget.chalet!.descriptionHowToGet),
             VerticalSizedBox16(),
-            Text(
-              'Opis',
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            VerticalSizedBox8(),
-            Text(
-              widget.chalet!.description!,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            VerticalSizedBox16(),
-            if (widget.isMapEnabled)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Mapa',
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                  VerticalSizedBox8(),
-                  // Container(
-                  //   width: double.infinity,
-                  //   height: 200.0,
-                  //   child: GoogleMap(
-                  //       initialCameraPosition: CameraPosition(
-                  //           target: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']), zoom: 15.0),
-                  //       markers: <Marker>{
-                  //         Marker(
-                  //           markerId: MarkerId(widget.chalet!.id),
-                  //           position: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']),
-                  //           infoWindow: InfoWindow(
-                  //             title: '${widget.chalet?.name} ${widget.chalet?.id}',
-                  //             snippet: widget.chalet?.rating.toString(),
-                  //           ),
-                  //         )
-                  //       }),
-                  // ),
-                ],
-              ),
-            VerticalSizedBox16(),
+            // if (widget.isMapEnabled)
+            //   Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text(
+            //         'Mapa',
+            //         style: Theme.of(context).textTheme.headline6!.copyWith(
+            //               fontWeight: FontWeight.w700,
+            //             ),
+            //       ),
+            //       VerticalSizedBox8(),
+            // Container(
+            //   width: double.infinity,
+            //   height: 200.0,
+            //   child: GoogleMap(
+            //       initialCameraPosition: CameraPosition(
+            //           target: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']), zoom: 15.0),
+            //       markers: <Marker>{
+            //         Marker(
+            //           markerId: MarkerId(widget.chalet!.id),
+            //           position: getLatLngFromGeoPoint(widget.chalet?.position['geopoint']),
+            //           infoWindow: InfoWindow(
+            //             title: '${widget.chalet?.name} ${widget.chalet?.id}',
+            //             snippet: widget.chalet?.rating.toString(),
+            //           ),
+            //         )
+            //       }),
+            // ),
+            //   ],
+            // ),
+            Divider(),
             if (!_isReviewsActive)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
