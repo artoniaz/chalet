@@ -8,8 +8,10 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class ChaletDetails extends StatefulWidget {
+  final ChaletModel chalet;
   const ChaletDetails({
     Key? key,
+    required this.chalet,
   }) : super(key: key);
 
   @override
@@ -17,15 +19,7 @@ class ChaletDetails extends StatefulWidget {
 }
 
 class _ChaletDetailsState extends State<ChaletDetails> {
-  ChaletModel? _chalet;
   ScrollController _controller = ScrollController();
-
-  @override
-  void didChangeDependencies() {
-    final args = ModalRoute.of(context)!.settings.arguments as ChaletDetailsArgs;
-    setState(() => _chalet = args.chalet);
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +28,11 @@ class _ChaletDetailsState extends State<ChaletDetails> {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          CustomAppBars.customImageSliderSliverAppBar(_chalet!, _pictureHeight),
+          CustomAppBars.customImageSliderSliverAppBar(widget.chalet, _pictureHeight),
           SliverToBoxAdapter(
             child: ChaletCard(
               controller: _controller,
-              chalet: _chalet,
+              chalet: widget.chalet,
               isMapEnabled: true,
               isGalleryEnabled: false,
             ),

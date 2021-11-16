@@ -39,4 +39,7 @@ class GeolocationService extends ChangeNotifier {
       throw 'Nie udało się znaleźć lokalizacji na podstawie podanego adresu';
     }
   }
+
+  double getDistanceBetweenPoints(LatLng userLatLng, LatLng chaletLatLng) =>
+      geo.distanceBetween(userLatLng.latitude, userLatLng.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
 }

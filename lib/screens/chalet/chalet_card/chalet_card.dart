@@ -6,7 +6,9 @@ import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ChaletCard extends StatefulWidget {
   final ChaletModel? chalet;
@@ -27,6 +29,15 @@ class ChaletCard extends StatefulWidget {
 
 class _ChaletCardState extends State<ChaletCard> {
   bool _isReviewsActive = false;
+  String _distanceToChalet = '';
+
+  void _getDistanceToChalet() {
+    LatLng _userLocation = context.read<LatLng>();
+    LatLng chaletLatLng = getLatLngFromGeoPoint(widget.chalet!.position['geopoint']);
+    double distance = GeolocatorPlatform.instance.distanceBetween(
+        _userLocation.latitude, _userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+    setState(() => _distanceToChalet = distance.toStringAsFixed(1));
+  }
 
   void scrollReviewList(GlobalKey itemKey) async {
     await Scrollable.ensureVisible(
@@ -45,6 +56,12 @@ class _ChaletCardState extends State<ChaletCard> {
       setState(() => _isReviewsActive = false);
     }
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void initState() {
+    if (widget.chalet != null) _getDistanceToChalet();
+    super.initState();
   }
 
   @override
@@ -83,6 +100,7 @@ class _ChaletCardState extends State<ChaletCard> {
                           size: 16.0,
                           color: Palette.chaletBlue,
                         ),
+                      Text('Odległość $_distanceToChalet m'),
                     ],
                   ),
                 ),
