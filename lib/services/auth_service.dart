@@ -42,9 +42,11 @@ class AuthService {
   }
 
   //register with email and password
-  Future<void> registerWithEmailAndPassword(String email, String password) async {
+  Future<void> registerWithEmailAndPassword(String email, String password, String nick) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password).then((user) {
+        user.user?.updateDisplayName(nick);
+      });
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
