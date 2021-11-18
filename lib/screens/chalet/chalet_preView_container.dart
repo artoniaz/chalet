@@ -44,6 +44,7 @@ class ChaletPreviewContainer extends StatelessWidget {
             right: Dimentions.medium,
             bottom: Dimentions.large,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   '${distanceToChalet.toStringAsFixed(1)} m',

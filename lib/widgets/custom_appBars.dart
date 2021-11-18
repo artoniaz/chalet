@@ -34,11 +34,7 @@ class CustomAppBars {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leadingWidth: 72.0,
-        leading: CustomRoundedIconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          iconData: Icons.arrow_back,
-          iconSize: 32.0,
-        ),
+        leading: CustomBackLeadingButton(),
       );
 
   static SliverAppBar customImageSliderSliverAppBar(ChaletModel chalet, double pictureHeight) => SliverAppBar(
