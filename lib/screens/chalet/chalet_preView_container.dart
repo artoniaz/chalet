@@ -4,11 +4,17 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChaletPreviewContainer extends StatelessWidget {
   final ChaletModel chalet;
+  final double distanceToChalet;
 
-  const ChaletPreviewContainer({Key? key, required this.chalet}) : super(key: key);
+  const ChaletPreviewContainer({
+    Key? key,
+    required this.chalet,
+    required this.distanceToChalet,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +43,17 @@ class ChaletPreviewContainer extends StatelessWidget {
         Positioned(
             right: Dimentions.medium,
             bottom: Dimentions.large,
-            child: RatingIconLabel(
-              ratingLabel: chalet.rating,
+            child: Row(
+              children: [
+                Text(
+                  '${distanceToChalet.toStringAsFixed(1)} m',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
+                ),
+                HorizontalSizedBox8(),
+                RatingIconLabel(
+                  ratingLabel: chalet.rating,
+                ),
+              ],
             ))
       ],
     );

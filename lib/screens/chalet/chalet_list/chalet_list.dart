@@ -1,3 +1,4 @@
+import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/config/routes/routes_definitions.dart';
 import 'package:chalet/models/index.dart';
@@ -6,6 +7,7 @@ import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -89,13 +91,19 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
               padding: EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
               sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                (context, index) => GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, RoutesDefinitions.CHALET_DETAILS,
-                      arguments: ChaletDetailsArgs(chalet: chaletList[index])),
-                  child: ChaletPreviewContainer(
-                    chalet: chaletList[index],
-                  ),
-                ),
+                (context, index) {
+                  LatLng chaletLatLng = getLatLngFromGeoPoint(chaletList[index].position['geopoint']);
+                  double distance = GeolocatorPlatform.instance.distanceBetween(
+                      _userLocation.latitude, _userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+                  return GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, RoutesDefinitions.CHALET_DETAILS,
+                        arguments: ChaletDetailsArgs(chalet: chaletList[index])),
+                    child: ChaletPreviewContainer(
+                      chalet: chaletList[index],
+                      distanceToChalet: distance,
+                    ),
+                  );
+                },
                 childCount: chaletList.length,
               ))),
         ],
