@@ -195,6 +195,21 @@ class _ChaletCardState extends State<ChaletCard> {
             VerticalSizedBox16(),
             DescriptionCard(title: 'Dokładny opis jak trafić', description: widget.chalet!.descriptionHowToGet),
             VerticalSizedBox16(),
+            Divider(),
+            VerticalSizedBox16(),
+            RichText(
+              text: TextSpan(
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                  children: [
+                    TextSpan(
+                      text: 'Dodany przez: ',
+                    ),
+                    TextSpan(text: widget.chalet!.creator, style: TextStyle(color: Palette.goldLeaf)),
+                  ]),
+            ),
+            VerticalSizedBox16(),
             // if (widget.isMapEnabled)
             //   Column(
             //     crossAxisAlignment: CrossAxisAlignment.start,

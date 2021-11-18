@@ -53,6 +53,7 @@ class _AddChaletState extends State<AddChalet> {
     position: GeoFirePoint(0, 0),
     isVerified: false,
     is24: false,
+    creator: '',
   );
 
   String? _chaletLocalizationAddress;
@@ -131,6 +132,8 @@ class _AddChaletState extends State<AddChalet> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel? user = Provider.of<UserModel?>(context);
+    if (user != null) _chalet.creator = user.displayName ?? 'anonimowy użytkownik';
     return Scaffold(
       body: SingleChildScrollView(
         child: GestureDetector(

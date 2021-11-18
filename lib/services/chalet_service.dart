@@ -54,6 +54,7 @@ class ChaletService {
         position: chalet.position.data,
         isVerified: chalet.isVerified,
         is24: chalet.is24,
+        creator: chalet.creator,
       ).toJson());
       return res.id;
     } catch (e) {
