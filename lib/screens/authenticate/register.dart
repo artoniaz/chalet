@@ -16,6 +16,7 @@ class _RegisterState extends State<Register> {
   final AuthService _authService = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  TextEditingController nickController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordRepeatController = TextEditingController();
   String email = '';
@@ -29,7 +30,7 @@ class _RegisterState extends State<Register> {
       email = email.trim();
       passwordController.text = passwordController.text.trim();
       try {
-        await _authService.registerWithEmailAndPassword(email, passwordController.text);
+        await _authService.registerWithEmailAndPassword(email, passwordController.text, nickController.text);
       } catch (e) {
         setState(() {
           passwordController.clear();
@@ -75,6 +76,13 @@ class _RegisterState extends State<Register> {
                             onChanged: (String val) => setState(() => email = val),
                             onEditingComplete: () => node.nextFocus(),
                             keyboardType: TextInputType.emailAddress,
+                          ),
+                          VerticalSizedBox16(),
+                          TextFormField(
+                            decoration: textInputDecoration.copyWith(hintText: 'Pseudonim'),
+                            validator: (val) => val!.length < 3 ? 'Pseudonim musi zawierać minimum 3 znaki' : null,
+                            controller: nickController,
+                            onEditingComplete: () => node.nextFocus(),
                           ),
                           VerticalSizedBox16(),
                           TextFormField(

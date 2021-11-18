@@ -9,3 +9,5 @@ bool compareLatLng(LatLng a, LatLng b) =>
 GeoFirePoint getGeoFirePointFromLatLng(LatLng pos) => GeoFirePoint(pos.latitude, pos.longitude);
 
 LatLng getLatLngFromGeoPoint(GeoPoint geoPoint) => LatLng(geoPoint.latitude, geoPoint.longitude);
+
+LatLng getLatLngFromGeoFirePoint(GeoFirePoint geoPoint) => LatLng(geoPoint.latitude, geoPoint.longitude);

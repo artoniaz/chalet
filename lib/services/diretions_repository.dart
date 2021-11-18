@@ -22,7 +22,7 @@ class DirectionsRepository {
       });
       return Directions.fromMap(response.data);
     } catch (e) {
-      throw e;
+      throw 'Nie udało się wyznaczyć trasy do tego Szaletu';
     }
   }
 }
