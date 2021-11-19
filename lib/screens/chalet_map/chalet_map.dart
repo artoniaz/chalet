@@ -16,9 +16,11 @@ import 'package:collection/collection.dart';
 
 class ChaletMap extends StatefulWidget {
   final Function(LatLng) updateQuery;
+  final BitmapDescriptor? chaletLocationIcon;
   const ChaletMap({
     Key? key,
     required this.updateQuery,
+    this.chaletLocationIcon,
   }) : super(key: key);
 
   @override
@@ -31,6 +33,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   late LatLng _userLocation;
 
   List<Marker> markers = [];
+  final markerKey = GlobalKey();
+
   bool _isPanelDraggagle = true;
   ChaletModel? _activeChalet;
 
@@ -40,13 +44,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   double _centerButtonHeight = _centerButtonPrimaryHeight;
   double _navigationHeight = _navButtonPrimaryHeight;
   Directions? _directionsInfo;
-  BitmapDescriptor? _markerIcon;
 
   bool _isSearchThisAreaButtonActive = false;
-
-  Future _setMarkerIcon() async {
-    _markerIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/poo/poo_happy.png');
-  }
 
   void _handleNavigationButton() async {
     try {
@@ -89,7 +88,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void _addMarker(ChaletModel chalet) {
     var _marker = Marker(
         markerId: MarkerId(chalet.id),
-        icon: _markerIcon ?? BitmapDescriptor.defaultMarker,
+        icon: widget.chaletLocationIcon ?? BitmapDescriptor.defaultMarker,
         position: getLatLngFromGeoPoint(chalet.position['geopoint']),
         infoWindow: InfoWindow(
           title: '${chalet.name} ${chalet.id}',
@@ -128,7 +127,6 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     LatLng _location = context.read<LatLng>();
     _cameraCenterPosition = _location;
     _userLocation = _location;
-    await _setMarkerIcon();
   }
 
   @override
