@@ -7,10 +7,7 @@ import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:geolocator/geolocator.dart';
-=======
->>>>>>> master
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -94,7 +91,6 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
               padding: EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
               sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-<<<<<<< HEAD
                 (context, index) {
                   LatLng chaletLatLng = getLatLngFromGeoPoint(chaletList[index].position['geopoint']);
                   double distance = GeolocatorPlatform.instance.distanceBetween(
@@ -108,24 +104,6 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
                     ),
                   );
                 },
-=======
-                (context, index) => GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      PageTransition(
-                        child: Provider<LatLng>(
-                          create: (context) => _userLocation,
-                          child: ChaletDetails(
-                            chalet: chaletList[index],
-                          ),
-                        ),
-                        type: PageTransitionType.rightToLeft,
-                      )),
-                  child: ChaletPreviewContainer(
-                    chalet: chaletList[index],
-                  ),
-                ),
->>>>>>> master
                 childCount: chaletList.length,
               ))),
         ],
