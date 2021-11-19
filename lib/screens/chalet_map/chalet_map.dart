@@ -40,8 +40,13 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   double _centerButtonHeight = _centerButtonPrimaryHeight;
   double _navigationHeight = _navButtonPrimaryHeight;
   Directions? _directionsInfo;
+  BitmapDescriptor? _markerIcon;
 
   bool _isSearchThisAreaButtonActive = false;
+
+  Future _setMarkerIcon() async {
+    _markerIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/poo/poo_happy.png');
+  }
 
   void _handleNavigationButton() async {
     try {
@@ -84,6 +89,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void _addMarker(ChaletModel chalet) {
     var _marker = Marker(
         markerId: MarkerId(chalet.id),
+        icon: _markerIcon ?? BitmapDescriptor.defaultMarker,
         position: getLatLngFromGeoPoint(chalet.position['geopoint']),
         infoWindow: InfoWindow(
           title: '${chalet.name} ${chalet.id}',
@@ -118,10 +124,11 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     chaletlist.forEach((chalet) => _addMarker(chalet));
   }
 
-  void getInitData() {
+  void getInitData() async {
     LatLng _location = context.read<LatLng>();
     _cameraCenterPosition = _location;
     _userLocation = _location;
+    await _setMarkerIcon();
   }
 
   @override

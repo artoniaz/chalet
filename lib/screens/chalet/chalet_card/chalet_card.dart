@@ -1,4 +1,5 @@
 import 'package:chalet/config/functions/lat_lng_functions.dart';
+import 'package:chalet/config/index.dart';
 import 'package:chalet/models/chalet_model.dart';
 import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
@@ -245,7 +246,11 @@ class _ChaletCardState extends State<ChaletCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomElevatedButton(label: 'Pokaż oceny', onPressed: () => setState(() => _isReviewsActive = true)),
+                  CustomElevatedButton(
+                    label: 'Pokaż oceny',
+                    onPressed: () => setState(() => _isReviewsActive = true),
+                    backgroundColor: Palette.goldLeaf,
+                  ),
                 ],
               ),
             if (_isReviewsActive)
@@ -262,8 +267,14 @@ class _ChaletCardState extends State<ChaletCard> {
                     chaletId: widget.chalet!.id,
                     scrollReviewList: scrollReviewList,
                   ),
+                  VerticalSizedBox24(),
                 ],
               ),
+            Divider(),
+            CustomElevatedButton(
+              label: 'Zgłoś problem',
+              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.SHARE_PROBLEM),
+            ),
           ],
         ),
       ),
