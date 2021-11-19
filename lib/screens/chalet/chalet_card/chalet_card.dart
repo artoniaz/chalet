@@ -1,4 +1,5 @@
 import 'package:chalet/config/functions/lat_lng_functions.dart';
+import 'package:chalet/config/index.dart';
 import 'package:chalet/models/chalet_model.dart';
 import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
@@ -6,6 +7,10 @@ import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+import 'package:geoflutterfire/geoflutterfire.dart';
+=======
+>>>>>>> master
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -15,12 +20,14 @@ class ChaletCard extends StatefulWidget {
   final ScrollController controller;
   final bool isMapEnabled;
   final bool isGalleryEnabled;
+  final LatLng userLocation;
   const ChaletCard({
     Key? key,
     required this.controller,
     required this.chalet,
     required this.isMapEnabled,
     required this.isGalleryEnabled,
+    required this.userLocation,
   }) : super(key: key);
 
   @override
@@ -32,10 +39,21 @@ class _ChaletCardState extends State<ChaletCard> {
   String _distanceToChalet = '';
 
   void _getDistanceToChalet() {
+<<<<<<< HEAD
+    late LatLng chaletLatLng;
+    if (widget.chalet!.position.runtimeType == GeoFirePoint) {
+      chaletLatLng = getLatLngFromGeoFirePoint(widget.chalet!.position);
+    } else {
+      chaletLatLng = getLatLngFromGeoPoint(widget.chalet!.position['geopoint']);
+    }
+    double distance = GeolocatorPlatform.instance.distanceBetween(
+        widget.userLocation.latitude, widget.userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+=======
     LatLng _userLocation = context.read<LatLng>();
     LatLng chaletLatLng = getLatLngFromGeoPoint(widget.chalet!.position['geopoint']);
     double distance = GeolocatorPlatform.instance.distanceBetween(
         _userLocation.latitude, _userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+>>>>>>> master
     setState(() => _distanceToChalet = distance.toStringAsFixed(1));
   }
 
@@ -187,6 +205,24 @@ class _ChaletCardState extends State<ChaletCard> {
             ),
             VerticalSizedBox16(),
             DescriptionCard(title: 'Dokładny opis jak trafić', description: widget.chalet!.descriptionHowToGet),
+<<<<<<< HEAD
+            VerticalSizedBox16(),
+            Divider(),
+            VerticalSizedBox16(),
+            RichText(
+              text: TextSpan(
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                  children: [
+                    TextSpan(
+                      text: 'Dodany przez: ',
+                    ),
+                    TextSpan(text: widget.chalet!.creator, style: TextStyle(color: Palette.goldLeaf)),
+                  ]),
+            ),
+=======
+>>>>>>> master
             VerticalSizedBox16(),
             // if (widget.isMapEnabled)
             //   Column(
@@ -223,7 +259,11 @@ class _ChaletCardState extends State<ChaletCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomElevatedButton(label: 'Pokaż oceny', onPressed: () => setState(() => _isReviewsActive = true)),
+                  CustomElevatedButton(
+                    label: 'Pokaż oceny',
+                    onPressed: () => setState(() => _isReviewsActive = true),
+                    backgroundColor: Palette.goldLeaf,
+                  ),
                 ],
               ),
             if (_isReviewsActive)
@@ -240,8 +280,18 @@ class _ChaletCardState extends State<ChaletCard> {
                     chaletId: widget.chalet!.id,
                     scrollReviewList: scrollReviewList,
                   ),
+                  VerticalSizedBox24(),
                 ],
               ),
+            Divider(),
+            CustomElevatedButton(
+              label: 'Zgłoś problem',
+              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.SHARE_PROBLEM,
+                  arguments: ReportProblemArgs(
+                    chaletId: widget.chalet!.id,
+                    chaletName: widget.chalet!.name,
+                  )),
+            ),
           ],
         ),
       ),

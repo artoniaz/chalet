@@ -16,9 +16,11 @@ import 'package:collection/collection.dart';
 
 class ChaletMap extends StatefulWidget {
   final Function(LatLng) updateQuery;
+  final BitmapDescriptor? chaletLocationIcon;
   const ChaletMap({
     Key? key,
     required this.updateQuery,
+    this.chaletLocationIcon,
   }) : super(key: key);
 
   @override
@@ -28,8 +30,11 @@ class ChaletMap extends StatefulWidget {
 class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixin<ChaletMap> {
   late LatLng _cameraCenterPosition;
   late GoogleMapController _googleMapController;
+  late LatLng _userLocation;
 
   List<Marker> markers = [];
+  final markerKey = GlobalKey();
+
   bool _isPanelDraggagle = true;
   ChaletModel? _activeChalet;
 
@@ -83,6 +88,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void _addMarker(ChaletModel chalet) {
     var _marker = Marker(
         markerId: MarkerId(chalet.id),
+        icon: widget.chaletLocationIcon ?? BitmapDescriptor.defaultMarker,
         position: getLatLngFromGeoPoint(chalet.position['geopoint']),
         infoWindow: InfoWindow(
           title: '${chalet.name} ${chalet.id}',
@@ -117,9 +123,10 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     chaletlist.forEach((chalet) => _addMarker(chalet));
   }
 
-  void getInitData() {
+  void getInitData() async {
     LatLng _location = context.read<LatLng>();
     _cameraCenterPosition = _location;
+    _userLocation = _location;
   }
 
   @override
@@ -169,6 +176,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                     chalet: _activeChalet,
                     isMapEnabled: false,
                     isGalleryEnabled: true,
+                    userLocation: _userLocation,
                   ),
             onPanelSlide: (pos) {
               final panelMaxScrollExtend = _panelHeightOpen - MediaQuery.of(context).size.height * 0.2;

@@ -18,7 +18,7 @@ class ChaletService {
     return subject.switchMap((center) {
       return geo
           .collection(collectionRef: chaletCollection)
-          .within(center: getGeoFirePointFromLatLng(center), radius: 50.0, field: 'position', strictMode: true);
+          .within(center: getGeoFirePointFromLatLng(center), radius: 2.0, field: 'position', strictMode: true);
     }).map((documentSnapshotList) => documentSnapshotList
         .map((documentSnapshot) => ChaletModel.fromJson(documentSnapshot.data(), documentSnapshot.id))
         .toList());
@@ -54,6 +54,7 @@ class ChaletService {
         position: chalet.position.data,
         isVerified: chalet.isVerified,
         is24: chalet.is24,
+        creator: chalet.creator,
       ).toJson());
       return res.id;
     } catch (e) {

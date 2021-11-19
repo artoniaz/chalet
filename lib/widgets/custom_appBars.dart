@@ -5,11 +5,12 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBars {
-  static AppBar customAppBarDark(
+  static AppBar customAppBarChaletBlue(
     BuildContext context,
     String label,
   ) =>
       AppBar(
+        backgroundColor: Palette.chaletBlue,
         title: Text(
           label,
           style: Theme.of(context).textTheme.headline3!.copyWith(color: Palette.backgroundWhite),
@@ -34,11 +35,7 @@ class CustomAppBars {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leadingWidth: 72.0,
-        leading: CustomRoundedIconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          iconData: Icons.arrow_back,
-          iconSize: 32.0,
-        ),
+        leading: CustomBackLeadingButton(),
       );
 
   static SliverAppBar customImageSliderSliverAppBar(ChaletModel chalet, double pictureHeight) => SliverAppBar(

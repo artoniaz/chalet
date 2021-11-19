@@ -1,5 +1,4 @@
 import 'package:chalet/models/index.dart';
-import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/dimentions.dart';
@@ -22,8 +21,18 @@ class ChaletPageSelection extends StatefulWidget {
 class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
+  BitmapDescriptor? _chaletLocationIcon;
 
   bool isScreenLoading = true;
+
+  Future<void> _getBitmapDescriptor() async {
+    // final byteData = await rootBundle.load('assets/poo/poo_happy.png');
+    // Uint8List image = byteData.buffer.asUint8List();
+    // final descriptor = await BitmapDescriptor.fromBytes(image);
+    final descriptor =
+        await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), 'assets/poo/chalet_icon.png');
+    _chaletLocationIcon = descriptor;
+  }
 
   void _updateCameraPositionBehaviourSubject(LatLng value) {
     setState(() {
@@ -34,6 +43,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   void _getInitData() async {
     LatLng _userLocation = context.read<LatLng>();
     _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(_userLocation);
+    await _getBitmapDescriptor();
     setState(() {
       isScreenLoading = false;
     });
@@ -64,6 +74,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
                     // ChaletList(),
                     ChaletMap(
                       updateQuery: _updateCameraPositionBehaviourSubject,
+                      chaletLocationIcon: _chaletLocationIcon,
                     ),
                   ],
                 ),

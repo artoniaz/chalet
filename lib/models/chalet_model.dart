@@ -17,6 +17,7 @@ class ChaletModel {
   dynamic position;
   bool isVerified;
   bool is24;
+  String creator;
   ChaletModel({
     required this.id,
     required this.name,
@@ -33,6 +34,7 @@ class ChaletModel {
     required this.isVerified,
     required this.is24,
     required this.venueDescription,
+    required this.creator,
   });
 
   factory ChaletModel.fromJson(Object? json, String id) {
@@ -44,6 +46,7 @@ class ChaletModel {
         numberDetailedRating: (json as dynamic)['numberDetailedRating'] ?? 0,
         descriptionHowToGet: (json as dynamic)['descriptionHowToGet']?.toString() ?? '',
         venueDescription: (json as dynamic)['venueDescription']?.toString() ?? '',
+        creator: (json as dynamic)['creator']?.toString() ?? '',
         clean: (json as dynamic)['clean']?.toDouble() ?? 0.0,
         paper: (json as dynamic)['paper']?.toDouble() ?? 0.0,
         privacy: (json as dynamic)['privacy']?.toDouble() ?? 0.0,
@@ -76,5 +79,6 @@ class ChaletModel {
         'position': position,
         'isVerified': isVerified,
         'is24': is24,
+        'creator': creator,
       };
 }
