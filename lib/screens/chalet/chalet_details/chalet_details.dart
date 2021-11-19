@@ -11,8 +11,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ChaletDetails extends StatefulWidget {
+  final ChaletModel chalet;
   const ChaletDetails({
     Key? key,
+    required this.chalet,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,7 @@ class ChaletDetails extends StatefulWidget {
 }
 
 class _ChaletDetailsState extends State<ChaletDetails> {
+<<<<<<< HEAD
   ChaletModel? _chalet;
   late LatLng _userLocation;
   bool _isScreenLoading = true;
@@ -73,6 +76,24 @@ class _ChaletDetailsState extends State<ChaletDetails> {
                   ),
                 ),
               ],
+=======
+  ScrollController _controller = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    double _pictureHeight = MediaQuery.of(context).size.height * .5;
+    return Scaffold(
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          CustomAppBars.customImageSliderSliverAppBar(widget.chalet, _pictureHeight),
+          SliverToBoxAdapter(
+            child: ChaletCard(
+              controller: _controller,
+              chalet: widget.chalet,
+              isMapEnabled: true,
+              isGalleryEnabled: false,
+>>>>>>> master
             ),
           );
   }

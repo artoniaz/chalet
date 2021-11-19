@@ -7,7 +7,10 @@ import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:geoflutterfire/geoflutterfire.dart';
+=======
+>>>>>>> master
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +39,7 @@ class _ChaletCardState extends State<ChaletCard> {
   String _distanceToChalet = '';
 
   void _getDistanceToChalet() {
+<<<<<<< HEAD
     late LatLng chaletLatLng;
     if (widget.chalet!.position.runtimeType == GeoFirePoint) {
       chaletLatLng = getLatLngFromGeoFirePoint(widget.chalet!.position);
@@ -44,6 +48,12 @@ class _ChaletCardState extends State<ChaletCard> {
     }
     double distance = GeolocatorPlatform.instance.distanceBetween(
         widget.userLocation.latitude, widget.userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+=======
+    LatLng _userLocation = context.read<LatLng>();
+    LatLng chaletLatLng = getLatLngFromGeoPoint(widget.chalet!.position['geopoint']);
+    double distance = GeolocatorPlatform.instance.distanceBetween(
+        _userLocation.latitude, _userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+>>>>>>> master
     setState(() => _distanceToChalet = distance.toStringAsFixed(1));
   }
 
@@ -195,6 +205,7 @@ class _ChaletCardState extends State<ChaletCard> {
             ),
             VerticalSizedBox16(),
             DescriptionCard(title: 'Dokładny opis jak trafić', description: widget.chalet!.descriptionHowToGet),
+<<<<<<< HEAD
             VerticalSizedBox16(),
             Divider(),
             VerticalSizedBox16(),
@@ -210,6 +221,8 @@ class _ChaletCardState extends State<ChaletCard> {
                     TextSpan(text: widget.chalet!.creator, style: TextStyle(color: Palette.goldLeaf)),
                   ]),
             ),
+=======
+>>>>>>> master
             VerticalSizedBox16(),
             // if (widget.isMapEnabled)
             //   Column(
