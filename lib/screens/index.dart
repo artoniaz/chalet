@@ -32,4 +32,4 @@ export 'package:chalet/screens/review/review_container.dart';
 export 'package:chalet/screens/my_profile/profile_card.dart';
 export 'package:chalet/screens/my_profile/remove_account_dialog.dart';
 
-export 'package:chalet/screens/problem/share_problem.dart';
+export 'package:chalet/screens/problem/report_problem.dart';

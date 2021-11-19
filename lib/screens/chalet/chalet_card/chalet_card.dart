@@ -273,7 +273,11 @@ class _ChaletCardState extends State<ChaletCard> {
             Divider(),
             CustomElevatedButton(
               label: 'Zgłoś problem',
-              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.SHARE_PROBLEM),
+              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.SHARE_PROBLEM,
+                  arguments: ReportProblemArgs(
+                    chaletId: widget.chalet!.id,
+                    chaletName: widget.chalet!.name,
+                  )),
             ),
           ],
         ),

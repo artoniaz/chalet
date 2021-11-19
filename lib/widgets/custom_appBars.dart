@@ -5,11 +5,12 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBars {
-  static AppBar customAppBarDark(
+  static AppBar customAppBarChaletBlue(
     BuildContext context,
     String label,
   ) =>
       AppBar(
+        backgroundColor: Palette.chaletBlue,
         title: Text(
           label,
           style: Theme.of(context).textTheme.headline3!.copyWith(color: Palette.backgroundWhite),

@@ -10,7 +10,7 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute() => (settings) {
         case RoutesDefinitions.ADD_CHALET:
           return PageTransition(child: AddChaletRoot(), type: PageTransitionType.fade, settings: settings);
         case RoutesDefinitions.SHARE_PROBLEM:
-          return PageTransition(child: ShareProblem(), type: PageTransitionType.rightToLeft, settings: settings);
+          return PageTransition(child: ReportProblem(), type: PageTransitionType.rightToLeft, settings: settings);
         default:
           return null;
       }
