@@ -1,6 +1,7 @@
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
+import 'package:chalet/screens/my_profile/change_password.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
@@ -95,6 +96,11 @@ class _ProfileCardState extends State<ProfileCard> {
                                   CustomElevatedButton(
                                     label: 'Edytuj dane',
                                     onPressed: () => _panelController.open(),
+                                  ),
+                                  CustomElevatedButton(
+                                    label: 'Zmień hasło',
+                                    onPressed: () => Navigator.push(
+                                        context, MaterialPageRoute(builder: (context) => ChangePassword())),
                                   ),
                                   CustomTextButton(
                                     label: 'Wyloguj',

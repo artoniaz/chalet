@@ -81,7 +81,7 @@ class AuthService {
 
   Future<void> sendPasswordResetEmail(String email) async {
     try {
-      _firebaseAuth.sendPasswordResetEmail(email: email);
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
     } catch (e) {
       throw 'Nie udało się zrestartować hasła';
     }
@@ -89,10 +89,21 @@ class AuthService {
 
   Future<void> editUserData(String displayName) async {
     try {
-      await _firebaseAuth.currentUser!.updateProfile(displayName: displayName);
+      await _firebaseAuth.currentUser!.updateDisplayName(displayName);
     } catch (e) {
       print(e);
       throw 'Nie udało się zaktualizować danych użytkownika';
+    }
+  }
+
+  Future<void> changeUserPassword(String userEmail, String oldPassword, String newPassword) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(email: userEmail, password: oldPassword);
+
+      await _firebaseAuth.currentUser!.updatePassword(newPassword);
+    } catch (e) {
+      print(e);
+      throw 'Nie udało się zaktualizować hasła';
     }
   }
 
