@@ -102,6 +102,11 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
                     },
                     childCount: chaletList.length,
                   ))),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 72.0,
+                ),
+              )
             ],
           ),
           Positioned(
