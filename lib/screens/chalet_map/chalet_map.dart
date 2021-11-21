@@ -1,4 +1,5 @@
 import 'package:chalet/config/functions/lat_lng_functions.dart';
+import 'package:chalet/config/index.dart';
 import 'package:chalet/models/directions_model.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
@@ -39,10 +40,10 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   ChaletModel? _activeChalet;
 
   final _panelController = PanelController();
-  static const _centerButtonPrimaryHeight = Dimentions.medium;
-  static const _navButtonPrimaryHeight = 80.0;
-  double _centerButtonHeight = _centerButtonPrimaryHeight;
-  double _navigationHeight = _navButtonPrimaryHeight;
+  static const _addButtonPrimaryHeight = Dimentions.medium;
+  static const _centerButtonPrimaryHeight = 80.0;
+  double _addButtonHeight = _addButtonPrimaryHeight + 72.0;
+  double _centerButtonHeight = _centerButtonPrimaryHeight + 72.0;
   Directions? _directionsInfo;
 
   bool _isSearchThisAreaButtonActive = false;
@@ -139,6 +140,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void didChangeDependencies() {
     final _chaletlist = Provider.of<List<ChaletModel>>(context);
     _updateMarkers(_chaletlist);
+    // if (_chaletlist.isEmpty) EasyLoading.showInfo('Brak szaletów w tej okolicy. Sraj gdzie chcesz');
     super.didChangeDependencies();
   }
 
@@ -180,13 +182,13 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                   ),
             onPanelSlide: (pos) {
               final panelMaxScrollExtend = _panelHeightOpen - MediaQuery.of(context).size.height * 0.2;
-              double btnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight;
-              if (_activeChalet != null) btnHeight += MediaQuery.of(context).size.height * 0.2;
-              double navBtnHeight = pos * panelMaxScrollExtend + _navButtonPrimaryHeight;
-              if (_activeChalet != null) navBtnHeight += MediaQuery.of(context).size.height * 0.2;
+              double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight + 72.0;
+              if (_activeChalet != null) btnHeight += MediaQuery.of(context).size.height * 0.1;
+              double navBtnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight + 72.0;
+              if (_activeChalet != null) navBtnHeight += MediaQuery.of(context).size.height * 0.1;
               setState(() {
-                _centerButtonHeight = btnHeight;
-                _navigationHeight = navBtnHeight;
+                _addButtonHeight = btnHeight;
+                _centerButtonHeight = navBtnHeight;
               });
             },
             body: GoogleMap(
@@ -245,6 +247,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
             right: Dimentions.medium,
             bottom: _centerButtonHeight,
             child: FloatingActionButton(
+              heroTag: 'chaletMapCenterButton',
               backgroundColor: Palette.chaletBlue,
               foregroundColor: Palette.white,
               onPressed: _centerCamera,
@@ -253,12 +256,13 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
           ),
           Positioned(
             right: Dimentions.medium,
-            bottom: _navigationHeight,
+            bottom: _addButtonHeight,
             child: FloatingActionButton(
+              heroTag: 'chaletMapAddChaletButton',
               backgroundColor: Palette.chaletBlue,
               foregroundColor: Palette.white,
-              onPressed: _handleNavigationButton,
-              child: Icon(Icons.navigation),
+              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
+              child: Icon(Icons.add),
             ),
           ),
         ],

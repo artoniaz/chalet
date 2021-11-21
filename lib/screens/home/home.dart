@@ -1,6 +1,7 @@
 import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,7 +21,6 @@ class _HomeState extends State<Home> {
 
   final List<Widget> tabs = [
     ChaletPageSelection(),
-    // ChangeNotifierProvider(create: (context) => ImageFileListModel(), child: AddChalet()),
     ProfileCard(),
   ];
 
@@ -54,6 +54,7 @@ class _HomeState extends State<Home> {
         : Provider<LatLng>(
             create: (context) => _userLocation,
             child: Scaffold(
+              extendBody: true,
               body: IndexedStack(
                 index: _currentIndex,
                 children: tabs,

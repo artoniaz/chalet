@@ -51,7 +51,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
 
   @override
   void initState() {
-    _tabController = new TabController(vsync: this, length: 2, initialIndex: 0);
+    _tabController = new TabController(vsync: this, length: 2, initialIndex: 1);
     _getInitData();
     super.initState();
   }
@@ -70,8 +70,6 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
                   physics: NeverScrollableScrollPhysics(),
                   children: [
                     ChaletList(),
-
-                    // ChaletList(),
                     ChaletMap(
                       updateQuery: _updateCameraPositionBehaviourSubject,
                       chaletLocationIcon: _chaletLocationIcon,

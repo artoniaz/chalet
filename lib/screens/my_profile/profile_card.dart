@@ -1,7 +1,5 @@
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/user_model.dart';
-import 'package:chalet/screens/index.dart';
-import 'package:chalet/screens/my_profile/change_password.dart';
 import 'package:chalet/screens/my_profile/personal_number_dialogs.dart';
 import 'package:chalet/screens/my_profile/profile_drawer.dart';
 import 'package:chalet/services/index.dart';
@@ -109,6 +107,9 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
   void dispose() {
     _personalNumberFocusNode.dispose();
+    _userNameFocusNode.dispose();
+    _userDisplayNameController.dispose();
+    _personalNumberTextController.dispose();
     super.dispose();
   }
 

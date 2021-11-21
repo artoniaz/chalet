@@ -1,19 +1,26 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
+const { Storage } = require('@google-cloud/storage');
+
 admin.initializeApp();
 
 // auth trigger (new user signup)
-exports.newUserSignup = functions.auth.user().onCreate(user => {
-    return admin.firestore().collection('users').doc(user.uid).set({
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-    });
-});
+// correct function, currently not used in the project
+// exports.newUserSignup = functions.auth.user().onCreate(user => {
+//     return admin.firestore().collection('users').doc(user.uid).set({
+//         uid: user.uid,
+//         email: user.email,
+//         displayName: user.displayName,
+//         photoURL: user.photoURL,
+//     });
+// });
 
-exports.userDeleteAccount = functions.auth.user().onDelete((user) => {
-    return admin.firestore().collection('users').doc(user.uid).delete();
+exports.deleteUserProfilePhotoOnUserDelete = functions.auth.user().onDelete((user) => {
+    const storage = new Storage();
+    const filePath = `user_images/${user.uid}`;
+    const bucket = storage.bucket('chalet-e78ab.appspot.com');
+    const file = bucket.file(filePath);
+    return file.delete();
 });
 
 exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/reviews/{chaletId}/chalet_reviews/{reviewId}')
