@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class CustomAvatar extends StatelessWidget {
-  final String photoURL;
+  final String? photoURL;
   const CustomAvatar({
     Key? key,
     required this.photoURL,
@@ -17,12 +17,21 @@ class CustomAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-        child: CustomCachedNetworkImage(
-      itemUrl: photoURL,
-      width: 200,
-      height: 200,
-    ));
+    return photoURL == null
+        ? Container(
+            width: 200,
+            height: 200,
+            child: CircleAvatar(
+              backgroundColor: Palette.chaletBlue,
+            ))
+        : ClipOval(
+            child: photoURL == null
+                ? Container()
+                : CustomCachedNetworkImage(
+                    itemUrl: photoURL ?? '',
+                    width: 200,
+                    height: 200,
+                  ));
   }
 }
 
@@ -52,7 +61,7 @@ class CustomCircleAvatar extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         children: [
           CustomAvatar(
-            photoURL: photoURL!,
+            photoURL: photoURL,
           ),
           Positioned(
             top: 5,
