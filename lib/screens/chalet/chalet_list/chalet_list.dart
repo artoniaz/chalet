@@ -7,6 +7,7 @@ import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:page_transition/page_transition.dart';
@@ -83,6 +84,14 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
                         ),
                   ),
                   Divider(),
+                  if (chaletList.isEmpty)
+                    Text(
+                      'Brak Szaletów w tej okolicy. Sraj gdzie chcesz.',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: Palette.ivoryBlack,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
                 ],
               ),
             ),

@@ -12,12 +12,14 @@ class ImageSliderEditFile extends StatelessWidget {
   final ImageModelFile itemFile;
   final int currentImgIndex;
   final int imageIndex;
+  final bool allowAddMoreImg;
 
   const ImageSliderEditFile({
     Key? key,
     required this.itemFile,
     required this.currentImgIndex,
     required this.imageIndex,
+    required this.allowAddMoreImg,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -33,14 +35,6 @@ class ImageSliderEditFile extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
-            // Positioned(
-            //   right: Dimentions.medium,
-            //   top: Dimentions.medium,
-            //   child: StarIcon(
-            //     isDefault: itemFile.isDefault,
-            //     imageIndex: imageIndex,
-            //   ),
-            // ),
             Positioned(
               left: Dimentions.small,
               bottom: Dimentions.small,
@@ -50,19 +44,20 @@ class ImageSliderEditFile extends StatelessWidget {
                 iconSize: 35.0,
               ),
             ),
-            Positioned(
-              right: Dimentions.small,
-              bottom: Dimentions.small,
-              child: CustomRoundedIconButton(
-                onPressed: () => imageSourceBottomSheet(
-                  context,
-                  handleGalleryImg: imageFileList.getImageGallery,
-                  handleCameraImg: imageFileList.getImageCamera,
+            if (allowAddMoreImg)
+              Positioned(
+                right: Dimentions.small,
+                bottom: Dimentions.small,
+                child: CustomRoundedIconButton(
+                  onPressed: () => imageSourceBottomSheet(
+                    context,
+                    handleGalleryImg: imageFileList.getImageGallery,
+                    handleCameraImg: imageFileList.getImageCamera,
+                  ),
+                  iconData: Icons.add,
+                  iconSize: 35.0,
                 ),
-                iconData: Icons.add,
-                iconSize: 35.0,
               ),
-            ),
           ],
         ));
   }

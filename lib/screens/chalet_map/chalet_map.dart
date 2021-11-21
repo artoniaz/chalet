@@ -1,4 +1,5 @@
 import 'package:chalet/config/functions/lat_lng_functions.dart';
+import 'package:chalet/config/index.dart';
 import 'package:chalet/models/directions_model.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
@@ -41,8 +42,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   final _panelController = PanelController();
   static const _centerButtonPrimaryHeight = Dimentions.medium;
   static const _navButtonPrimaryHeight = 80.0;
-  double _centerButtonHeight = _centerButtonPrimaryHeight;
-  double _navigationHeight = _navButtonPrimaryHeight;
+  double _addButtonHeight = _centerButtonPrimaryHeight;
+  double _centerButtonHeight = _navButtonPrimaryHeight;
   Directions? _directionsInfo;
 
   bool _isSearchThisAreaButtonActive = false;
@@ -139,6 +140,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void didChangeDependencies() {
     final _chaletlist = Provider.of<List<ChaletModel>>(context);
     _updateMarkers(_chaletlist);
+    if (_chaletlist.isEmpty) EasyLoading.showInfo('Brak szaletów w tej okolicy. Sraj gdzie chcesz');
     super.didChangeDependencies();
   }
 
@@ -185,8 +187,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               double navBtnHeight = pos * panelMaxScrollExtend + _navButtonPrimaryHeight;
               if (_activeChalet != null) navBtnHeight += MediaQuery.of(context).size.height * 0.2;
               setState(() {
-                _centerButtonHeight = btnHeight;
-                _navigationHeight = navBtnHeight;
+                _addButtonHeight = btnHeight;
+                _centerButtonHeight = navBtnHeight;
               });
             },
             body: GoogleMap(
@@ -253,12 +255,12 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
           ),
           Positioned(
             right: Dimentions.medium,
-            bottom: _navigationHeight,
+            bottom: _addButtonHeight,
             child: FloatingActionButton(
               backgroundColor: Palette.chaletBlue,
               foregroundColor: Palette.white,
-              onPressed: _handleNavigationButton,
-              child: Icon(Icons.navigation),
+              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
+              child: Icon(Icons.add),
             ),
           ),
         ],

@@ -67,6 +67,7 @@ class _ChaletPhotoCaruselState extends State<ChaletPhotoCarusel> {
               itemFile: item,
               currentImgIndex: _currentImgIndex,
               imageIndex: i,
+              allowAddMoreImg: chaletImagesList.length < 2,
             ),
           ))
       .values
