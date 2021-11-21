@@ -8,17 +8,26 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Palette.ivoryBlack,
-      unselectedItemColor: Palette.white,
-      selectedItemColor: Palette.chaletBlue,
-      currentIndex: currentIndex,
-      onTap: (index) => handleTabChange(index),
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.wc), label: 'Szalety'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Mój profil'),
-      ],
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topRight: Radius.circular(40),
+        topLeft: Radius.circular(40),
+      ),
+      child: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.wc), label: 'Szalety'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Mój profil'),
+        ],
+        elevation: 2.0,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Palette.chaletBlue,
+        unselectedItemColor: Palette.backgroundWhite,
+        selectedItemColor: Palette.backgroundWhite,
+        selectedFontSize: 16.0,
+        currentIndex: currentIndex,
+        onTap: (index) => handleTabChange(index),
+      ),
     );
   }
 }
