@@ -1,10 +1,15 @@
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
+import 'package:chalet/screens/my_profile/change_password.dart';
+import 'package:chalet/screens/my_profile/personal_number_dialogs.dart';
+import 'package:chalet/screens/my_profile/profile_drawer.dart';
 import 'package:chalet/services/index.dart';
+import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -18,17 +23,63 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final _panelController = PanelController();
   PackageInfo? _packageInfo;
+  FocusNode _personalNumberFocusNode = FocusNode();
+  FocusNode _userNameFocusNode = FocusNode();
+  bool _hasPersonalNumberBeenFocused = false;
+  bool _isUpdateButtonActive = false;
 
   TextEditingController _userDisplayNameController = TextEditingController();
+  TextEditingController _personalNumberTextController = TextEditingController();
+
+  void _checkIsUpdateButtonActive() {
+    _userDisplayNameController.addListener(() {
+      if (_userDisplayNameController.text.isNotEmpty || _personalNumberTextController.text.length == 9) {
+        setState(() => _isUpdateButtonActive = true);
+      }
+    });
+    _personalNumberTextController.addListener(() {
+      if (_userDisplayNameController.text.isNotEmpty || _personalNumberTextController.text.length == 9) {
+        setState(() => _isUpdateButtonActive = true);
+      }
+    });
+  }
 
   void _updateDisplayname() async {
-    try {
-      await AuthService().editUserData(_userDisplayNameController.text);
-      _panelController.close();
-    } catch (e) {
-      EasyLoading.showError(e.toString());
+    if (_formKey.currentState!.validate() && _userDisplayNameController.text.isNotEmpty) {
+      try {
+        await AuthService().editUserData(_userDisplayNameController.text);
+        dissmissCurrentFocus(context);
+        _personalNumberFocusNode.unfocus();
+        _userNameFocusNode.unfocus();
+        _panelController.close();
+        if (_personalNumberTextController.text.length == 9) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return PersonalNumberConfirmDialog(
+                  hasAlsoUserNameChanged: true,
+                );
+              });
+        }
+        _personalNumberTextController.clear();
+      } catch (e) {
+        EasyLoading.showError(e.toString());
+      }
+    } else if (_userDisplayNameController.text.isEmpty && _personalNumberTextController.text.length == 9) {
+      _personalNumberTextController.clear();
+      _personalNumberFocusNode.unfocus();
+      _userNameFocusNode.unfocus();
+      showDialog(
+          context: context,
+          builder: (context) {
+            return PersonalNumberConfirmDialog(
+              hasAlsoUserNameChanged: false,
+            );
+          });
     }
   }
 
@@ -40,13 +91,30 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
   void initState() {
     _getPackageInfo();
+    _checkIsUpdateButtonActive();
+    _personalNumberFocusNode.addListener(() {
+      if (_personalNumberFocusNode.hasFocus && !_hasPersonalNumberBeenFocused) {
+        setState(() => _hasPersonalNumberBeenFocused = true);
+        _personalNumberFocusNode.unfocus();
+        showDialog(
+            context: context,
+            builder: (context) {
+              return SeriouslyDialog();
+            });
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _personalNumberFocusNode.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
-    final node = FocusScope.of(context);
 
     return StreamBuilder<UserModel?>(
         stream: AuthService().user,
@@ -54,7 +122,17 @@ class _ProfileCardState extends State<ProfileCard> {
           if (snapshot.hasData) {
             final user = snapshot.data;
             return Scaffold(
+              extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                iconTheme: IconThemeData(color: Palette.chaletBlue),
+                backgroundColor: Colors.transparent,
+              ),
               resizeToAvoidBottomInset: false,
+              drawer: ProfileDrawer(
+                panelController: _panelController,
+                packageInfo: _packageInfo,
+                user: user,
+              ),
               body: Stack(
                 children: [
                   CustomScrollView(
@@ -79,75 +157,66 @@ class _ProfileCardState extends State<ProfileCard> {
                                 Divider(),
                                 Text(
                                   user.displayName ?? '',
-                                  style: Theme.of(context).textTheme.headline2,
+                                  style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
                                 ),
-                                VerticalSizedBox8(),
+                                VerticalSizedBox16(),
                                 Text(
                                   user.email,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.headline6!.copyWith(color: Palette.grey),
                                 ),
                               ],
                             )),
-                            Container(
-                              padding: EdgeInsets.all(Dimentions.small),
-                              child: Column(
-                                children: [
-                                  CustomElevatedButton(
-                                    label: 'Edytuj dane',
-                                    onPressed: () => _panelController.open(),
-                                  ),
-                                  CustomTextButton(
-                                    label: 'Wyloguj',
-                                    color: Palette.ivoryBlack,
-                                    onPressed: () => AuthService().signOut(),
-                                  ),
-                                  CustomTextButton(
-                                    label: 'Usuń profil',
-                                    color: Palette.ivoryBlack,
-                                    onPressed: () => showDialog(
-                                      context: context,
-                                      builder: (context) => RemoveAccountDialog(
-                                        userEmail: user.email,
-                                      ),
-                                    ),
-                                  ),
-                                  _packageInfo != null
-                                      ? Text('wersja aplikacji: ${_packageInfo!.version}')
-                                      : CircularProgressIndicator(
-                                          strokeWidth: 2.0,
-                                        ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
                   SlidingUpPanel(
-                    padding: EdgeInsets.fromLTRB(Dimentions.small, 24, Dimentions.small, Dimentions.small),
+                    padding:
+                        EdgeInsets.fromLTRB(Dimentions.medium, Dimentions.large, Dimentions.medium, Dimentions.medium),
                     backdropEnabled: true,
                     borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
                     minHeight: 0.0,
                     maxHeight: MediaQuery.of(context).size.height * 0.4,
-                    onPanelClosed: () => dissmissCurrentFocus(context),
+                    onPanelClosed: () {
+                      _personalNumberFocusNode.unfocus();
+                      _userNameFocusNode.unfocus();
+                      _personalNumberTextController.clear();
+                      _userDisplayNameController.clear();
+                      setState(() => _isUpdateButtonActive = false);
+                    },
                     controller: _panelController,
                     panel: GestureDetector(
                       onTap: () => dissmissCurrentFocus(context),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'Nazwa użytkownika'),
-                            controller: _userDisplayNameController,
-                            onEditingComplete: () => node.nextFocus(),
-                            keyboardType: TextInputType.text,
-                          ),
-                          VerticalSizedBox16(),
-                          CustomElevatedButton(
-                            label: 'Zapisz dane',
-                            onPressed: _updateDisplayname,
-                          ),
-                        ],
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: 'Nazwa użytkownika'),
+                              controller: _userDisplayNameController,
+                              focusNode: _userNameFocusNode,
+                              keyboardType: TextInputType.text,
+                              validator: (val) => val!.length > 0 && val.length < 3
+                                  ? 'Nazwa użytkownika musi zawierać miniumum 3 znaki'
+                                  : null,
+                            ),
+                            VerticalSizedBox16(),
+                            TextFormField(
+                              controller: _personalNumberTextController,
+                              decoration: textInputDecoration.copyWith(hintText: 'Numer PESEL'),
+                              keyboardType: _hasPersonalNumberBeenFocused ? TextInputType.number : TextInputType.none,
+                              focusNode: _personalNumberFocusNode,
+                              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                              maxLength: 9,
+                            ),
+                            VerticalSizedBox16(),
+                            CustomElevatedButton(
+                              label: 'Zapisz dane',
+                              onPressed: _isUpdateButtonActive ? _updateDisplayname : null,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

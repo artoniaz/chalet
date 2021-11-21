@@ -5,8 +5,8 @@ import 'package:page_transition/page_transition.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute() => (settings) {
       switch (settings.name) {
-        // case RoutesDefinitions.CHALET_DETAILS:
-        //   return PageTransition(child: ChaletDetails(), type: PageTransitionType.rightToLeft, settings: settings);
+        case RoutesDefinitions.CHALET_DETAILS:
+          return PageTransition(child: ChaletDetails(), type: PageTransitionType.rightToLeft, settings: settings);
         case RoutesDefinitions.ADD_CHALET:
           return PageTransition(child: AddChaletRoot(), type: PageTransitionType.fade, settings: settings);
         case RoutesDefinitions.SHARE_PROBLEM:

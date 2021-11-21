@@ -11,10 +11,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ChaletDetails extends StatefulWidget {
-  final ChaletModel chalet;
   const ChaletDetails({
     Key? key,
-    required this.chalet,
   }) : super(key: key);
 
   @override
