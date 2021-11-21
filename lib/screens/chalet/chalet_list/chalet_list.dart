@@ -57,6 +57,7 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
     super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        heroTag: 'chaletListAddChaletButton',
         onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
         child: Icon(Icons.add, color: Palette.backgroundWhite),
         backgroundColor: Palette.chaletBlue,

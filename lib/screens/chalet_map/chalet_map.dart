@@ -247,6 +247,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
             right: Dimentions.medium,
             bottom: _centerButtonHeight,
             child: FloatingActionButton(
+              heroTag: 'chaletMapCenterButton',
               backgroundColor: Palette.chaletBlue,
               foregroundColor: Palette.white,
               onPressed: _centerCamera,
@@ -257,6 +258,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
             right: Dimentions.medium,
             bottom: _addButtonHeight,
             child: FloatingActionButton(
+              heroTag: 'chaletMapAddChaletButton',
               backgroundColor: Palette.chaletBlue,
               foregroundColor: Palette.white,
               onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
