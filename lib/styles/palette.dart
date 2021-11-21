@@ -11,4 +11,5 @@ class Palette {
   static const Color errorRed = Color(0xFFED4337);
   static const Color backgroundWhite = Color(0xFFfafcfe);
   static const Color white = Color(0xFFffffff);
+  static const Color grey = Colors.grey;
 }

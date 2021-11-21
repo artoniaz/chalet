@@ -99,7 +99,6 @@ class AuthService {
   Future<void> changeUserPassword(String userEmail, String oldPassword, String newPassword) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: userEmail, password: oldPassword);
-
       await _firebaseAuth.currentUser!.updatePassword(newPassword);
     } catch (e) {
       print(e);

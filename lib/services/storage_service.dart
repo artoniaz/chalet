@@ -57,7 +57,7 @@ class StorageService {
       TaskSnapshot uploadImageTask = await storageRef.child('user_images/$userUid').putFile(imageFile);
       if (uploadImageTask.state == TaskState.success) {
         final String downloadUrlOriginal = await uploadImageTask.ref.getDownloadURL();
-        await _firebaseAuth.currentUser!.updateProfile(photoURL: downloadUrlOriginal);
+        await _firebaseAuth.currentUser!.updatePhotoURL(downloadUrlOriginal);
       }
     } catch (e) {
       print(e);
