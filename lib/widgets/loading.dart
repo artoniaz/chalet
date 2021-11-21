@@ -8,7 +8,7 @@ class Loading extends StatelessWidget {
   const Loading({
     Key? key,
     this.spinnerColor = Palette.chaletBlue,
-    this.backgroundColor = Palette.goldLeaf,
+    this.backgroundColor = Palette.backgroundWhite,
   }) : super(key: key);
 
   @override

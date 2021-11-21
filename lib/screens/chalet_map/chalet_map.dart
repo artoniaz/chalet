@@ -40,10 +40,10 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   ChaletModel? _activeChalet;
 
   final _panelController = PanelController();
-  static const _centerButtonPrimaryHeight = Dimentions.medium;
-  static const _navButtonPrimaryHeight = 80.0;
-  double _addButtonHeight = _centerButtonPrimaryHeight;
-  double _centerButtonHeight = _navButtonPrimaryHeight;
+  static const _addButtonPrimaryHeight = Dimentions.medium;
+  static const _centerButtonPrimaryHeight = 80.0;
+  double _addButtonHeight = _addButtonPrimaryHeight;
+  double _centerButtonHeight = _centerButtonPrimaryHeight;
   Directions? _directionsInfo;
 
   bool _isSearchThisAreaButtonActive = false;
@@ -140,7 +140,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void didChangeDependencies() {
     final _chaletlist = Provider.of<List<ChaletModel>>(context);
     _updateMarkers(_chaletlist);
-    if (_chaletlist.isEmpty) EasyLoading.showInfo('Brak szaletów w tej okolicy. Sraj gdzie chcesz');
+    // if (_chaletlist.isEmpty) EasyLoading.showInfo('Brak szaletów w tej okolicy. Sraj gdzie chcesz');
     super.didChangeDependencies();
   }
 
@@ -182,9 +182,9 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                   ),
             onPanelSlide: (pos) {
               final panelMaxScrollExtend = _panelHeightOpen - MediaQuery.of(context).size.height * 0.2;
-              double btnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight;
+              double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight;
               if (_activeChalet != null) btnHeight += MediaQuery.of(context).size.height * 0.2;
-              double navBtnHeight = pos * panelMaxScrollExtend + _navButtonPrimaryHeight;
+              double navBtnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight;
               if (_activeChalet != null) navBtnHeight += MediaQuery.of(context).size.height * 0.2;
               setState(() {
                 _addButtonHeight = btnHeight;
@@ -245,7 +245,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
             ),
           Positioned(
             right: Dimentions.medium,
-            bottom: _centerButtonHeight,
+            bottom: _centerButtonHeight + 72.0,
             child: FloatingActionButton(
               heroTag: 'chaletMapCenterButton',
               backgroundColor: Palette.chaletBlue,
@@ -256,7 +256,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
           ),
           Positioned(
             right: Dimentions.medium,
-            bottom: _addButtonHeight,
+            bottom: _addButtonHeight + 72.0,
             child: FloatingActionButton(
               heroTag: 'chaletMapAddChaletButton',
               backgroundColor: Palette.chaletBlue,

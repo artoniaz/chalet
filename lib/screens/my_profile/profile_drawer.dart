@@ -87,6 +87,9 @@ class ProfileDrawer extends StatelessWidget {
                       : CircularProgressIndicator(
                           strokeWidth: 2.0,
                         ),
+                  Container(
+                    height: 72.0,
+                  ),
                 ],
               ),
             ),
