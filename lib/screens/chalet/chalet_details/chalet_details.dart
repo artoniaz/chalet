@@ -23,13 +23,17 @@ class _ChaletDetailsState extends State<ChaletDetails> {
   ChaletModel? _chalet;
   late LatLng _userLocation;
   bool _isScreenLoading = true;
+  Widget? _returnPage;
 
   ScrollController _controller = ScrollController();
 
   @override
   void didChangeDependencies() {
     final args = ModalRoute.of(context)!.settings.arguments as ChaletDetailsArgs;
-    setState(() => _chalet = args.chalet);
+    setState(() {
+      _chalet = args.chalet;
+      _returnPage = args.returnPage;
+    });
     super.didChangeDependencies();
   }
 
@@ -62,7 +66,11 @@ class _ChaletDetailsState extends State<ChaletDetails> {
             body: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
-                CustomAppBars.customImageSliderSliverAppBar(_chalet!, _pictureHeight),
+                CustomAppBars.customImageSliderSliverAppBar(
+                  _chalet!,
+                  _pictureHeight,
+                  _returnPage,
+                ),
                 SliverToBoxAdapter(
                   child: ChaletCard(
                     controller: _controller,

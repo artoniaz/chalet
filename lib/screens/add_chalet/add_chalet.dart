@@ -117,7 +117,7 @@ class _AddChaletState extends State<AddChalet> {
           EasyLoading.dismiss();
           EasyLoading.showSuccess('Szalet dodano');
           Navigator.pushReplacementNamed(context, RoutesDefinitions.CHALET_DETAILS,
-              arguments: ChaletDetailsArgs(chalet: _chalet));
+              arguments: ChaletDetailsArgs(chalet: _chalet, returnPage: Home()));
         } catch (e) {
           print(e);
           EasyLoading.dismiss();

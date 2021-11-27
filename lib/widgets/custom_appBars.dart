@@ -38,10 +38,13 @@ class CustomAppBars {
         leading: CustomBackLeadingButton(),
       );
 
-  static SliverAppBar customImageSliderSliverAppBar(ChaletModel chalet, double pictureHeight) => SliverAppBar(
+  static SliverAppBar customImageSliderSliverAppBar(ChaletModel chalet, double pictureHeight, [Widget? returnPage]) =>
+      SliverAppBar(
         backgroundColor: Colors.transparent,
         leadingWidth: 72.0,
-        leading: CustomBackLeadingButton(),
+        leading: CustomBackLeadingButton(
+          returnPage: returnPage,
+        ),
         elevation: 0,
         expandedHeight: pictureHeight,
         floating: false,
