@@ -192,7 +192,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               });
             },
             body: GoogleMap(
-              initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
+              initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 18.0),
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               onMapCreated: _onMapCreated,
