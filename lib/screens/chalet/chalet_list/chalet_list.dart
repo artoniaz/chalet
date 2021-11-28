@@ -2,10 +2,13 @@ import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/config/routes/routes_definitions.dart';
 import 'package:chalet/models/index.dart';
+import 'package:chalet/screens/chalet/chalet_list/sorting_dropown.dart';
+import 'package:chalet/screens/chalet/chalet_list/sorting_values.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_appBars.dart';
+import 'package:chalet/widgets/horizontal_sized_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -24,8 +27,41 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   List<ChaletModel> chaletList = [];
   late LatLng _userLocation;
+  String _currentSorting = SortingValues.BEST_RATED;
+
+  double _getDistance(
+    double startLatitude,
+    double startLongitude,
+    double endLatitude,
+    double endLongitude,
+  ) =>
+      GeolocatorPlatform.instance.distanceBetween(
+        startLatitude,
+        startLongitude,
+        endLatitude,
+        endLongitude,
+      );
 
   void _sortChaletsByRatingDesc(List<ChaletModel> chalets) => chalets.sort((a, b) => b.rating.compareTo(a.rating));
+
+  void _sortChaletsByLocationAsc(List<ChaletModel> chalets) {
+    return chalets.sort((a, b) {
+      LatLng aLatLng = getLatLngFromGeoPoint(a.position['geopoint']);
+      LatLng bLatLng = getLatLngFromGeoPoint(b.position['geopoint']);
+      return _getDistance(aLatLng.latitude, aLatLng.longitude, _userLocation.latitude, _userLocation.longitude)
+          .compareTo(
+              _getDistance(bLatLng.latitude, bLatLng.longitude, _userLocation.latitude, _userLocation.longitude));
+    });
+  }
+
+  void _onSortingChange(String val) {
+    setState(() => _currentSorting = val);
+    if (val == SortingValues.BEST_RATED) {
+      _sortChaletsByRatingDesc(chaletList);
+    } else if (val == SortingValues.NEAREST) {
+      _sortChaletsByLocationAsc(chaletList);
+    } else {}
+  }
 
   void getInitData(bool listen) async {
     List<ChaletModel> chalets = Provider.of<List<ChaletModel>>(context, listen: listen);
@@ -63,25 +99,15 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(
                   Dimentions.verticalPadding,
-                  Dimentions.large + 55,
+                  Dimentions.large + 40,
                   Dimentions.verticalPadding,
                   Dimentions.small,
                 ),
                 sliver: SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Najwyżej oceniane',
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              color: Palette.ivoryBlack,
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
-                      Divider(),
-                    ],
-                  ),
-                ),
+                    child: SortingDropdown(
+                  currentSorting: _currentSorting,
+                  onChanged: _onSortingChange,
+                )),
               ),
               SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
@@ -89,8 +115,8 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
                       delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       LatLng chaletLatLng = getLatLngFromGeoPoint(chaletList[index].position['geopoint']);
-                      double distance = GeolocatorPlatform.instance.distanceBetween(_userLocation.latitude,
-                          _userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
+                      double distance = _getDistance(_userLocation.latitude, _userLocation.longitude,
+                          chaletLatLng.latitude, chaletLatLng.longitude);
                       return GestureDetector(
                         onTap: () => Navigator.pushNamed(context, RoutesDefinitions.CHALET_DETAILS,
                             arguments: ChaletDetailsArgs(chalet: chaletList[index])),

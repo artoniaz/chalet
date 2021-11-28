@@ -262,7 +262,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               heroTag: 'chaletMapAddChaletButton',
               backgroundColor: Palette.chaletBlue,
               foregroundColor: Palette.white,
-              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
+              onPressed: () => Navigator.pushReplacementNamed(context, RoutesDefinitions.ADD_CHALET),
               child: Icon(Icons.add),
             ),
           ),
