@@ -105,11 +105,10 @@ class _AddChaletState extends State<AddChalet> {
     setState(() => _isCreateChaletBtnActive = false);
 
     if (_formKey.currentState!.validate()) {
-      if (_chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0) {
+      ImageFileListModel imageListModel = Provider.of<ImageFileListModel>(context, listen: false);
+      if (_chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0 && imageListModel.images.isNotEmpty) {
         EasyLoading.show(status: '', maskType: EasyLoadingMaskType.black);
         try {
-          ImageFileListModel imageListModel = Provider.of<ImageFileListModel>(context, listen: false);
-
           String? chaletId = await ChaletService().createChalet(_chalet);
           List<ImageModelUrl> imagesUrls =
               await StorageService().addImagesToStorage(chaletId ?? '', imageListModel.images);
@@ -118,7 +117,7 @@ class _AddChaletState extends State<AddChalet> {
           EasyLoading.dismiss();
           EasyLoading.showSuccess('Szalet dodano');
           Navigator.pushReplacementNamed(context, RoutesDefinitions.CHALET_DETAILS,
-              arguments: ChaletDetailsArgs(chalet: _chalet));
+              arguments: ChaletDetailsArgs(chalet: _chalet, returnPage: Home()));
         } catch (e) {
           print(e);
           EasyLoading.dismiss();
@@ -159,7 +158,10 @@ class _AddChaletState extends State<AddChalet> {
                               onChanged: (val) => setState(() => _chalet.name = val),
                             ),
                             VerticalSizedBox16(),
-                            Text('Uzupełnij wszystkie oceny',
+                            Text(
+                                isFormAllowed
+                                    ? 'Uzupełnij wszystkie oceny'
+                                    : 'Uzupełnij wszystkie oceny i dodaj zdjęcie',
                                 textAlign: TextAlign.end,
                                 style: Theme.of(context)
                                     .textTheme

@@ -44,7 +44,7 @@ class _ChaletCardState extends State<ChaletCard> {
     }
     double distance = GeolocatorPlatform.instance.distanceBetween(
         widget.userLocation.latitude, widget.userLocation.longitude, chaletLatLng.latitude, chaletLatLng.longitude);
-    setState(() => _distanceToChalet = distance.toStringAsFixed(1));
+    setState(() => _distanceToChalet = distance.toStringAsFixed(0));
   }
 
   void scrollReviewList(GlobalKey itemKey) async {

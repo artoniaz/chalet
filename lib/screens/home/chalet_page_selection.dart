@@ -57,6 +57,12 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   }
 
   @override
+  void dispose() {
+    _cameraPositionBehaviourSubject.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return isScreenLoading
         ? Loading()

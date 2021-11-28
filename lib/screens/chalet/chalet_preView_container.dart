@@ -47,7 +47,7 @@ class ChaletPreviewContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '${distanceToChalet.toStringAsFixed(1)} m',
+                  '${distanceToChalet.toStringAsFixed(0)} m',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
                 ),
                 HorizontalSizedBox8(),

@@ -1,8 +1,13 @@
+import 'package:chalet/screens/home/home.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 
 class CustomBackLeadingButton extends StatelessWidget {
-  const CustomBackLeadingButton({Key? key}) : super(key: key);
+  final Widget? returnPage;
+  const CustomBackLeadingButton({
+    Key? key,
+    this.returnPage,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,11 @@ class CustomBackLeadingButton extends StatelessWidget {
       child: RawMaterialButton(
         padding: EdgeInsets.all(4.0),
         constraints: BoxConstraints(minWidth: 0),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () {
+          returnPage != null
+              ? Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => returnPage!), (route) => false)
+              : Navigator.of(context).pop();
+        },
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         elevation: 2.0,
         fillColor: Palette.backgroundWhite,

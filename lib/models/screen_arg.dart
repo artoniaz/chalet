@@ -1,8 +1,13 @@
 import 'package:chalet/models/index.dart';
+import 'package:flutter/material.dart';
 
 class ChaletDetailsArgs {
   final ChaletModel chalet;
-  ChaletDetailsArgs({required this.chalet});
+  final Widget? returnPage;
+  ChaletDetailsArgs({
+    required this.chalet,
+    this.returnPage,
+  });
 }
 
 class ReportProblemArgs {
