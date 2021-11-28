@@ -157,8 +157,9 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final _panelHeightClosed = _activeChalet == null ? 0.0 : MediaQuery.of(context).size.height * 0.2;
-    final _panelHeightOpen = MediaQuery.of(context).size.height * 0.6;
+    double screenHeight = MediaQuery.of(context).size.height;
+    final _panelHeightClosed = _activeChalet == null ? 0.0 : screenHeight * 0.3;
+    final _panelHeightOpen = screenHeight * 0.6;
     return Scaffold(
       body: Stack(
         alignment: Alignment.topCenter,
@@ -182,11 +183,11 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                     userLocation: _userLocation,
                   ),
             onPanelSlide: (pos) {
-              final panelMaxScrollExtend = _panelHeightOpen - MediaQuery.of(context).size.height * 0.2;
+              final panelMaxScrollExtend = _panelHeightOpen - screenHeight * 0.3;
               double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight + 72.0;
-              if (_activeChalet != null) btnHeight += MediaQuery.of(context).size.height * 0.1;
+              if (_activeChalet != null) btnHeight += screenHeight * 0.2;
               double navBtnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight + 72.0;
-              if (_activeChalet != null) navBtnHeight += MediaQuery.of(context).size.height * 0.1;
+              if (_activeChalet != null) navBtnHeight += screenHeight * 0.2;
               setState(() {
                 _addButtonHeight = btnHeight;
                 _centerButtonHeight = navBtnHeight;
