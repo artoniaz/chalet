@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "280637907854",
+    "project_id": "chalet-e78ab",
+    "storage_bucket": "chalet-e78ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280637907854:android:d59393587aba0fb1143adf",
+        "android_client_info": {
+          "package_name": "com.mocode.chalet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "280637907854-m4eb9spaq3vahj1sd8shi993jsfur2tf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVdEGAsNTU_Um6lfBa0oV6TMLx0YiyJfU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "280637907854-m4eb9spaq3vahj1sd8shi993jsfur2tf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
