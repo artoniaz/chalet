@@ -203,6 +203,7 @@ class _AddChaletState extends State<AddChalet> {
                               minLines: 3,
                               maxLines: 4,
                               onChanged: (val) => setState(() => _chalet.venueDescription = val),
+                              validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
                             ),
                             VerticalSizedBox16(),
                             Text(
@@ -218,6 +219,7 @@ class _AddChaletState extends State<AddChalet> {
                               minLines: 3,
                               maxLines: 4,
                               onChanged: (val) => setState(() => _chalet.descriptionHowToGet = val),
+                              validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
                             ),
                             VerticalSizedBox16(),
                             Row(

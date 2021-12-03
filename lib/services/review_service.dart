@@ -72,7 +72,7 @@ class ReviewService {
         return [];
     } catch (e) {
       print(e);
-      throw 'Błąd sprawdzania ostatniej oceny.';
+      throw 'Wystąpił błąd dodawania oceny.';
     }
   }
 

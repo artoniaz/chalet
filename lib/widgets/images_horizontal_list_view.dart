@@ -1,5 +1,6 @@
 import 'package:chalet/models/index.dart';
 import 'package:chalet/widgets/index.dart';
+import 'package:chalet/widgets/photo_gallery.dart';
 import 'package:flutter/material.dart';
 
 class ImagesHorizontalListView extends StatelessWidget {
@@ -9,6 +10,15 @@ class ImagesHorizontalListView extends StatelessWidget {
     required this.chalet,
   }) : super(key: key);
 
+  void _openPhotoGallery(BuildContext context, int index) {
+    showDialog(
+        context: context,
+        builder: (_) => ProductDetailsPhotoGallery(
+              chaletModelUrlList: chalet.images,
+              initialPage: index,
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -16,13 +26,7 @@ class ImagesHorizontalListView extends StatelessWidget {
       shrinkWrap: true,
       itemCount: chalet.images.length,
       itemBuilder: (context, index) => GestureDetector(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => FullScreenImageCarusel(
-                      chaletModelUrlList: chalet.images,
-                      initialPage: index,
-                    ))),
+        onTap: () => _openPhotoGallery(context, index),
         child: Container(
           width: 160,
           child: Hero(
