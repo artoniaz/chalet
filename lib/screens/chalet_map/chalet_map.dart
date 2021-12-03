@@ -93,8 +93,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
         icon: BitmapDescriptor.defaultMarker,
         position: getLatLngFromGeoPoint(chalet.position['geopoint']),
         infoWindow: InfoWindow(
-          title: '${chalet.name} ${chalet.id}',
-          snippet: chalet.rating.toString(),
+          title: '${chalet.name}',
+          snippet: 'Ocena: ${chalet.rating}',
         ),
         onTap: () {
           if (_activeChalet == null) _panelController.show();
@@ -184,11 +184,13 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                     userLocation: _userLocation,
                   ),
             onPanelSlide: (pos) {
-              final panelMaxScrollExtend = _panelHeightOpen - screenHeight * 0.3;
+              final panelMaxScrollExtend = _panelHeightOpen - 170;
               double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight + 72.0;
-              if (_activeChalet != null) btnHeight += screenHeight * 0.2;
+              // if (_activeChalet != null) btnHeight += screenHeight * 0.2;
+              if (_activeChalet != null) btnHeight += 72.0 + Dimentions.big;
               double navBtnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight + 72.0;
-              if (_activeChalet != null) navBtnHeight += screenHeight * 0.2;
+              // if (_activeChalet != null) navBtnHeight += screenHeight * 0.2;
+              if (_activeChalet != null) navBtnHeight += 72.0 + Dimentions.big;
               setState(() {
                 _addButtonHeight = btnHeight;
                 _centerButtonHeight = navBtnHeight;
@@ -264,7 +266,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               heroTag: 'chaletMapAddChaletButton',
               backgroundColor: Palette.chaletBlue,
               foregroundColor: Palette.white,
-              onPressed: () => Navigator.pushReplacementNamed(context, RoutesDefinitions.ADD_CHALET),
+              onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
               child: Icon(Icons.add),
             ),
           ),

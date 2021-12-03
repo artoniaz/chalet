@@ -106,9 +106,13 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   }
 
   _initDialogModule(String userId, String userName) async {
-    String dialogType = await _validateLastReviewForChalet(userId);
-    setState(() => _currentRatingType = dialogType);
-    _ratingPopUp(context, userId, userName);
+    try {
+      String dialogType = await _validateLastReviewForChalet(userId);
+      setState(() => _currentRatingType = dialogType);
+      _ratingPopUp(context, userId, userName);
+    } catch (e) {
+      EasyLoading.showError(e.toString());
+    }
   }
 
   Future<void> _createReview(String userId, String userName) async {
