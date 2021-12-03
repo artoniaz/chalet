@@ -53,6 +53,26 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        develop {
+            dimension "default"
+            resValue "string", "app_name", "Chalet Dev"
+            applicationIdSuffix ".dev"
+        }
+        demo {
+            dimension "default"
+            resValue "string", "app_name", "Chalet Demo"
+            applicationIdSuffix ".demo"
+        }
+        prod {
+            dimension "default"
+            resValue "string", "app_name", "Chalet"
+            applicationId "com.mocode.chalet"
+        }
+    }
 }
 
 flutter {

@@ -5,9 +5,31 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "chalet - mobile",
+            "name": "chalet - prod",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
+        },
+        {
+            "name": "chalet - demo",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "demo"
+            ]
+        },
+        {
+            "name": "chalet - dev",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "develop"
+            ]
         },
         {
             "name": "chalet (profile mode)",
@@ -17,3 +39,7 @@
         }
     ]
 }
+//build commands
+// flutter build apk --flavor develop
+// flutter build apk --flavor demo
+// flutter build apk --flavor prod
