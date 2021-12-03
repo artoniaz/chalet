@@ -158,7 +158,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
     double screenHeight = MediaQuery.of(context).size.height;
-    final _panelHeightClosed = _activeChalet == null ? 0.0 : screenHeight * 0.3;
+    // final _panelHeightClosed = _activeChalet == null ? 0.0 : screenHeight * 0.3;
+    final _panelHeightClosed = _activeChalet == null ? 0.0 : 170.0;
     final _panelHeightOpen = screenHeight * 0.6;
     return Scaffold(
       body: Stack(

@@ -115,8 +115,6 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel?>(context);
-
     return StreamBuilder<UserModel?>(
         stream: AuthService().user,
         builder: (context, snapshot) {
@@ -178,7 +176,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     backdropEnabled: true,
                     borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
                     minHeight: 0.0,
-                    maxHeight: MediaQuery.of(context).size.height * 0.4,
+                    maxHeight: MediaQuery.of(context).size.height * 0.6,
                     onPanelClosed: () {
                       _personalNumberFocusNode.unfocus();
                       _userNameFocusNode.unfocus();
@@ -186,6 +184,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       _userDisplayNameController.clear();
                       setState(() => _isUpdateButtonActive = false);
                     },
+                    // onPanelOpened: () => _userDisplayNameController.text = user.displayName ?? '',
                     controller: _panelController,
                     panel: GestureDetector(
                       onTap: () => dissmissCurrentFocus(context),
@@ -194,7 +193,8 @@ class _ProfileCardState extends State<ProfileCard> {
                         child: Column(
                           children: [
                             TextFormField(
-                              decoration: textInputDecoration.copyWith(hintText: 'Nazwa użytkownika'),
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: user.displayName == '' ? 'Nazwa użytkownika' : user.displayName),
                               controller: _userDisplayNameController,
                               focusNode: _userNameFocusNode,
                               keyboardType: TextInputType.text,
