@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class CustomRoundedIconButton extends StatelessWidget {
   final Function onPressed;
   final IconData iconData;
-  final double iconSize;
+  final double? iconSize;
   const CustomRoundedIconButton({
     Key? key,
     required this.onPressed,
     required this.iconData,
-    required this.iconSize,
+    this.iconSize = 25.0,
   }) : super(key: key);
 
   @override
