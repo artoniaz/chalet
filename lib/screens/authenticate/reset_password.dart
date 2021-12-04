@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({
@@ -16,7 +15,6 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-  final AuthService _authService = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
 
@@ -26,7 +24,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       await AuthService().sendPasswordResetEmail(email);
       Navigator.of(context).pop();
       EasyLoading.showInfo(
-        'Sprawdź swój email ${email} w celu zmiany hasła.',
+        'Sprawdź swój email $email w celu zmiany hasła.',
         duration: Duration(seconds: 5),
         dismissOnTap: true,
       );

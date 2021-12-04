@@ -4,7 +4,6 @@ import 'package:chalet/models/image_model_file.dart';
 import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/services/chalet_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 
 class StorageService {

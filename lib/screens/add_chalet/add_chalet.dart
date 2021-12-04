@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
 import 'package:chalet/models/image_model_url.dart';

@@ -36,18 +36,6 @@ class _ProductDetailsPhotoGalleryState extends State<ProductDetailsPhotoGallery>
 
   void onPageChanged(int index) => setState(() => currentIndex = index);
 
-  void _getJumpToPageLeft() {
-    int jumpToIndex = currentIndex - 1;
-    if (jumpToIndex < 0) jumpToIndex = widget.chaletModelUrlList.length - 1;
-    pageController.jumpToPage(jumpToIndex);
-  }
-
-  void _getJumpToPageRight() {
-    int jumpToIndex = currentIndex + 1;
-    if (jumpToIndex == widget.chaletModelUrlList.length) jumpToIndex = 0;
-    pageController.jumpToPage(jumpToIndex);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
