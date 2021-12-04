@@ -8,7 +8,6 @@ export 'package:chalet/widgets/loading.dart';
 export 'package:chalet/widgets/photo_carusel/chalet_photo_carusel.dart';
 export 'package:chalet/widgets/photo_carusel/image_slider_presentational.dart';
 export 'package:chalet/widgets/photo_carusel/image_slider_editable_file.dart';
-export 'package:chalet/widgets/photo_carusel/full_screen_carusel.dart';
 export 'package:chalet/widgets/photo_carusel/image_slider_details.dart';
 export 'package:chalet/widgets/rating_icon_label.dart';
 export 'package:chalet/widgets/bottom_nav_bar.dart';

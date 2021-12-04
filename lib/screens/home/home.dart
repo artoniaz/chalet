@@ -1,7 +1,5 @@
-import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
-import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

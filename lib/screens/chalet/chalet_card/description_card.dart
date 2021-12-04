@@ -1,6 +1,4 @@
 import 'package:chalet/screens/chalet/chalet_card/input_container.dart';
-import 'package:chalet/styles/dimentions.dart';
-import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 

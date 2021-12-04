@@ -1,5 +1,3 @@
-import 'package:chalet/config/index.dart';
-import 'package:chalet/models/user_model.dart';
 import 'package:chalet/services/auth_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';

@@ -1,4 +1,3 @@
-import 'package:chalet/screens/home/home.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 

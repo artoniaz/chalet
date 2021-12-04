@@ -1,7 +1,5 @@
-import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
 import 'package:chalet/models/index.dart';
-import 'package:chalet/models/review_details_model.dart';
 import 'package:chalet/models/review_model.dart';
 import 'package:chalet/screens/review/rating_dialogs/dialog_types.dart';
 import 'package:chalet/screens/review/rating_dialogs/full_rating_dialog.dart';

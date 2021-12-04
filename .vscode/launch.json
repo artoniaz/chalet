@@ -39,7 +39,9 @@
         }
     ]
 }
-//build commands
-// flutter build apk --flavor develop
-// flutter build apk --flavor demo
-// flutter build apk --flavor prod
+/*
+build commands
+ flutter build apk --flavor develop
+ flutter build apk --flavor demo
+ flutter build apk --flavor prod
+*/

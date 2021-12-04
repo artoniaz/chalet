@@ -14,15 +14,16 @@ class AuthService {
         .map((firebseUser) => firebseUser != null ? UserModel.userModelFromFirebaseUser(firebseUser) : null);
   }
 
+  // currenty not used
   //sign in anon
-  Future signInAnon() async {
-    try {
-      firebaseAuth.UserCredential authResult = await _firebaseAuth.signInAnonymously();
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
+  // Future signInAnon() async {
+  //   try {
+  //     firebaseAuth.UserCredential authResult = await _firebaseAuth.signInAnonymously();
+  //   } catch (e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
 
   //sing in with email and password
   Future<void> signInWithEmailAndPassword(String email, String password) async {
@@ -70,7 +71,7 @@ class AuthService {
       case FacebookLoginStatus.success:
         final FacebookAccessToken fbToken = response.accessToken!;
         final firebaseAuth.AuthCredential credential = firebaseAuth.FacebookAuthProvider.credential(fbToken.token);
-        final result = await _firebaseAuth.signInWithCredential(credential);
+        await _firebaseAuth.signInWithCredential(credential);
         break;
       case FacebookLoginStatus.cancel:
         break;

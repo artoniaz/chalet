@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 ThemeData themeData() => ThemeData(
       primaryColor: Palette.darkBlue,
-      accentColor: Palette.goldLeaf,
+      colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Palette.goldLeaf),
       scaffoldBackgroundColor: Palette.backgroundWhite,
       appBarTheme: AppBarTheme(
         elevation: 0.0,

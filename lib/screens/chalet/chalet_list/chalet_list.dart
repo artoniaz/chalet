@@ -7,12 +7,9 @@ import 'package:chalet/screens/chalet/chalet_list/sorting_values.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
-import 'package:chalet/widgets/custom_appBars.dart';
-import 'package:chalet/widgets/horizontal_sized_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

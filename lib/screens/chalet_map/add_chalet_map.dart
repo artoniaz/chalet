@@ -6,7 +6,6 @@ import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:chalet/widgets/index.dart';
 
@@ -18,7 +17,6 @@ class AddChaletMap extends StatefulWidget {
 }
 
 class _AddChaletMapState extends State<AddChaletMap> {
-  static const LatLng _initialDeaultCameraPosition = LatLng(52.23749905, 21.018166594);
   late GoogleMapController _googleMapController;
   late LatLng _chaletLatLngPosition;
   late Placemark _chaletAddressPlacemark;

@@ -3,8 +3,6 @@ import 'package:chalet/models/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChaletPreviewContainer extends StatelessWidget {
   final ChaletModel chalet;

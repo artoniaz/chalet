@@ -3,17 +3,13 @@ import 'package:chalet/config/index.dart';
 import 'package:chalet/models/directions_model.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/diretions_repository.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/palette.dart';
 import 'package:chalet/widgets/custom_text_button_rounded.dart';
-import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:collection/collection.dart';
 
 class ChaletMap extends StatefulWidget {
   final Function(LatLng) updateQuery;
@@ -48,18 +44,19 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
 
   bool _isSearchThisAreaButtonActive = false;
 
-  void _handleNavigationButton() async {
-    try {
-      LatLng _userLocation = context.read<LatLng>();
-      final directions = await DirectionsRepository().getDirections(
-          origin: _userLocation, destination: getLatLngFromGeoPoint(_activeChalet?.position['geopoint']));
-      setState(() {
-        _directionsInfo = directions;
-      });
-    } catch (e) {
-      EasyLoading.showError(e.toString());
-    }
-  }
+  // temporary removed from the scope
+  // void _handleNavigationButton() async {
+  //   try {
+  //     LatLng _userLocation = context.read<LatLng>();
+  //     final directions = await DirectionsRepository().getDirections(
+  //         origin: _userLocation, destination: getLatLngFromGeoPoint(_activeChalet?.position['geopoint']));
+  //     setState(() {
+  //       _directionsInfo = directions;
+  //     });
+  //   } catch (e) {
+  //     EasyLoading.showError(e.toString());
+  //   }
+  // }
 
   void _centerCamera() {
     _googleMapController.animateCamera(
