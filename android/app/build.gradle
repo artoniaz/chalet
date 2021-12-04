@@ -73,6 +73,11 @@ android {
             applicationId "com.mocode.chalet"
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
 }
 
 flutter {

@@ -86,7 +86,12 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
                 children: _reviewList.isEmpty
                     ? [Text('Brak ocen')]
                     : [
-                        ..._reviewList.map((el) => ReviewContainer(review: el)),
+                        ..._reviewList
+                            .asMap()
+                            .map((i, el) => MapEntry(
+                                i, ReviewContainer(review: el, isLastReviewOnList: i == _reviewList.length - 1)))
+                            .values
+                            .toList(),
                         if (_displayShowMoreReviewsButton)
                           CustomElevatedButton(
                             label: 'Pokaż więcej ocen',

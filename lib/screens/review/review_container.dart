@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 
 class ReviewContainer extends StatelessWidget {
   final ReviewModel review;
+  final bool isLastReviewOnList;
   const ReviewContainer({
     Key? key,
     required this.review,
+    required this.isLastReviewOnList,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,8 @@ class ReviewContainer extends StatelessWidget {
               rating: review.rating,
             ),
             HorizontalSizedBox8(),
-            Text(timestampToDate(review.created)),
+            // Text(timestampToDate(review.created)),
+            Text(getTimeagoFromDateTime(review.created)),
           ],
         ),
         VerticalSizedBox8(),
@@ -70,7 +73,7 @@ class ReviewContainer extends StatelessWidget {
               ),
             ],
           ),
-        Divider(),
+        if (!isLastReviewOnList) Divider(),
       ],
     );
   }

@@ -108,7 +108,6 @@ class _ChaletCardState extends State<ChaletCard> {
                           size: 16.0,
                           color: Palette.chaletBlue,
                         ),
-                      Text('Odległość $_distanceToChalet m'),
                     ],
                   ),
                 ),
@@ -132,6 +131,10 @@ class _ChaletCardState extends State<ChaletCard> {
               ],
             ),
             Divider(),
+            Text(
+              'Odległość $_distanceToChalet m',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             VerticalSizedBox16(),
             Row(
               children: [
@@ -278,6 +281,9 @@ class _ChaletCardState extends State<ChaletCard> {
                     chaletId: widget.chalet!.id,
                     chaletName: widget.chalet!.name,
                   )),
+            ),
+            Container(
+              height: 72.0,
             ),
           ],
         ),
