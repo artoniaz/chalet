@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "chalet-e78ab"
-  }
+    "default": "chalet-e78ab",
+    "dev": "chalet-dev-285b2",
+    "demo": "chalet-demo",
+    "prod": "chalet-e78ab"
+  },
+  "targets": {}
 }
