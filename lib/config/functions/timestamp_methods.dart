@@ -12,4 +12,7 @@ int calcDaysBetween(Timestamp timestamp) {
   return DateTime.now().difference(from).inDays;
 }
 
-String getTimeagoFromDateTime(Timestamp timestamp) => timeago.format(getDateTimeFromTimestamp(timestamp), locale: 'pl');
+String getTimeagoFromDateTime(Timestamp timestamp) {
+  timeago.setLocaleMessages('pl', timeago.PlMessages());
+  return timeago.format(getDateTimeFromTimestamp(timestamp), locale: 'pl');
+}
