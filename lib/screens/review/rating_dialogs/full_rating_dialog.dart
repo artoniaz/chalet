@@ -1,21 +1,25 @@
+import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/add_review/add_review_event.dart';
+import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/models/review_details_model.dart';
 import 'package:chalet/services/review_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class FullRatingDialog extends StatefulWidget {
   final String reviewId;
   final String chaletId;
-  final Function handleCloseDialog;
   final double chaletRating;
+  final AddReviewBloc addReviewBloc;
   const FullRatingDialog({
     Key? key,
     required this.chaletId,
     required this.reviewId,
-    required this.handleCloseDialog,
     required this.chaletRating,
+    required this.addReviewBloc,
   }) : super(key: key);
 
   @override
@@ -44,15 +48,9 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
 
   bool _validateForm() => _reviewDetails.paper > 0 && _reviewDetails.clean > 0 && _reviewDetails.privacy > 0;
 
-  Future<void> _addDetailsReviewToQuickReview() async {
-    try {
-      if (_validateForm()) {
-        await ReviewService().addDetailsReviewToQuickReview(widget.chaletId, widget.reviewId, _reviewDetails);
-        widget.handleCloseDialog();
-        EasyLoading.showSuccess('Dodano ocenę szaletu');
-      } else {}
-    } catch (e) {
-      EasyLoading.showError(e.toString());
+  _addDetailsReviewToQuickReview() {
+    if (_validateForm()) {
+      widget.addReviewBloc.add(AddDetailsReviewToQuickReview(widget.chaletId, widget.reviewId, _reviewDetails));
     }
   }
 
@@ -131,10 +129,15 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.red),
                   ),
                 VerticalSizedBox24(),
-                ButtonsPopUpRow(
-                  approveButtonLabel: 'Zapisz ocenę',
-                  onPressedApproveButton: _addDetailsReviewToQuickReview,
-                ),
+                BlocBuilder<AddReviewBloc, AddReviewState>(
+                    bloc: widget.addReviewBloc,
+                    builder: (context, state) {
+                      return ButtonsPopUpRow(
+                        approveButtonLabel: 'Zapisz ocenę',
+                        onPressedApproveButton:
+                            state is AddReviewStateRequestLoading ? null : _addDetailsReviewToQuickReview,
+                      );
+                    }),
               ],
             ),
           ),

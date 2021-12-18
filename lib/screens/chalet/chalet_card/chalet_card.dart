@@ -1,3 +1,4 @@
+import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/review/review_bloc.dart';
 import 'package:chalet/blocs/review/review_event.dart';
 import 'package:chalet/blocs/review/review_state.dart';
@@ -8,6 +9,7 @@ import 'package:chalet/repositories/review_repository.dart';
 import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/screens/index.dart';
+import 'package:chalet/screens/review/add_review_module.dart';
 import 'package:chalet/services/review_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
@@ -116,8 +118,11 @@ class _ChaletCardState extends State<ChaletCard> {
                     ],
                   ),
                 ),
-                AddReviewModule(
-                  chaletId: widget.chalet!.id,
+                BlocProvider<AddReviewBloc>(
+                  create: (context) => AddReviewBloc(reviewRepository: ReviewService()),
+                  child: AddReviewModule(
+                    chaletId: widget.chalet!.id,
+                  ),
                 ),
               ],
             ),
