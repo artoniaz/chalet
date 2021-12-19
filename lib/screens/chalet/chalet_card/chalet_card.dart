@@ -1,10 +1,12 @@
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/problem/problem_bloc.dart';
 import 'package:chalet/blocs/review/review_bloc.dart';
 import 'package:chalet/blocs/review/review_event.dart';
 import 'package:chalet/blocs/review/review_state.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/chalet_model.dart';
+import 'package:chalet/repositories/problem_repository.dart';
 import 'package:chalet/repositories/review_repository.dart';
 import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
