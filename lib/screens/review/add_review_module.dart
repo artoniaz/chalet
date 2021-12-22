@@ -64,8 +64,13 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   void initState() {
     _addReviewBloc = BlocProvider.of<AddReviewBloc>(context, listen: false);
     _user = Provider.of<UserModel?>(context, listen: false);
-
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _addReviewBloc.close();
+    super.dispose();
   }
 
   @override

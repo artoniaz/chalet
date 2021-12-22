@@ -109,6 +109,7 @@ class _AddChaletState extends State<AddChalet> {
     if (_formKey.currentState!.validate()) {
       ImageFileListModel imageListModel = Provider.of<ImageFileListModel>(context, listen: false);
       if (_chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0 && imageListModel.images.isNotEmpty) {
+        _chalet.creator = _user?.displayName ?? 'anonimowy użytkownik';
         _addChaletBloc.add(CreateChalet(_chalet, imageListModel.images));
       } else
         setState(() => isFormAllowed = false);
@@ -123,9 +124,13 @@ class _AddChaletState extends State<AddChalet> {
   }
 
   @override
+  void dispose() {
+    _addChaletBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    UserModel? user = Provider.of<UserModel?>(context);
-    if (user != null) _chalet.creator = user.displayName ?? 'anonimowy użytkownik';
     return BlocConsumer<AddChaletBloc, AddChaletState>(
         bloc: _addChaletBloc,
         listener: (context, state) {

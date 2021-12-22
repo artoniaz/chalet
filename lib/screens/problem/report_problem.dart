@@ -56,6 +56,12 @@ class _ReportProblemState extends State<ReportProblem> {
   }
 
   @override
+  void dispose() {
+    _problemBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProblemBloc, ProblemState>(
         bloc: _problemBloc,
