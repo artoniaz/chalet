@@ -1,7 +1,10 @@
+import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/repositories/chalet_repository.dart';
 import 'package:chalet/repositories/problem_repository.dart';
+import 'package:chalet/repositories/storage_repository.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +36,12 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<ProblemBloc>(
             create: (context) => ProblemBloc(problemRepository: ProblemRepository()),
+          ),
+          BlocProvider<AddChaletBloc>(
+            create: (context) => AddChaletBloc(
+              chaletRepository: ChaletRepository(),
+              storageRepository: StorageRepository(),
+            ),
           )
         ],
         child: MaterialApp(
