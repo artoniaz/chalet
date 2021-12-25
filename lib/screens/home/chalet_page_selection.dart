@@ -1,3 +1,5 @@
+import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
+import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
@@ -6,6 +8,7 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/palette.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +25,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   late final TabController _tabController;
   late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
   BitmapDescriptor? _chaletLocationIcon;
-
-  bool isScreenLoading = true;
+  bool _isCameraLoading = true;
 
   Future<void> _getBitmapDescriptor() async {
     // final byteData = await rootBundle.load('assets/poo/poo_happy.png');
@@ -41,18 +43,17 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   }
 
   void _getInitData() async {
-    LatLng _userLocation = context.read<LatLng>();
-    _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(_userLocation);
-    await _getBitmapDescriptor();
-    setState(() {
-      isScreenLoading = false;
-    });
+    LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
+    _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(userLocation);
+    // await _getBitmapDescriptor();
+    setState(() => _isCameraLoading = false);
   }
 
   @override
   void initState() {
     _tabController = new TabController(vsync: this, length: 2, initialIndex: 1);
     _getInitData();
+
     super.initState();
   }
 
@@ -64,7 +65,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    return isScreenLoading
+    return _isCameraLoading
         ? Loading()
         : StreamProvider<List<ChaletModel>>(
             initialData: [],

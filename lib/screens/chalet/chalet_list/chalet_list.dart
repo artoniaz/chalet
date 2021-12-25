@@ -1,3 +1,4 @@
+import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/config/routes/routes_definitions.dart';
@@ -62,7 +63,7 @@ class _ChaletListState extends State<ChaletList> with AutomaticKeepAliveClientMi
 
   void getInitData(bool listen) async {
     List<ChaletModel> chalets = Provider.of<List<ChaletModel>>(context, listen: listen);
-    _userLocation = context.read<LatLng>();
+    _userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
 
     _sortChaletsByRatingDesc(chalets);
     setState(() {

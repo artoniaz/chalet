@@ -1,7 +1,11 @@
+import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
+import 'package:chalet/blocs/geolocation/geolocation_event.dart';
+import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -13,9 +17,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late GeolocationBloc _geolocatinBloc;
   int _currentIndex = 0;
-  late LatLng _userLocation;
-  bool _isScreenLoading = true;
 
   final List<Widget> tabs = [
     ChaletPageSelection(),
@@ -24,34 +27,26 @@ class _HomeState extends State<Home> {
 
   void handleTabChange(int index) => setState(() => _currentIndex = index);
 
-  void getInitData() async {
-    try {
-      final _location = await GeolocationService().getUserLocation();
-      setState(() {
-        _userLocation = _location;
-        _isScreenLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _userLocation = LatLng(52.23749905, 21.018166594);
-        _isScreenLoading = false;
-      });
-    }
-  }
-
   @override
   void initState() {
-    getInitData();
+    _geolocatinBloc = Provider.of<GeolocationBloc>(context, listen: false);
+    _geolocatinBloc.add(GetUserGeolocation());
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return _isScreenLoading
-        ? Loading()
-        : Provider<LatLng>(
-            create: (context) => _userLocation,
-            child: Scaffold(
+    return BlocBuilder<GeolocationBloc, GeolocationState>(
+        bloc: _geolocatinBloc,
+        builder: (context, state) {
+          if (state is GeolocationStateInitial || state is GeolocationStateLoading) return Loading();
+          if (state is GeolocationStateLoaded)
+            return Scaffold(
               extendBody: true,
               body: IndexedStack(
                 index: _currentIndex,
@@ -61,7 +56,9 @@ class _HomeState extends State<Home> {
                 currentIndex: _currentIndex,
                 handleTabChange: handleTabChange,
               ),
-            ),
-          );
+            );
+          else
+            return Loading();
+        });
   }
 }
