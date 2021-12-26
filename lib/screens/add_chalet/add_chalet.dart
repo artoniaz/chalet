@@ -1,3 +1,6 @@
+import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
+import 'package:chalet/blocs/add_chalet/add_chalet_event.dart';
+import 'package:chalet/blocs/add_chalet/add_chalet_state.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
 import 'package:chalet/models/image_model_url.dart';
@@ -9,6 +12,7 @@ import 'package:chalet/services/storage_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +37,8 @@ class AddChalet extends StatefulWidget {
 }
 
 class _AddChaletState extends State<AddChalet> {
+  late AddChaletBloc _addChaletBloc;
+  late UserModel? _user;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   ChaletModel _chalet = new ChaletModel(
@@ -55,8 +61,8 @@ class _AddChaletState extends State<AddChalet> {
   );
 
   String? _chaletLocalizationAddress;
+  bool _isLocalizationChoosen = false;
   bool isFormAllowed = true;
-  bool _isCreateChaletBtnActive = false;
 
   void _handleGeneralRatingUpdate(double rating) {
     setState(() => _chalet.rating = rating);
@@ -90,7 +96,7 @@ class _AddChaletState extends State<AddChalet> {
     if (chaletLocalizationArgs != null) {
       setState(() {
         _chaletLocalizationAddress = chaletLocalizationArgs.chaletAddress.street;
-        _isCreateChaletBtnActive = true;
+        _isLocalizationChoosen = true;
         _chalet.position = Geoflutterfire().point(
           latitude: chaletLocalizationArgs.chaletLocalization.latitude,
           longitude: chaletLocalizationArgs.chaletLocalization.longitude,
@@ -100,166 +106,184 @@ class _AddChaletState extends State<AddChalet> {
   }
 
   Future<void> createChalet() async {
-    setState(() => _isCreateChaletBtnActive = false);
-
     if (_formKey.currentState!.validate()) {
       ImageFileListModel imageListModel = Provider.of<ImageFileListModel>(context, listen: false);
       if (_chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0 && imageListModel.images.isNotEmpty) {
-        EasyLoading.show(status: '', maskType: EasyLoadingMaskType.black);
-        try {
-          String? chaletId = await ChaletService().createChalet(_chalet);
-          List<ImageModelUrl> imagesUrls =
-              await StorageService().addImagesToStorage(chaletId ?? '', imageListModel.images);
-          _chalet.id = chaletId ?? '';
-          _chalet.images = imagesUrls;
-          EasyLoading.dismiss();
-          EasyLoading.showSuccess('Szalet dodano');
-          Navigator.pushReplacementNamed(context, RoutesDefinitions.CHALET_DETAILS,
-              arguments: ChaletDetailsArgs(chalet: _chalet, returnPage: Home()));
-        } catch (e) {
-          print(e);
-          EasyLoading.dismiss();
-          EasyLoading.showError('Wystąpił błąd. Dodaj szalet ponownie');
-        }
+        _chalet.creator = _user?.displayName ?? 'anonimowy użytkownik';
+        _addChaletBloc.add(CreateChalet(_chalet, imageListModel.images));
       } else
         setState(() => isFormAllowed = false);
     }
-    setState(() => _isCreateChaletBtnActive = true);
+  }
+
+  @override
+  void initState() {
+    _addChaletBloc = BlocProvider.of<AddChaletBloc>(context, listen: false);
+    _user = Provider.of<UserModel?>(context, listen: false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _addChaletBloc.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    UserModel? user = Provider.of<UserModel?>(context);
-    if (user != null) _chalet.creator = user.displayName ?? 'anonimowy użytkownik';
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () => dissmissCurrentFocus(context),
-          child: Form(
-            key: _formKey,
-            child: SafeArea(
-              child: Stack(
-                alignment: Alignment.topLeft,
-                children: [
-                  Column(
-                    children: [
-                      ChaletImagePicker(),
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(Dimentions.big, Dimentions.big, Dimentions.big, Dimentions.large),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return BlocConsumer<AddChaletBloc, AddChaletState>(
+        bloc: _addChaletBloc,
+        listener: (context, state) {
+          if (state is AddChaletStateLoading) {
+            EasyLoading.show();
+          } else if (state is AddChaletChaletAddedLoadingImages) {
+            EasyLoading.show(status: 'Teraz ładujemy Twoje zdjęcia. To może chwilę potrwać.');
+          } else if (state is AddChaletStateCreated) {
+            EasyLoading.dismiss();
+            EasyLoading.showSuccess('Szalet dodano');
+            Navigator.pushReplacementNamed(context, RoutesDefinitions.CHALET_DETAILS,
+                arguments: ChaletDetailsArgs(chalet: state.chalet, returnPage: Home()));
+          } else if (state is AddChaletStateError) {
+            EasyLoading.dismiss();
+            EasyLoading.showError('Wystąpił błąd. Dodaj szalet ponownie');
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            body: SingleChildScrollView(
+              child: GestureDetector(
+                onTap: () => dissmissCurrentFocus(context),
+                child: Form(
+                  key: _formKey,
+                  child: SafeArea(
+                    child: Stack(
+                      alignment: Alignment.topLeft,
+                      children: [
+                        Column(
                           children: [
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(hintText: 'Nazwa Szaletu'),
-                              validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
-                              onChanged: (val) => setState(() => _chalet.name = val),
-                            ),
-                            VerticalSizedBox16(),
-                            Text(
-                                isFormAllowed
-                                    ? 'Uzupełnij wszystkie oceny'
-                                    : 'Uzupełnij wszystkie oceny i dodaj zdjęcie',
-                                textAlign: TextAlign.end,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .copyWith(color: isFormAllowed ? Palette.ivoryBlack : Palette.errorRed)),
-                            VerticalSizedBox8(),
-                            RatingBarRow(
-                              label: 'Ocena ogólna',
-                              handleRatingUpdate: _handleGeneralRatingUpdate,
-                            ),
-                            Divider(),
-                            SwitchBar(
-                              label: 'Otwarty całą dobę?',
-                              handleis24Update: _handleis24Update,
-                              value: _chalet.is24,
-                            ),
-                            RatingBarRow(
-                              label: 'Czystość',
-                              handleRatingUpdate: _handleCleanRatingUpdate,
-                            ),
-                            RatingBarRow(label: 'Papier', handleRatingUpdate: _handlePaperRatingUpdate),
-                            RatingBarRow(
-                              label: 'Prywatność',
-                              handleRatingUpdate: _handlePrivacyRatingUpdate,
-                            ),
-                            Divider(),
-                            VerticalSizedBox8(),
-                            Text(
-                              'Opis budynku',
-                              style: Theme.of(context).textTheme.headline6!.copyWith(
-                                    fontWeight: FontWeight.w700,
+                            ChaletImagePicker(),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  Dimentions.big, Dimentions.big, Dimentions.big, Dimentions.large),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  TextFormField(
+                                    decoration: textInputDecoration.copyWith(hintText: 'Nazwa Szaletu'),
+                                    validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
+                                    onChanged: (val) => setState(() => _chalet.name = val),
                                   ),
-                            ),
-                            VerticalSizedBox8(),
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(
-                                  hintText:
-                                      'W jakim budynku znajduje się Szalet? (Stacja benzynowa/bilioteka/uniwersytet/przejście podziemne etc.)'),
-                              minLines: 3,
-                              maxLines: 4,
-                              onChanged: (val) => setState(() => _chalet.venueDescription = val),
-                              validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
-                            ),
-                            VerticalSizedBox16(),
-                            Text(
-                              'Jak trafić',
-                              style: Theme.of(context).textTheme.headline6!.copyWith(
-                                    fontWeight: FontWeight.w700,
+                                  VerticalSizedBox16(),
+                                  Text(
+                                      isFormAllowed
+                                          ? 'Uzupełnij wszystkie oceny'
+                                          : 'Uzupełnij wszystkie oceny i dodaj zdjęcie',
+                                      textAlign: TextAlign.end,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(color: isFormAllowed ? Palette.ivoryBlack : Palette.errorRed)),
+                                  VerticalSizedBox8(),
+                                  RatingBarRow(
+                                    label: 'Ocena ogólna',
+                                    handleRatingUpdate: _handleGeneralRatingUpdate,
                                   ),
-                            ),
-                            VerticalSizedBox8(),
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(
-                                  hintText: 'Wskaż innym drogę do Szaletu (piętro, które drzwi, tajne przejścia etc.)'),
-                              minLines: 3,
-                              maxLines: 4,
-                              onChanged: (val) => setState(() => _chalet.descriptionHowToGet = val),
-                              validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
-                            ),
-                            VerticalSizedBox16(),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    _chaletLocalizationAddress == null
-                                        ? 'Wybierz lokalizację'
-                                        : 'Lokalizacja Szaletu: $_chaletLocalizationAddress',
+                                  Divider(),
+                                  SwitchBar(
+                                    label: 'Otwarty całą dobę?',
+                                    handleis24Update: _handleis24Update,
+                                    value: _chalet.is24,
+                                  ),
+                                  RatingBarRow(
+                                    label: 'Czystość',
+                                    handleRatingUpdate: _handleCleanRatingUpdate,
+                                  ),
+                                  RatingBarRow(label: 'Papier', handleRatingUpdate: _handlePaperRatingUpdate),
+                                  RatingBarRow(
+                                    label: 'Prywatność',
+                                    handleRatingUpdate: _handlePrivacyRatingUpdate,
+                                  ),
+                                  Divider(),
+                                  VerticalSizedBox8(),
+                                  Text(
+                                    'Opis budynku',
                                     style: Theme.of(context).textTheme.headline6!.copyWith(
                                           fontWeight: FontWeight.w700,
                                         ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            VerticalSizedBox8(),
-                            CustomElevatedButton(
-                              label: _chaletLocalizationAddress == null ? 'Lokalizacja' : 'Zmień lokalizację',
-                              onPressed: () => _navigateToLocalizationAndGetChaletLocalization(context),
-                            ),
-                            VerticalSizedBox16(),
-                            CustomElevatedButtonIcon(
-                              onPressed: _isCreateChaletBtnActive ? createChalet : null,
-                              label: 'Dodaj szalet',
-                              iconData: Icons.add,
+                                  VerticalSizedBox8(),
+                                  TextFormField(
+                                    decoration: textInputDecoration.copyWith(
+                                        hintText:
+                                            'W jakim budynku znajduje się Szalet? (Stacja benzynowa/bilioteka/uniwersytet/przejście podziemne etc.)'),
+                                    minLines: 3,
+                                    maxLines: 4,
+                                    onChanged: (val) => setState(() => _chalet.venueDescription = val),
+                                    validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
+                                  ),
+                                  VerticalSizedBox16(),
+                                  Text(
+                                    'Jak trafić',
+                                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                                  VerticalSizedBox8(),
+                                  TextFormField(
+                                    decoration: textInputDecoration.copyWith(
+                                        hintText:
+                                            'Wskaż innym drogę do Szaletu (piętro, które drzwi, tajne przejścia etc.)'),
+                                    minLines: 3,
+                                    maxLines: 4,
+                                    onChanged: (val) => setState(() => _chalet.descriptionHowToGet = val),
+                                    validator: (val) => val!.isEmpty ? 'To pole jest obowiązkowe' : null,
+                                  ),
+                                  VerticalSizedBox16(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _chaletLocalizationAddress == null
+                                              ? 'Wybierz lokalizację'
+                                              : 'Lokalizacja Szaletu: $_chaletLocalizationAddress',
+                                          style: Theme.of(context).textTheme.headline6!.copyWith(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  VerticalSizedBox8(),
+                                  CustomElevatedButton(
+                                    label: _chaletLocalizationAddress == null ? 'Lokalizacja' : 'Zmień lokalizację',
+                                    onPressed: () => _navigateToLocalizationAndGetChaletLocalization(context),
+                                  ),
+                                  VerticalSizedBox16(),
+                                  CustomElevatedButtonIcon(
+                                    onPressed: state is AddChaletStateLoading ||
+                                            state is AddChaletChaletAddedLoadingImages ||
+                                            !_isLocalizationChoosen
+                                        ? null
+                                        : createChalet,
+                                    label: 'Dodaj szalet',
+                                    iconData: Icons.add,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        Container(
+                          width: 72.0,
+                          child: CustomBackLeadingButton(),
+                        ),
+                      ],
+                    ),
                   ),
-                  Container(
-                    width: 72.0,
-                    child: CustomBackLeadingButton(),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        });
   }
 }

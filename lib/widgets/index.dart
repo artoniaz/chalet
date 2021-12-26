@@ -32,3 +32,5 @@ export 'package:chalet/widgets/switch_bar.dart';
 export 'package:chalet/widgets/chalet_convenience_icon.dart';
 export 'package:chalet/widgets/custom_dialog.dart';
 export 'package:chalet/widgets/photo_gallery.dart';
+export 'package:chalet/widgets/error_message_container.dart';
+export 'package:chalet/widgets/bottom_container.dart';

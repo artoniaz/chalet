@@ -1,7 +1,10 @@
+import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuickRatingDialog extends StatelessWidget {
   final Function(double) handleRatingUpdate;
@@ -10,6 +13,7 @@ class QuickRatingDialog extends StatelessWidget {
   final Function createReview;
   final bool validateQuickReview;
   final ScrollController scrollController;
+  final AddReviewBloc addReviewBloc;
   const QuickRatingDialog({
     Key? key,
     required this.handleRatingUpdate,
@@ -18,6 +22,7 @@ class QuickRatingDialog extends StatelessWidget {
     required this.createReview,
     required this.validateQuickReview,
     required this.scrollController,
+    required this.addReviewBloc,
   }) : super(key: key);
 
   @override
@@ -69,10 +74,14 @@ class QuickRatingDialog extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.red),
                     ),
                   VerticalSizedBox16(),
-                  ButtonsPopUpRow(
-                    approveButtonLabel: 'Zapisz ocenę',
-                    onPressedApproveButton: createReview,
-                  ),
+                  BlocBuilder<AddReviewBloc, AddReviewState>(
+                      bloc: addReviewBloc,
+                      builder: (context, state) {
+                        return ButtonsPopUpRow(
+                          approveButtonLabel: 'Zapisz ocenę',
+                          onPressedApproveButton: state is AddReviewStateRequestLoading ? null : createReview,
+                        );
+                      }),
                 ],
               ),
             ),

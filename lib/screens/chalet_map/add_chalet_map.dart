@@ -1,3 +1,5 @@
+import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
+import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
 import 'package:chalet/screens/index.dart';
@@ -5,9 +7,11 @@ import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:chalet/widgets/index.dart';
+import 'package:provider/provider.dart';
 
 class AddChaletMap extends StatefulWidget {
   const AddChaletMap({Key? key}) : super(key: key);
@@ -22,7 +26,6 @@ class _AddChaletMapState extends State<AddChaletMap> {
   late Placemark _chaletAddressPlacemark;
   late LatLng _initialUserPosition;
   Marker? _chaletMarker;
-
   bool _isCameraLoading = true;
   bool _isCameraBackToUserLocationBtnActive = false;
   static const double _cameraZoom = 18.0;
@@ -45,7 +48,7 @@ class _AddChaletMapState extends State<AddChaletMap> {
   }
 
   void _getInitialCameraPositon() async {
-    LatLng initPos = await GeolocationService().getUserLocation();
+    LatLng initPos = context.read<GeolocationBloc>().state.props.first as LatLng;
     List<Placemark> addresses = await GeolocationService().getAddressfromCoords(initPos);
     setState(() {
       _initialUserPosition = initPos;
@@ -98,129 +101,129 @@ class _AddChaletMapState extends State<AddChaletMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: CustomAppBars.customTransparentAppBar(context),
-      body: _isCameraLoading
-          ? Loading()
-          : Stack(
-              children: [
-                GoogleMap(
-                  initialCameraPosition: CameraPosition(target: _initialUserPosition, zoom: _cameraZoom),
-                  onMapCreated: (controller) => _googleMapController = controller,
-                  onCameraMoveStarted: _onCameraMoveStarted,
-                  onCameraMove: _onCameraMove,
-                  onCameraIdle: _onCameraIdle,
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                  myLocationEnabled: true,
-                  markers: {
-                    if (_chaletMarker != null) _chaletMarker!,
-                  },
-                ),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 100),
-                  child: Positioned(
-                      top: MediaQuery.of(context).size.height / 2 - _middleMarkerAnimationMove,
-                      left: MediaQuery.of(context).size.width / 2,
-                      child: Transform.translate(
-                        offset: Offset(-(middleMarkerSize / 2), -(middleMarkerSize * 0.8)),
-                        child: Icon(
-                          Icons.south,
-                          size: middleMarkerSize,
+        extendBodyBehindAppBar: true,
+        appBar: CustomAppBars.customTransparentAppBar(context),
+        body: _isCameraLoading
+            ? Loading()
+            : Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: CameraPosition(target: _initialUserPosition, zoom: _cameraZoom),
+                    onMapCreated: (controller) => _googleMapController = controller,
+                    onCameraMoveStarted: _onCameraMoveStarted,
+                    onCameraMove: _onCameraMove,
+                    onCameraIdle: _onCameraIdle,
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    myLocationEnabled: true,
+                    markers: {
+                      if (_chaletMarker != null) _chaletMarker!,
+                    },
+                  ),
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 100),
+                    child: Positioned(
+                        top: MediaQuery.of(context).size.height / 2 - _middleMarkerAnimationMove,
+                        left: MediaQuery.of(context).size.width / 2,
+                        child: Transform.translate(
+                          offset: Offset(-(middleMarkerSize / 2), -(middleMarkerSize * 0.8)),
+                          child: Icon(
+                            Icons.south,
+                            size: middleMarkerSize,
+                          ),
+                        )),
+                  ),
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 100),
+                    child: Positioned(
+                        top: MediaQuery.of(context).size.height / 2,
+                        left: MediaQuery.of(context).size.width / 2,
+                        child: FractionalTranslation(
+                            translation: Offset(-0.5, -0.5),
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                                BoxShadow(
+                                  color: Palette.ivoryBlack,
+                                  blurRadius: 5.0,
+                                ),
+                              ]),
+                              child: Icon(
+                                Icons.circle,
+                                color: Palette.ivoryBlack,
+                                size: 10,
+                              ),
+                            ))),
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.all(Dimentions.big),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40.0),
+                              topRight: Radius.circular(40.0),
+                            )),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Potwierdź lokalizację',
+                              style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center,
+                            ),
+                            VerticalSizedBox8(),
+                            Divider(),
+                            VerticalSizedBox8(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.south),
+                                    HorizontalSizedBox4(),
+                                    Text(
+                                      _chaletAddressPlacemark.street.toString(),
+                                      style:
+                                          Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.w600),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () => navigateToAddressInputScreen(),
+                                ),
+                              ],
+                            ),
+                            VerticalSizedBox8(),
+                            CustomElevatedButton(
+                              label: 'Potwierdź',
+                              onPressed: () => navigateBackAndPassChaletLocalization(),
+                            )
+                          ],
                         ),
                       )),
-                ),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 100),
-                  child: Positioned(
-                      top: MediaQuery.of(context).size.height / 2,
-                      left: MediaQuery.of(context).size.width / 2,
-                      child: FractionalTranslation(
-                          translation: Offset(-0.5, -0.5),
-                          child: Container(
-                            decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                              BoxShadow(
-                                color: Palette.ivoryBlack,
-                                blurRadius: 5.0,
-                              ),
-                            ]),
-                            child: Icon(
-                              Icons.circle,
-                              color: Palette.ivoryBlack,
-                              size: 10,
+                  if (_isCameraBackToUserLocationBtnActive)
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height / 4 + 10.0,
+                      right: 0,
+                      child: NavigationIconBtn(onPressed: () {
+                        _googleMapController.animateCamera(
+                          CameraUpdate.newCameraPosition(
+                            CameraPosition(
+                              target: _initialUserPosition,
+                              zoom: _cameraZoom,
                             ),
-                          ))),
-                ),
-                Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(Dimentions.big),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40.0),
-                            topRight: Radius.circular(40.0),
-                          )),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Potwierdź lokalizację',
-                            style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w600),
-                            textAlign: TextAlign.center,
                           ),
-                          VerticalSizedBox8(),
-                          Divider(),
-                          VerticalSizedBox8(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.south),
-                                  HorizontalSizedBox4(),
-                                  Text(
-                                    _chaletAddressPlacemark.street.toString(),
-                                    style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.w600),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ],
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: () => navigateToAddressInputScreen(),
-                              ),
-                            ],
-                          ),
-                          VerticalSizedBox8(),
-                          CustomElevatedButton(
-                            label: 'Potwierdź',
-                            onPressed: () => navigateBackAndPassChaletLocalization(),
-                          )
-                        ],
-                      ),
-                    )),
-                if (_isCameraBackToUserLocationBtnActive)
-                  Positioned(
-                    bottom: MediaQuery.of(context).size.height / 4 + 10.0,
-                    right: 0,
-                    child: NavigationIconBtn(onPressed: () {
-                      _googleMapController.animateCamera(
-                        CameraUpdate.newCameraPosition(
-                          CameraPosition(
-                            target: _initialUserPosition,
-                            zoom: _cameraZoom,
-                          ),
-                        ),
-                      );
-                      _onCameraIdle();
-                    }),
-                  )
-              ],
-            ),
-    );
+                        );
+                        _onCameraIdle();
+                      }),
+                    )
+                ],
+              ));
   }
 }

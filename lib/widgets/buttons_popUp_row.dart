@@ -3,7 +3,7 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class ButtonsPopUpRow extends StatelessWidget {
-  final Function onPressedApproveButton;
+  final Function? onPressedApproveButton;
   final String approveButtonLabel;
   const ButtonsPopUpRow({
     Key? key,

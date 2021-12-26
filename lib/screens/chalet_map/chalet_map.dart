@@ -1,3 +1,4 @@
+import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/directions_model.dart';
@@ -60,7 +61,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
 
   void _centerCamera() {
     _googleMapController.animateCamera(
-      CameraUpdate.newCameraPosition(CameraPosition(target: context.read<LatLng>(), zoom: 15.0)),
+      CameraUpdate.newCameraPosition(CameraPosition(target: _userLocation, zoom: 15.0)),
     );
     setState(() => _isSearchThisAreaButtonActive = false);
   }
@@ -72,7 +73,6 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
 
   void _onCameraIdle() {
     if (_activeChalet == null) {
-      LatLng _userLocation = context.read<LatLng>();
       if (_cameraCenterPosition.latitude.toStringAsFixed(5) == _userLocation.latitude.toStringAsFixed(5) &&
           _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5))
         setState(() => _isSearchThisAreaButtonActive = false);
@@ -123,9 +123,11 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   }
 
   void getInitData() async {
-    LatLng _location = context.read<LatLng>();
-    _cameraCenterPosition = _location;
-    _userLocation = _location;
+    // LatLng _location = context.read<LatLng>();
+    LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
+
+    _cameraCenterPosition = userLocation;
+    _userLocation = userLocation;
   }
 
   @override

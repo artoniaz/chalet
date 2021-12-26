@@ -1,12 +1,22 @@
+import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/problem/problem_bloc.dart';
+import 'package:chalet/blocs/review/review_bloc.dart';
+import 'package:chalet/blocs/review/review_event.dart';
+import 'package:chalet/blocs/review/review_state.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/chalet_model.dart';
+import 'package:chalet/repositories/problem_repository.dart';
+import 'package:chalet/repositories/review_repository.dart';
 import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/screens/index.dart';
+import 'package:chalet/screens/review/add_review_module.dart';
+import 'package:chalet/services/review_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -110,8 +120,11 @@ class _ChaletCardState extends State<ChaletCard> {
                     ],
                   ),
                 ),
-                AddReviewModule(
-                  chaletId: widget.chalet!.id,
+                BlocProvider<AddReviewBloc>(
+                  create: (context) => AddReviewBloc(reviewRepository: ReviewService()),
+                  child: AddReviewModule(
+                    chaletId: widget.chalet!.id,
+                  ),
                 ),
               ],
             ),
@@ -244,34 +257,14 @@ class _ChaletCardState extends State<ChaletCard> {
             //   ],
             // ),
             Divider(),
-            if (!_isReviewsActive)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomElevatedButton(
-                    label: 'Pokaż oceny',
-                    onPressed: () => setState(() => _isReviewsActive = true),
-                    backgroundColor: Palette.goldLeaf,
-                  ),
-                ],
+            BlocProvider<ReviewBloc>(
+              create: (context) => ReviewBloc(reviewRepository: ReviewService()),
+              child: ChaletReviewList(
+                chaletId: widget.chalet!.id,
+                scrollReviewList: scrollReviewList,
               ),
-            if (_isReviewsActive)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Oceny',
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                  ChaletReviewList(
-                    chaletId: widget.chalet!.id,
-                    scrollReviewList: scrollReviewList,
-                  ),
-                  VerticalSizedBox24(),
-                ],
-              ),
+            ),
+            VerticalSizedBox24(),
             Divider(),
             CustomElevatedButton(
               label: 'Zgłoś problem',
@@ -281,9 +274,7 @@ class _ChaletCardState extends State<ChaletCard> {
                     chaletName: widget.chalet!.name,
                   )),
             ),
-            Container(
-              height: 72.0,
-            ),
+            BottomContainer(),
           ],
         ),
       ),

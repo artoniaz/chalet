@@ -1,10 +1,12 @@
 import 'package:chalet/models/review_details_model.dart';
 import 'package:chalet/models/review_model.dart';
+import 'package:chalet/repositories/review_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ReviewService {
+class ReviewService implements ReviewRepository {
   final CollectionReference reviewsCollection = FirebaseFirestore.instance.collection('reviews');
 
+  @override
   Future<List<ReviewModel>> getReviewsForChalet(String chaletId) async {
     try {
       final data = await reviewsCollection
@@ -20,6 +22,7 @@ class ReviewService {
     }
   }
 
+  @override
   Future<List<ReviewModel>> getMoreReviewsForChalet(String chaletId, ReviewModel lastReview) async {
     try {
       final data = await reviewsCollection

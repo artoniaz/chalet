@@ -1,15 +1,17 @@
-import 'package:chalet/config/functions/timestamp_methods.dart';
-import 'package:chalet/models/index.dart';
+import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/add_review/add_review_event.dart';
+import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/models/review_model.dart';
+import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/review/rating_dialogs/dialog_types.dart';
 import 'package:chalet/screens/review/rating_dialogs/full_rating_dialog.dart';
-import 'package:chalet/screens/review/rating_dialogs/quick_rating_dialog_confirm.dart';
 import 'package:chalet/screens/review/rating_dialogs/not_allowed_dialog.dart';
 import 'package:chalet/screens/review/rating_dialogs/quick_rating_dialog.dart';
-import 'package:chalet/services/review_service.dart';
+import 'package:chalet/screens/review/rating_dialogs/quick_rating_dialog_confirm.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
@@ -25,57 +27,13 @@ class AddReviewModule extends StatefulWidget {
 }
 
 class _AddReviewModuleState extends State<AddReviewModule> {
-  double _chaletRating = 0.0;
+  late AddReviewBloc _addReviewBloc;
+  late UserModel? _user;
   TextEditingController _chaletDescController = TextEditingController();
-  ScrollController _dialogController = ScrollController();
   FocusNode _chaletDescFocusNode = FocusNode();
-
-  String _currentReviewId = '';
-  String? _currentRatingType;
-
   bool _validateQuickReview = false;
-
-  Widget? _getDialog(void Function(void Function()) innerSetState, String userId, String userName) {
-    if (_currentRatingType == DialogTypes.quickRatingDialog)
-      return QuickRatingDialog(
-          key: ValueKey(DialogTypes.quickRatingDialog),
-          handleRatingUpdate: _handleRatingUpdate,
-          chaletDescController: _chaletDescController,
-          chaletDescFocusNode: _chaletDescFocusNode,
-          validateQuickReview: _validateQuickReview,
-          scrollController: _dialogController,
-          createReview: () async {
-            if (_chaletRating > 0 && _chaletDescController.text.length > 0) {
-              await _createReview(userId, userName);
-              innerSetState(() => _currentRatingType = DialogTypes.fullRatingDialog);
-            } else
-              innerSetState(() => _validateQuickReview = true);
-          });
-    else if (_currentRatingType == DialogTypes.quickRatingDialogConfirm)
-      return QuickRatingDialogConfirm(
-        key: ValueKey(
-          DialogTypes.quickRatingDialogConfirm,
-        ),
-        chaletRating: _chaletRating,
-        goToFullReview: () => innerSetState(() => _currentRatingType = DialogTypes.fullRatingDialog),
-      );
-    else if (_currentRatingType == DialogTypes.fullRatingDialog)
-      return FullRatingDialog(
-        key: ValueKey(DialogTypes.fullRatingDialog),
-        chaletId: widget.chaletId,
-        reviewId: _currentReviewId,
-        chaletRating: _chaletRating,
-        handleCloseDialog: () {
-          innerSetState(() => _currentRatingType = DialogTypes.notAllowedDialog);
-          Navigator.of(context).pop();
-        },
-      );
-    else
-      return NotAllowedDialog(
-        key: ValueKey(DialogTypes.notAllowedDialog),
-        chaletRating: _chaletRating,
-      );
-  }
+  ScrollController _dialogController = ScrollController();
+  double _chaletRating = 0.0;
 
   void _handleRatingUpdate(double rating) {
     setState(() => _chaletRating = rating);
@@ -85,91 +43,102 @@ class _AddReviewModuleState extends State<AddReviewModule> {
     });
   }
 
-  Future<String> _validateLastReviewForChalet(String userId) async {
-    final reviews = await ReviewService().getLastUserReviewForChalet(widget.chaletId, userId);
-    if (reviews.isNotEmpty) {
-      ReviewModel rev = reviews.first;
-      int daysSinceLastReview = calcDaysBetween(rev.created);
-      if (daysSinceLastReview > 0)
-        return DialogTypes.quickRatingDialog;
-      else if (daysSinceLastReview <= 0 && !rev.hasUserAddedFullReview) {
-        setState(() => _chaletRating = rev.rating);
-        return DialogTypes.quickRatingDialogConfirm;
-      } else
-        setState(() => _chaletRating = rev.rating);
-      return DialogTypes.notAllowedDialog;
-    } else {
-      return DialogTypes.quickRatingDialog;
-    }
+  void _handleCreateQuickReview() {
+    _addReviewBloc.add(CreateQuickReview(ReviewModel(
+      id: '',
+      chaletId: widget.chaletId,
+      userId: _user!.uid,
+      userName: _user!.displayName ?? '',
+      rating: _chaletRating,
+      description: _chaletDescController.text,
+      created: Timestamp.now(),
+      hasUserAddedFullReview: false,
+    )));
   }
 
-  _initDialogModule(String userId, String userName) async {
-    try {
-      String dialogType = await _validateLastReviewForChalet(userId);
-      setState(() => _currentRatingType = dialogType);
-      _ratingPopUp(context, userId, userName);
-    } catch (e) {
-      EasyLoading.showError(e.toString());
-    }
-  }
-
-  Future<void> _createReview(String userId, String userName) async {
-    try {
-      String reviewId = await ReviewService().createQuickReview(ReviewModel(
-        id: '',
-        chaletId: widget.chaletId,
-        userId: userId,
-        userName: userName,
-        rating: _chaletRating,
-        description: _chaletDescController.text,
-        created: Timestamp.now(),
-        hasUserAddedFullReview: false,
-      ));
-      if (reviewId != '') {
-        setState(() => _currentReviewId = reviewId);
-      } else
-        throw 'Błąd dodawania oceny';
-    } catch (e) {
-      EasyLoading.showError(e.toString());
-    }
+  void _handleGoToFullReviewBtn() {
+    _addReviewBloc.add(GoToFullReviewDialog());
   }
 
   @override
-  void didUpdateWidget(covariant AddReviewModule oldWidget) {
-    if (oldWidget.chaletId != widget.chaletId) {
-      setState(() {
-        _currentRatingType = null;
-        _chaletDescController.clear();
-        _validateQuickReview = false;
-      });
-    }
-    super.didUpdateWidget(oldWidget);
+  void initState() {
+    _addReviewBloc = BlocProvider.of<AddReviewBloc>(context, listen: false);
+    _user = Provider.of<UserModel?>(context, listen: false);
+    super.initState();
   }
 
   @override
   void dispose() {
-    _chaletDescFocusNode.dispose();
-    _chaletDescController.dispose();
+    _addReviewBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel?>(context);
-    return CustomElevatedButton(label: 'Oceń', onPressed: () => _initDialogModule(user!.uid, user.displayName ?? ''));
+    return BlocConsumer<AddReviewBloc, AddReviewState>(
+      bloc: _addReviewBloc,
+      listener: (context, state) {
+        if (state is AddReviewValidateRatingsLoading) {
+          EasyLoading.show(maskType: EasyLoadingMaskType.clear);
+        } else if (state is AddReviewStateQuickRating) {
+          EasyLoading.dismiss();
+          showDialog(
+              context: context,
+              builder: (context) => QuickRatingDialog(
+                    key: ValueKey(DialogTypes.quickRatingDialog),
+                    addReviewBloc: _addReviewBloc,
+                    handleRatingUpdate: _handleRatingUpdate,
+                    chaletDescController: _chaletDescController,
+                    chaletDescFocusNode: _chaletDescFocusNode,
+                    validateQuickReview: _validateQuickReview,
+                    scrollController: _dialogController,
+                    createReview: _handleCreateQuickReview,
+                  ));
+        } else if (state is AddReviewStateFullRatingDialog) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (context) => FullRatingDialog(
+                    key: ValueKey(DialogTypes.fullRatingDialog),
+                    addReviewBloc: _addReviewBloc,
+                    chaletId: widget.chaletId,
+                    reviewId: state.currentReviewId,
+                    chaletRating: state.chaletRating,
+                  ));
+        } else if (state is AddReviewStateQuickRatingConfirm) {
+          EasyLoading.dismiss();
+          showDialog(
+              context: context,
+              builder: (context) => QuickRatingDialogConfirm(
+                    key: ValueKey(
+                      DialogTypes.quickRatingDialogConfirm,
+                    ),
+                    chaletRating: state.chaletRating,
+                    goToFullReview: _handleGoToFullReviewBtn,
+                  ));
+        } else if (state is AddReviewStateQuickRatingNotAllowed) {
+          EasyLoading.dismiss();
+          showDialog(
+              context: context,
+              builder: (context) => NotAllowedDialog(
+                    key: ValueKey(DialogTypes.notAllowedDialog),
+                    chaletRating: state.chaletRating,
+                  ));
+        } else if (state is AddReviewStateClear) {
+          Navigator.of(context).pop();
+        } else if (state is AddReviewStateError) {
+          EasyLoading.showError(state.errorMessage);
+        }
+      },
+      builder: (context, state) => CustomElevatedButton(
+          label: 'Oceń',
+          onPressed: state is AddReviewValidateRatingsLoading
+              ? null
+              : () {
+                  _addReviewBloc.add(
+                    GetLastUserReviewForChalet(chaletId: widget.chaletId, userId: _user!.uid),
+                  );
+                }),
+    );
   }
-
-  Future<dynamic> _ratingPopUp(BuildContext context, String userId, String userName) async => showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(builder: (context, innerSetState) {
-          return AnimatedSwitcher(
-              transitionBuilder: (child, animation) => ScaleTransition(
-                    child: child,
-                    scale: animation,
-                  ),
-              child: _getDialog(innerSetState, userId, userName),
-              duration: Duration(milliseconds: 400));
-        });
-      });
 }
