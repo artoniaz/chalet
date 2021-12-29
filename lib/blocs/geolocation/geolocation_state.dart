@@ -21,5 +21,8 @@ class GeolocationStateLoaded extends GeolocationState {
 
 class GeolocationStateError extends GeolocationState {
   final String errorMessage;
-  GeolocationStateError(this.errorMessage);
+  LatLng userLocation;
+  @override
+  List<Object> get props => [userLocation];
+  GeolocationStateError({required this.errorMessage, required this.userLocation});
 }

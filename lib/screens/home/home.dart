@@ -45,8 +45,9 @@ class _HomeState extends State<Home> {
     return BlocBuilder<GeolocationBloc, GeolocationState>(
         bloc: _geolocatinBloc,
         builder: (context, state) {
-          if (state is GeolocationStateInitial || state is GeolocationStateLoading) return Loading();
-          if (state is GeolocationStateLoaded)
+          if (state is GeolocationStateInitial || state is GeolocationStateLoading)
+            return Loading();
+          else if (state is GeolocationStateLoaded || state is GeolocationStateError)
             return Scaffold(
               extendBody: true,
               body: IndexedStack(
@@ -59,7 +60,7 @@ class _HomeState extends State<Home> {
               ),
             );
           else
-            return Loading();
+            return Container();
         });
   }
 }
