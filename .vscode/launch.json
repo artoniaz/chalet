@@ -45,3 +45,5 @@ build commands
  flutter build apk --flavor demo
  flutter build apk --flavor prod
 */
+// to rebuild icons change assets/icons and run this commands
+// flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons*

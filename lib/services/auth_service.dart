@@ -35,6 +35,8 @@ class AuthService {
           throw 'Zły format adresu email.';
         } else if (e.code == 'user-not-found') {
           throw 'Brak użytkownika o podanym adresie email.';
+        } else if (e.code == 'network-request-failed') {
+          throw 'Brak połączenia z siecią. Sprawdź połaczenie z internetem.';
         } else {
           throw 'Niepoprawne dane do logowania.';
         }

@@ -29,7 +29,7 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
       LatLng _userLocation = await geolocationRepository.getUserLocation();
       yield GeolocationStateLoaded(userLocation: _userLocation);
     } catch (e) {
-      yield GeolocationStateError(e.toString());
+      yield GeolocationStateError(errorMessage: e.toString(), userLocation: LatLng(52.237049, 21.017532));
     }
   }
 }
