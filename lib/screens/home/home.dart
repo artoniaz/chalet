@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> tabs = [
     ChaletPageSelection(),
+    SocialHome(),
     ProfileCard(),
   ];
 
