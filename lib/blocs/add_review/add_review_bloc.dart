@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
@@ -16,7 +14,6 @@ class AddReviewBloc extends Bloc<AddReviewEvent, AddReviewState> {
   String _currentReviewId = '';
   double _chaletRating = 0.0;
 
-  @override
   AddReviewState get initialState => AddReviewStateInitial();
 
   @override

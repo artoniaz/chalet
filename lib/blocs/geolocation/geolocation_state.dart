@@ -13,7 +13,7 @@ class GeolocationStateInitial extends GeolocationState {}
 class GeolocationStateLoading extends GeolocationState {}
 
 class GeolocationStateLoaded extends GeolocationState {
-  LatLng userLocation;
+  final LatLng userLocation;
   GeolocationStateLoaded({required this.userLocation});
   @override
   List<Object> get props => [userLocation];
@@ -21,7 +21,7 @@ class GeolocationStateLoaded extends GeolocationState {
 
 class GeolocationStateError extends GeolocationState {
   final String errorMessage;
-  LatLng userLocation;
+  final LatLng userLocation;
   @override
   List<Object> get props => [userLocation];
   GeolocationStateError({required this.errorMessage, required this.userLocation});

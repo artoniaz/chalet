@@ -2,12 +2,10 @@ import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/models/review_details_model.dart';
-import 'package:chalet/services/review_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class FullRatingDialog extends StatefulWidget {
   final String reviewId;

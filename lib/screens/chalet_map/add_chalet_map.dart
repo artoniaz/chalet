@@ -1,5 +1,4 @@
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
-import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
 import 'package:chalet/screens/index.dart';
