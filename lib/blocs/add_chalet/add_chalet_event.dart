@@ -1,5 +1,4 @@
 import 'package:chalet/models/image_model_file.dart';
-import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/models/index.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,4 +11,7 @@ class CreateChalet extends AddChaletEvent {
   final ChaletModel chalet;
   final List<ImageModelFile> images;
   CreateChalet(this.chalet, this.images);
+
+  @override
+  List<Object> get props => [chalet, images];
 }

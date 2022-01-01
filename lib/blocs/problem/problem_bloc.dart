@@ -7,7 +7,6 @@ class ProblemBloc extends Bloc<ProblemEvent, ProblemState> {
   final ProblemRepository problemRepository;
   ProblemBloc({required this.problemRepository}) : super(ProblemStateInitial());
 
-  @override
   ProblemState get initialState => ProblemStateInitial();
 
   @override
