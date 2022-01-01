@@ -3,12 +3,9 @@ import 'package:chalet/blocs/add_chalet/add_chalet_event.dart';
 import 'package:chalet/blocs/add_chalet/add_chalet_state.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
-import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/providers/image_file_list_provider_model.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/index.dart';
-import 'package:chalet/services/storage_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -121,12 +118,6 @@ class _AddChaletState extends State<AddChalet> {
     _addChaletBloc = BlocProvider.of<AddChaletBloc>(context, listen: false);
     _user = Provider.of<UserModel?>(context, listen: false);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _addChaletBloc.close();
-    super.dispose();
   }
 
   @override

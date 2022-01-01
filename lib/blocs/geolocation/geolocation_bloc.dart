@@ -8,7 +8,6 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
   final GeolocationRepository geolocationRepository;
   GeolocationBloc({required this.geolocationRepository}) : super(GeolocationStateInitial());
 
-  @override
   GeolocationState get initialState => GeolocationStateInitial();
 
   @override

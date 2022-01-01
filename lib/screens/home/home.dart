@@ -2,11 +2,9 @@ import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_event.dart';
 import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {

@@ -3,14 +3,12 @@ import 'package:chalet/blocs/review/review_event.dart';
 import 'package:chalet/blocs/review/review_state.dart';
 import 'package:chalet/models/review_model.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/review_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_elevated_button.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ChaletReviewList extends StatefulWidget {
   final String chaletId;
@@ -28,7 +26,6 @@ class ChaletReviewList extends StatefulWidget {
 class _ChaletReviewListState extends State<ChaletReviewList> {
   late ReviewBloc _reviewBloc;
   bool _displayShowMoreReviewsButton = false;
-  bool _isLoading = true;
   bool _isLoadingMoreReviews = false;
   List<ReviewModel> _reviewList = [];
   GlobalKey _itemKey = GlobalKey();
@@ -38,7 +35,6 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
       setState(() {
         _reviewList = state.reviewList;
         _displayShowMoreReviewsButton = state.displayShowMoreReviewsButton;
-        _isLoading = false;
       });
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         widget.scrollReviewList(_itemKey);

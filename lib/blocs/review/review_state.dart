@@ -1,5 +1,4 @@
 import 'package:chalet/models/review_model.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:equatable/equatable.dart';
 
 class ReviewState extends Equatable {

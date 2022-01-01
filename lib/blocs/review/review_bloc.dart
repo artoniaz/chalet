@@ -11,7 +11,6 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
   List<ReviewModel> _reviewList = [];
   bool _displayShowMoreReviewsButton = false;
 
-  @override
   ReviewState get initialState => ReviewStateInitial();
 
   @override
