@@ -16,7 +16,7 @@ class BottomNavBar extends StatelessWidget {
       child: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.wc), label: 'Szalety'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Social'),
+          BottomNavigationBarItem(icon: Icon(Icons.public), label: 'Social'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Mój profil'),
         ],
         elevation: 2.0,
