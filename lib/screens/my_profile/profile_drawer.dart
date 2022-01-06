@@ -1,3 +1,6 @@
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/blocs/user_data/user_data_event.dart';
+import 'package:chalet/blocs/user_data/user_data_state.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/screens/my_profile/change_password.dart';
@@ -6,13 +9,15 @@ import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info/package_info.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ProfileDrawer extends StatelessWidget {
   final PanelController panelController;
   final PackageInfo? packageInfo;
-  final UserModel? user;
+  final UserModel user;
   const ProfileDrawer({
     Key? key,
     required this.panelController,
@@ -59,40 +64,46 @@ class ProfileDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(Dimentions.small),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  CustomTextButton(
-                    label: 'Wyloguj',
-                    color: Palette.ivoryBlack,
-                    onPressed: () => AuthService().signOut(),
-                  ),
-                  CustomTextButton(
-                    label: 'Usuń profil',
-                    color: Palette.ivoryBlack,
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => RemoveAccountDialog(
-                        userEmail: user!.email,
+            BlocBuilder<UserDataBloc, UserDataState>(builder: (context, state) {
+              return Container(
+                padding: EdgeInsets.all(Dimentions.small),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    CustomTextButton(
+                      label: 'Wyloguj',
+                      color: Palette.ivoryBlack,
+                      onPressed: () async {
+                        await AuthService().signOut();
+                        Provider.of<UserDataBloc>(context, listen: false).add(GetUserDataInitialState());
+                      },
+                    ),
+                    CustomTextButton(
+                      label: 'Usuń profil',
+                      color: Palette.ivoryBlack,
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => RemoveAccountDialog(
+                          userId: user.uid,
+                          userEmail: user.email,
+                        ),
                       ),
                     ),
-                  ),
-                  packageInfo != null
-                      ? Text(
-                          'wersja aplikacji: ${packageInfo!.version}',
-                          textAlign: TextAlign.center,
-                        )
-                      : CircularProgressIndicator(
-                          strokeWidth: 2.0,
-                        ),
-                  Container(
-                    height: 72.0,
-                  ),
-                ],
-              ),
-            ),
+                    packageInfo != null
+                        ? Text(
+                            'wersja aplikacji: ${packageInfo!.version}',
+                            textAlign: TextAlign.center,
+                          )
+                        : CircularProgressIndicator(
+                            strokeWidth: 2.0,
+                          ),
+                    Container(
+                      height: 72.0,
+                    ),
+                  ],
+                ),
+              );
+            }),
           ],
         ),
       ),

@@ -19,7 +19,6 @@ class FeedInfoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserModel? _user = Provider.of<UserModel>(context);
     return Container(
       padding: EdgeInsets.all(Dimentions.medium),
       margin: EdgeInsets.only(bottom: Dimentions.big),

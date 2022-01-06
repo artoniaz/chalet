@@ -2,6 +2,7 @@ import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/models/review_model.dart';
@@ -81,7 +82,8 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   @override
   void initState() {
     _addReviewBloc = BlocProvider.of<AddReviewBloc>(context, listen: false);
-    _user = Provider.of<UserModel?>(context, listen: false);
+    _user = context.read<UserDataBloc>().state.props.first as UserModel;
+
     super.initState();
   }
 

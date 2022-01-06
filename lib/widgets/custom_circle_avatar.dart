@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/services/storage_service.dart';
 import 'package:chalet/styles/index.dart';
@@ -43,7 +44,8 @@ class CustomCircleAvatar extends StatelessWidget {
   }) : super(key: key);
 
   void _getImageFromGallery(BuildContext context) async {
-    String userUid = Provider.of<UserModel?>(context, listen: false)!.uid;
+    String userUid = (context.read<UserDataBloc>().state.props.first as UserModel).uid;
+
     final _picker = ImagePicker();
     XFile? pickedImage =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70, maxHeight: 600, maxWidth: 600);
