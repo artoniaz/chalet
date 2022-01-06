@@ -1,6 +1,7 @@
 import 'package:chalet/blocs/problem/problem_bloc.dart';
 import 'package:chalet/blocs/problem/problem_event.dart';
 import 'package:chalet/blocs/problem/problem_state.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/problem_model.dart';
 import 'package:chalet/models/user_model.dart';
@@ -50,7 +51,8 @@ class _ReportProblemState extends State<ReportProblem> {
   @override
   void initState() {
     _problemBloc = Provider.of<ProblemBloc>(context, listen: false);
-    _user = Provider.of<UserModel?>(context, listen: false);
+    _user = context.read<UserDataBloc>().state.props.first as UserModel;
+
     super.initState();
   }
 

@@ -1,14 +1,22 @@
 import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
+import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/blocs/team_feed/team_feed_event.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/chalet_repository.dart';
 import 'package:chalet/repositories/geolocation_repository.dart';
 import 'package:chalet/repositories/problem_repository.dart';
 import 'package:chalet/repositories/storage_repository.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
+import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
+import 'package:chalet/services/review_service.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +39,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return StreamProvider<UserModel?>.value(
+    return StreamProvider<firebaseAuth.User?>.value(
       initialData: null,
       value: AuthService().user,
       child: MultiBlocProvider(
@@ -47,6 +55,21 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<GeolocationBloc>(
             create: (context) => GeolocationBloc(geolocationRepository: GeolocationRepository()),
+          ),
+          BlocProvider<TeamFeedInfoBloc>(
+              create: (context) => TeamFeedInfoBloc(
+                    teamFeedInfoRepository: TeamFeedInfoRepository(),
+                  )),
+          BlocProvider<AddReviewBloc>(
+            create: (context) => AddReviewBloc(
+              reviewRepository: ReviewService(),
+              teamFeedInfoBloc: BlocProvider.of<TeamFeedInfoBloc>(context),
+            ),
+          ),
+          BlocProvider<UserDataBloc>(
+            create: (context) => UserDataBloc(
+              userDataRepository: UserDataRepository(),
+            ),
           ),
         ],
         child: MaterialApp(

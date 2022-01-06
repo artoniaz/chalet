@@ -1,15 +1,24 @@
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/blocs/team_feed/team_feed_event.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
+import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/review_model.dart';
 import 'package:chalet/repositories/review_repository.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/services/review_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AddReviewBloc extends Bloc<AddReviewEvent, AddReviewState> {
   final ReviewRepository reviewRepository;
-  AddReviewBloc({required this.reviewRepository}) : super(AddReviewStateInitial());
+  final TeamFeedInfoBloc teamFeedInfoBloc;
+  AddReviewBloc({
+    required this.reviewRepository,
+    required this.teamFeedInfoBloc,
+  }) : super(AddReviewStateInitial());
 
   String _currentReviewId = '';
   double _chaletRating = 0.0;
@@ -70,6 +79,7 @@ class AddReviewBloc extends Bloc<AddReviewEvent, AddReviewState> {
         _currentReviewId = reviewId;
         _chaletRating = event.review.rating;
         yield AddReviewStateFullRatingDialog(_currentReviewId, _chaletRating);
+        teamFeedInfoBloc.add(CreateTeamFeedInfo(event.feedInfo));
       }
     } catch (e) {
       yield AddReviewStateError('Nie udało się dodać oceny.');

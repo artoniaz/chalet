@@ -106,11 +106,8 @@ class _ChaletCardState extends State<ChaletCard> {
                     ],
                   ),
                 ),
-                BlocProvider<AddReviewBloc>(
-                  create: (context) => AddReviewBloc(reviewRepository: ReviewService()),
-                  child: AddReviewModule(
-                    chaletId: widget.chalet!.id,
-                  ),
+                AddReviewModule(
+                  chalet: widget.chalet!,
                 ),
               ],
             ),

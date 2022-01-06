@@ -34,3 +34,4 @@ export 'package:chalet/widgets/custom_dialog.dart';
 export 'package:chalet/widgets/photo_gallery.dart';
 export 'package:chalet/widgets/error_message_container.dart';
 export 'package:chalet/widgets/bottom_container.dart';
+export 'package:chalet/widgets/text_divider.dart';

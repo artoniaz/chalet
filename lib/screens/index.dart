@@ -33,3 +33,8 @@ export 'package:chalet/screens/my_profile/profile_card.dart';
 export 'package:chalet/screens/my_profile/remove_account_dialog.dart';
 
 export 'package:chalet/screens/problem/report_problem.dart';
+
+//social screens
+export 'package:chalet/screens/social/social_home.dart';
+export 'package:chalet/screens/social/feed/feed_info_list.dart';
+export 'package:chalet/screens/social/feed/feed_info_container.dart';
