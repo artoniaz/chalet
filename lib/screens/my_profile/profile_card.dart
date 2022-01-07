@@ -119,7 +119,6 @@ class _ProfileCardState extends State<ProfileCard> {
     _userNameFocusNode.dispose();
     _userDisplayNameController.dispose();
     _personalNumberTextController.dispose();
-    // _userDataBloc.close();
     super.dispose();
   }
 

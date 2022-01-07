@@ -58,24 +58,24 @@ class CustomCircleAvatar extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Container(
       padding: EdgeInsets.fromLTRB(Dimentions.small, Dimentions.small, Dimentions.small, Dimentions.small),
-      child: Stack(
-        alignment: Alignment.center,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        children: [
-          CustomAvatar(
-            photoURL: photoURL,
-          ),
-          Positioned(
-            top: 5,
-            left: width / 2 + 50,
-            child: FractionalTranslation(
-              translation: Offset(0, 0),
-              child: CustomRoundedIconButton(
-                  onPressed: () => _getImageFromGallery(context), iconData: Icons.edit, iconSize: 25.0),
-            ),
-          ),
-        ],
-      ),
+      // child: Stack(
+      //   alignment: Alignment.center,
+      //   clipBehavior: Clip.antiAliasWithSaveLayer,
+      //   children: [
+      //     CustomAvatar(
+      //       photoURL: photoURL,
+      //     ),
+      //     Positioned(
+      //       top: 5,
+      //       left: width / 2 + 50,
+      //       child: FractionalTranslation(
+      //         translation: Offset(0, 0),
+      //         child: CustomRoundedIconButton(
+      //             onPressed: () => _getImageFromGallery(context), iconData: Icons.edit, iconSize: 25.0),
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

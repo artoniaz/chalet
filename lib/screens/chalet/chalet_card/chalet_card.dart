@@ -160,29 +160,26 @@ class _ChaletCardState extends State<ChaletCard> {
             ),
             VerticalSizedBox16(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ChaletConvenienceIcon(
-                  convenienceType: ConveniencesTypes.is24,
+                  convenienceType: widget.chalet!.is24 ? ConveniencesTypes.is24Green : ConveniencesTypes.is24Red,
                   width: chaletConvenienceWidth,
                   size: 36.0,
                   iconColor: widget.chalet!.is24 ? Palette.confirmGreen : Palette.errorRed,
                 ),
-                HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.paper,
                   convenienceScore: widget.chalet!.paper,
                   width: chaletConvenienceWidth,
                   size: 36.0,
                 ),
-                HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.clean,
                   convenienceScore: widget.chalet!.clean,
                   width: chaletConvenienceWidth,
                   size: 36.0,
                 ),
-                HorizontalSizedBox16(),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.privacy,
                   convenienceScore: widget.chalet!.privacy,
