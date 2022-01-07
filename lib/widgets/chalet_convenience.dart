@@ -1,5 +1,6 @@
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class ChaletConvenience extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      padding: EdgeInsets.all(Dimentions.small),
+      // padding: EdgeInsets.all(Dimentions.small),
       decoration: BoxDecoration(
         color: Palette.white,
         borderRadius: BorderRadius.circular(
@@ -32,11 +33,15 @@ class ChaletConvenience extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image(
-            width: size,
-            height: size,
-            image: AssetImage('assets/chaletIcons/${convenienceType.type}.png'),
+          PlatformSvgAsset(
+            assetName: convenienceType.type,
+            height: 50.0,
           ),
+          // Image(
+          //   width: size,
+          //   height: size,
+          //   image: AssetImage('assets/chaletIcons/${convenienceType.type}.png'),
+          // ),
           if (isMainDisplay) VerticalSizedBox8(),
           if (isMainDisplay) Text(convenienceType.name, style: Theme.of(context).textTheme.bodyText2),
           Text(convenienceScore.toString(), style: Theme.of(context).textTheme.bodyText2),

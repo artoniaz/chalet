@@ -1,5 +1,6 @@
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 
@@ -35,10 +36,9 @@ class ChaletConvenienceIcon extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(
-            Icons.access_time_outlined,
-            size: size,
-            color: iconColor,
+          PlatformSvgAsset(
+            assetName: convenienceType.type,
+            height: 50.0,
           ),
           if (isMainDisplay) VerticalSizedBox8(),
           if (isMainDisplay)

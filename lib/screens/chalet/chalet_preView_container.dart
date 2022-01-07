@@ -48,7 +48,7 @@ class ChaletPreviewContainer extends StatelessWidget {
                   '${distanceToChalet.toStringAsFixed(0)} m',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
                 ),
-                HorizontalSizedBox8(),
+                HorizontalSizedBox16(),
                 RatingIconLabel(
                   ratingLabel: chalet.rating,
                 ),

@@ -41,6 +41,7 @@ class UserModel {
       uid: uid,
       email: email,
       displayName: name,
+      photoURL: '',
     );
   }
 
