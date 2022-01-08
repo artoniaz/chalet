@@ -162,11 +162,11 @@ class _ChaletCardState extends State<ChaletCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ChaletConvenienceIcon(
+                ChaletConvenience(
                   convenienceType: widget.chalet!.is24 ? ConveniencesTypes.is24Green : ConveniencesTypes.is24Red,
+                  convenienceScore: widget.chalet!.paper,
                   width: chaletConvenienceWidth,
                   size: 36.0,
-                  iconColor: widget.chalet!.is24 ? Palette.confirmGreen : Palette.errorRed,
                 ),
                 ChaletConvenience(
                   convenienceType: ConveniencesTypes.paper,

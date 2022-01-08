@@ -2,8 +2,12 @@ import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
+import 'package:chalet/blocs/send_congrats/send_congrats_bloc.dart';
+import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_event.dart';
+import 'package:chalet/blocs/team_member/team_member_bloc.dart';
+import 'package:chalet/blocs/team_members/team_members_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/user_model.dart';
@@ -12,6 +16,7 @@ import 'package:chalet/repositories/geolocation_repository.dart';
 import 'package:chalet/repositories/problem_repository.dart';
 import 'package:chalet/repositories/storage_repository.dart';
 import 'package:chalet/repositories/team_feed_info_repository.dart';
+import 'package:chalet/repositories/team_repository.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
@@ -69,6 +74,28 @@ class MyApp extends StatelessWidget {
           BlocProvider<UserDataBloc>(
             create: (context) => UserDataBloc(
               userDataRepository: UserDataRepository(),
+            ),
+          ),
+          BlocProvider<TeamBloc>(
+            create: (context) => TeamBloc(
+              teamRepository: TeamRepository(),
+              userDataRepository: UserDataRepository(),
+            ),
+          ),
+          BlocProvider<TeamMemberBloc>(
+            create: (context) => TeamMemberBloc(
+              userDataRepository: UserDataRepository(),
+            ),
+          ),
+          BlocProvider<TeamMembersBloc>(
+            create: (context) => TeamMembersBloc(
+              teamRepository: TeamRepository(),
+              userDataRepository: UserDataRepository(),
+            ),
+          ),
+          BlocProvider<SendCongratsBloc>(
+            create: (context) => SendCongratsBloc(
+              teamFeedInfoRepository: TeamFeedInfoRepository(),
             ),
           ),
         ],

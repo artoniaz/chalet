@@ -7,6 +7,8 @@ class TeamFeedInfoRepository {
 
   Future<String> createTeamFeedInfo(FeedInfoModel feedInfo) => _teamFeedInfoService.createTeamFeedInfo(feedInfo);
   Stream<List<FeedInfoModel>> getFeedInfos(String teamId) => _teamFeedInfoService.getFeedInfos(teamId);
+  Future<void> sendCongratsToFeed(FeedInfoModel feedInfo, CongratsSenderModel congratsSenderModel) =>
+      _teamFeedInfoService.sendCongratsToFeed(feedInfo, congratsSenderModel);
 }
 
 enum FeedInfoRole {

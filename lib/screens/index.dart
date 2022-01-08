@@ -36,5 +36,12 @@ export 'package:chalet/screens/problem/report_problem.dart';
 
 //social screens
 export 'package:chalet/screens/social/social_home.dart';
+export 'package:chalet/screens/social/social_main_page.dart';
 export 'package:chalet/screens/social/feed/feed_info_list.dart';
 export 'package:chalet/screens/social/feed/feed_info_container.dart';
+export 'package:chalet/screens/social/create_team/create_team.dart';
+export 'package:chalet/screens/social/create_team/create_team_form.dart';
+export 'package:chalet/screens/social/create_team/add_member_to_team.dart';
+export 'package:chalet/screens/social/team/team_list.dart';
+export 'package:chalet/screens/social/team/team_member_container.dart';
+export 'package:chalet/screens/social/team/add_member_icon.dart';

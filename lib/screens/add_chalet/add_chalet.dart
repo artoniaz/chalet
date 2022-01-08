@@ -259,7 +259,7 @@ class _AddChaletState extends State<AddChalet> {
                                         ? null
                                         : createChalet,
                                     label: 'Dodaj szalet',
-                                    iconData: Icons.add,
+                                    icon: Icon(Icons.add),
                                   ),
                                 ],
                               ),

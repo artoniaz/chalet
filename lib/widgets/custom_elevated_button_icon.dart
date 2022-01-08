@@ -5,19 +5,15 @@ class CustomElevatedButtonIcon extends StatelessWidget {
   final Function? onPressed;
   final String label;
   final Color? backgroundColor;
-  final IconData iconData;
-  const CustomElevatedButtonIcon({
-    Key? key,
-    this.onPressed,
-    required this.label,
-    this.backgroundColor,
-    required this.iconData,
-  }) : super(key: key);
+  final Widget icon;
+  const CustomElevatedButtonIcon(
+      {Key? key, this.onPressed, required this.label, this.backgroundColor, required this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      icon: Icon(iconData),
+      icon: icon,
       onPressed: onPressed != null ? () => onPressed!() : null,
       style: ButtonStyle(
           splashFactory: InkSplash.splashFactory,
