@@ -63,7 +63,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
           ),
           feedInfo: FeedInfoModel(
             id: '',
-            teamId: 'TEST_TEAM_ID',
+            teamId: _user!.teamId ?? '',
             userId: _user!.uid,
             chaletId: widget.chalet.id,
             chaletName: widget.chalet.name,

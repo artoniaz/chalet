@@ -23,11 +23,32 @@ class UserDataService {
     }
   }
 
+  Future<void> updateUserTeamData(String userId, String teamId, String teamName) async {
+    try {
+      await _usersCollection.doc(userId).update({
+        'teamId': teamId,
+        'teamName': teamName,
+      });
+    } catch (e) {
+      print(e);
+      throw 'Nie udało się zaktualizować danych użytkownika';
+    }
+  }
+
   Future<void> removeUserData(String userId) async {
     try {
       await _usersCollection.doc(userId).delete();
     } catch (e) {
       throw 'Nie udało się usunąć danych użytkownika. Napsz do nas na pomoc@chalet.com w celu pełnego usunięcia Twoich danych';
+    }
+  }
+
+  Future<UserModel> findUser(String userLookedForEmail) async {
+    try {
+      var lookedForUser = await _usersCollection.where('email', isEqualTo: userLookedForEmail).get();
+      return lookedForUser.docs.map((el) => UserModel.fromJson(el)).toList().first;
+    } catch (e) {
+      throw 'Nie znaleziono użytkownika o podanym adresie email';
     }
   }
 }

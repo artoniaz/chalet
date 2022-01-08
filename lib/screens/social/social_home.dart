@@ -17,13 +17,10 @@ class SocialHome extends StatefulWidget {
 }
 
 class _SocialHomeState extends State<SocialHome> {
-  late TeamFeedInfoBloc _teamFeedInfoBloc;
   late UserDataBloc _userDataBloc;
 
   @override
   void initState() {
-    _teamFeedInfoBloc = Provider.of<TeamFeedInfoBloc>(context, listen: false);
-    _teamFeedInfoBloc.add(GetTeamFeedInfos('TEST_TEAM_ID'));
     _userDataBloc = Provider.of<UserDataBloc>(context, listen: false);
 
     super.initState();
@@ -31,25 +28,16 @@ class _SocialHomeState extends State<SocialHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<UserDataBloc, UserDataState>(
-          bloc: _userDataBloc,
-          builder: (context, userDataState) {
-            return BlocBuilder<TeamFeedInfoBloc, TeamFeedInfoState>(
-                bloc: _teamFeedInfoBloc,
-                builder: (context, teamFeedState) {
-                  if (teamFeedState is TeamFeedInfoStateLoading) {
-                    return Loading();
-                  } else if (teamFeedState is TeamFeedInfoStateLoaded && userDataState is UserDataStateLoaded) {
-                    return SingleChildScrollView(
-                      child: FeedInfoList(feedInfoList: teamFeedState.feedInfoList),
-                    );
-                  } else if (teamFeedState is TeamFeedInfoStateError) {
-                    return Center(child: Text(teamFeedState.errorMessage));
-                  } else
-                    return Container();
-                });
-          }),
-    );
+    return BlocBuilder<UserDataBloc, UserDataState>(
+        bloc: _userDataBloc,
+        builder: (context, userDataState) {
+          if (userDataState is UserDataStateLoaded) {
+            if (userDataState.user.teamId == '') {
+              return CreateTeam();
+            } else
+              return SocialMainPage();
+          } else
+            return Loading();
+        });
   }
 }

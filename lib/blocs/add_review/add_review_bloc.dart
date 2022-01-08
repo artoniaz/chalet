@@ -79,7 +79,7 @@ class AddReviewBloc extends Bloc<AddReviewEvent, AddReviewState> {
         _currentReviewId = reviewId;
         _chaletRating = event.review.rating;
         yield AddReviewStateFullRatingDialog(_currentReviewId, _chaletRating);
-        teamFeedInfoBloc.add(CreateTeamFeedInfo(event.feedInfo));
+        if (event.feedInfo.teamId != '') teamFeedInfoBloc.add(CreateTeamFeedInfo(event.feedInfo));
       }
     } catch (e) {
       yield AddReviewStateError('Nie udało się dodać oceny.');
