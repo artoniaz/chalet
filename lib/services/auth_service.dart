@@ -1,34 +1,30 @@
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/blocs/user_data/user_data_event.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:provider/provider.dart';
 
 class AuthService {
   final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
   final fb = FacebookLogin();
 
   //auth change user stream
-  Stream<UserModel?> get user {
-    return _firebaseAuth
-        .userChanges()
-        // .authStateChanges()
-        .map((firebseUser) => firebseUser != null ? UserModel.userModelFromFirebaseUser(firebseUser) : null);
+  Stream<firebaseAuth.User?> get user {
+    return _firebaseAuth.userChanges();
+    // .map((firebseUser) => firebseUser != null ? UserModel.userModelFromFirebaseUser(firebseUser) : null);
   }
 
-  // currenty not used
-  //sign in anon
-  // Future signInAnon() async {
-  //   try {
-  //     firebaseAuth.UserCredential authResult = await _firebaseAuth.signInAnonymously();
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
-
   //sing in with email and password
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<void> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      firebaseAuth.UserCredential res =
+          await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
@@ -45,11 +41,17 @@ class AuthService {
   }
 
   //register with email and password
-  Future<void> registerWithEmailAndPassword(String email, String password, String nick) async {
+  Future<void> registerWithEmailAndPassword(
+    String email,
+    String password,
+    String nick,
+  ) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password).then((user) {
-        user.user?.updateDisplayName(nick);
-      });
+      firebaseAuth.UserCredential res =
+          await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      await res.user?.updateDisplayName(nick);
+      final userId = res.user!.uid;
+      UserDataRepository().setUserDataOnRegister(userId, UserModel.fromData(userId, email, nick));
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
@@ -90,14 +92,14 @@ class AuthService {
     }
   }
 
-  Future<void> editUserData(String displayName) async {
-    try {
-      await _firebaseAuth.currentUser!.updateDisplayName(displayName);
-    } catch (e) {
-      print(e);
-      throw 'Nie udało się zaktualizować danych użytkownika';
-    }
-  }
+  // Future<void> editUserData(String displayName) async {
+  //   try {
+  //     await _firebaseAuth.currentUser!.updateDisplayName(displayName);
+  //   } catch (e) {
+  //     print(e);
+  //     throw 'Nie udało się zaktualizować danych użytkownika';
+  //   }
+  // }
 
   Future<void> changeUserPassword(String userEmail, String oldPassword, String newPassword) async {
     try {
@@ -112,7 +114,7 @@ class AuthService {
   //sign out
   Future<void> signOut() async {
     try {
-      return await _firebaseAuth.signOut();
+      await _firebaseAuth.signOut();
     } catch (e) {
       print(e.toString());
       return null;

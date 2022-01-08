@@ -20,7 +20,7 @@ class RatingIconLabel extends StatelessWidget {
         ),
         HorizontalSizedBox4(),
         Text(
-          ratingLabel.toString(),
+          ratingLabel.toStringAsFixed(1),
           style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
         )
       ],

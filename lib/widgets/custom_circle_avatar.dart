@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/services/storage_service.dart';
 import 'package:chalet/styles/index.dart';
@@ -43,7 +44,8 @@ class CustomCircleAvatar extends StatelessWidget {
   }) : super(key: key);
 
   void _getImageFromGallery(BuildContext context) async {
-    String userUid = Provider.of<UserModel?>(context, listen: false)!.uid;
+    String userUid = (context.read<UserDataBloc>().state.props.first as UserModel).uid;
+
     final _picker = ImagePicker();
     XFile? pickedImage =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70, maxHeight: 600, maxWidth: 600);
@@ -56,24 +58,24 @@ class CustomCircleAvatar extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Container(
       padding: EdgeInsets.fromLTRB(Dimentions.small, Dimentions.small, Dimentions.small, Dimentions.small),
-      child: Stack(
-        alignment: Alignment.center,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        children: [
-          CustomAvatar(
-            photoURL: photoURL,
-          ),
-          Positioned(
-            top: 5,
-            left: width / 2 + 50,
-            child: FractionalTranslation(
-              translation: Offset(0, 0),
-              child: CustomRoundedIconButton(
-                  onPressed: () => _getImageFromGallery(context), iconData: Icons.edit, iconSize: 25.0),
-            ),
-          ),
-        ],
-      ),
+      // child: Stack(
+      //   alignment: Alignment.center,
+      //   clipBehavior: Clip.antiAliasWithSaveLayer,
+      //   children: [
+      //     CustomAvatar(
+      //       photoURL: photoURL,
+      //     ),
+      //     Positioned(
+      //       top: 5,
+      //       left: width / 2 + 50,
+      //       child: FractionalTranslation(
+      //         translation: Offset(0, 0),
+      //         child: CustomRoundedIconButton(
+      //             onPressed: () => _getImageFromGallery(context), iconData: Icons.edit, iconSize: 25.0),
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

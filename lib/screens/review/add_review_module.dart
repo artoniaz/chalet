@@ -1,13 +1,19 @@
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/models/feed_info_model.dart';
+import 'package:chalet/models/index.dart';
 import 'package:chalet/models/review_model.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/screens/review/rating_dialogs/dialog_types.dart';
 import 'package:chalet/screens/review/rating_dialogs/full_rating_dialog.dart';
 import 'package:chalet/screens/review/rating_dialogs/not_allowed_dialog.dart';
 import 'package:chalet/screens/review/rating_dialogs/quick_rating_dialog.dart';
 import 'package:chalet/screens/review/rating_dialogs/quick_rating_dialog_confirm.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +22,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 class AddReviewModule extends StatefulWidget {
-  final String chaletId;
+  final ChaletModel chalet;
   const AddReviewModule({
     Key? key,
-    required this.chaletId,
+    required this.chalet,
   }) : super(key: key);
 
   @override
@@ -44,16 +50,31 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   }
 
   void _handleCreateQuickReview() {
-    _addReviewBloc.add(CreateQuickReview(ReviewModel(
-      id: '',
-      chaletId: widget.chaletId,
-      userId: _user!.uid,
-      userName: _user!.displayName ?? '',
-      rating: _chaletRating,
-      description: _chaletDescController.text,
-      created: Timestamp.now(),
-      hasUserAddedFullReview: false,
-    )));
+    _addReviewBloc.add(
+      CreateQuickReview(
+          review: ReviewModel(
+            id: '',
+            chaletId: widget.chalet.id,
+            userId: _user!.uid,
+            userName: _user!.displayName ?? '',
+            rating: _chaletRating,
+            description: _chaletDescController.text,
+            created: Timestamp.now(),
+            hasUserAddedFullReview: false,
+          ),
+          feedInfo: FeedInfoModel(
+            id: '',
+            teamId: _user!.teamId ?? '',
+            userId: _user!.uid,
+            chaletId: widget.chalet.id,
+            chaletName: widget.chalet.name,
+            userName: _user!.displayName ?? '',
+            role: FeedInfoRole.rating,
+            chaletRating: _chaletRating,
+            created: Timestamp.now(),
+            congratsSenderList: [],
+          )),
+    );
   }
 
   void _handleGoToFullReviewBtn() {
@@ -63,14 +84,9 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   @override
   void initState() {
     _addReviewBloc = BlocProvider.of<AddReviewBloc>(context, listen: false);
-    _user = Provider.of<UserModel?>(context, listen: false);
-    super.initState();
-  }
+    _user = context.read<UserDataBloc>().state.props.first as UserModel;
 
-  @override
-  void dispose() {
-    _addReviewBloc.close();
-    super.dispose();
+    super.initState();
   }
 
   @override
@@ -101,7 +117,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
               builder: (context) => FullRatingDialog(
                     key: ValueKey(DialogTypes.fullRatingDialog),
                     addReviewBloc: _addReviewBloc,
-                    chaletId: widget.chaletId,
+                    chaletId: widget.chalet.id,
                     reviewId: state.currentReviewId,
                     chaletRating: state.chaletRating,
                   ));
@@ -131,12 +147,13 @@ class _AddReviewModuleState extends State<AddReviewModule> {
         }
       },
       builder: (context, state) => CustomElevatedButton(
-          label: 'Oceń',
+          label: 'Zostaw balas',
+          backgroundColor: Palette.goldLeaf,
           onPressed: state is AddReviewValidateRatingsLoading
               ? null
               : () {
                   _addReviewBloc.add(
-                    GetLastUserReviewForChalet(chaletId: widget.chaletId, userId: _user!.uid),
+                    GetLastUserReviewForChalet(chaletId: widget.chalet.id, userId: _user!.uid),
                   );
                 }),
     );

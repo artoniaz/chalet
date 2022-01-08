@@ -1,8 +1,10 @@
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -30,7 +32,11 @@ class _RegisterState extends State<Register> {
       email = email.trim();
       passwordController.text = passwordController.text.trim();
       try {
-        await _authService.registerWithEmailAndPassword(email, passwordController.text, nickController.text);
+        await _authService.registerWithEmailAndPassword(
+          email,
+          passwordController.text,
+          nickController.text,
+        );
       } catch (e) {
         setState(() {
           passwordController.clear();

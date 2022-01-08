@@ -1,3 +1,5 @@
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/review_details_model.dart';
 import 'package:chalet/models/review_model.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +17,11 @@ class GetLastUserReviewForChalet extends AddReviewEvent {
 
 class CreateQuickReview extends AddReviewEvent {
   final ReviewModel review;
-  CreateQuickReview(this.review);
+  final FeedInfoModel feedInfo;
+  CreateQuickReview({
+    required this.review,
+    required this.feedInfo,
+  });
 }
 
 class GoToFullReviewDialog extends AddReviewEvent {}

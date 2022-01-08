@@ -1,3 +1,4 @@
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/services/auth_service.dart';
@@ -27,8 +28,9 @@ class _ChangePasswordState extends State<ChangePassword> {
   void _updatePassword() async {
     if (_formKey.currentState!.validate()) {
       try {
-        UserModel? user = Provider.of<UserModel?>(context, listen: false);
-        await AuthService().changeUserPassword(user!.email, _oldPasswordController.text, _newPasswordController.text);
+        UserModel? user = context.read<UserDataBloc>().state.props.first as UserModel;
+
+        await AuthService().changeUserPassword(user.email, _oldPasswordController.text, _newPasswordController.text);
         EasyLoading.showSuccess('Zmienino hasło');
         Navigator.pop(context);
       } catch (e) {

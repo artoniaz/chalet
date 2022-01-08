@@ -1,6 +1,7 @@
 import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_chalet/add_chalet_event.dart';
 import 'package:chalet/blocs/add_chalet/add_chalet_state.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
 import 'package:chalet/models/index.dart';
@@ -116,7 +117,8 @@ class _AddChaletState extends State<AddChalet> {
   @override
   void initState() {
     _addChaletBloc = BlocProvider.of<AddChaletBloc>(context, listen: false);
-    _user = Provider.of<UserModel?>(context, listen: false);
+    _user = context.read<UserDataBloc>().state.props.first as UserModel;
+
     super.initState();
   }
 
@@ -257,7 +259,7 @@ class _AddChaletState extends State<AddChalet> {
                                         ? null
                                         : createChalet,
                                     label: 'Dodaj szalet',
-                                    iconData: Icons.add,
+                                    icon: Icon(Icons.add),
                                   ),
                                 ],
                               ),

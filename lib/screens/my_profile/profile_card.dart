@@ -1,5 +1,8 @@
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/blocs/user_data/user_data_state.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:chalet/screens/my_profile/personal_number_dialogs.dart';
 import 'package:chalet/screens/my_profile/profile_drawer.dart';
 import 'package:chalet/services/index.dart';
@@ -8,7 +11,9 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:package_info/package_info.dart';
 
@@ -20,6 +25,8 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
+  late UserDataBloc _userDataBloc;
+  late UserModel _user;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _panelController = PanelController();
@@ -48,7 +55,7 @@ class _ProfileCardState extends State<ProfileCard> {
   void _updateDisplayname() async {
     if (_formKey.currentState!.validate() && _userDisplayNameController.text.isNotEmpty) {
       try {
-        await AuthService().editUserData(_userDisplayNameController.text);
+        await UserDataRepository().updateUserDisplayName(_user.uid, _userDisplayNameController.text);
         dissmissCurrentFocus(context);
         _personalNumberFocusNode.unfocus();
         _userNameFocusNode.unfocus();
@@ -87,6 +94,9 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   void initState() {
+    _userDataBloc = Provider.of<UserDataBloc>(context, listen: false);
+    _user = context.read<UserDataBloc>().state.props.first as UserModel;
+
     _getPackageInfo();
     _checkIsUpdateButtonActive();
     _personalNumberFocusNode.addListener(() {
@@ -114,11 +124,11 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<UserModel?>(
-        stream: AuthService().user,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final user = snapshot.data;
+    return BlocBuilder<UserDataBloc, UserDataState>(
+        bloc: _userDataBloc,
+        builder: (context, state) {
+          if (state is UserDataStateLoaded) {
+            final user = state.user;
             return Scaffold(
               extendBodyBehindAppBar: true,
               appBar: AppBar(
@@ -139,7 +149,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       SliverToBoxAdapter(
                         child: SafeArea(
                           child: CustomCircleAvatar(
-                            photoURL: user!.photoURL,
+                            photoURL: user.photoURL,
                           ),
                         ),
                       ),
