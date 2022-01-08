@@ -13,6 +13,7 @@ import 'package:chalet/screens/review/rating_dialogs/full_rating_dialog.dart';
 import 'package:chalet/screens/review/rating_dialogs/not_allowed_dialog.dart';
 import 'package:chalet/screens/review/rating_dialogs/quick_rating_dialog.dart';
 import 'package:chalet/screens/review/rating_dialogs/quick_rating_dialog_confirm.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +147,8 @@ class _AddReviewModuleState extends State<AddReviewModule> {
         }
       },
       builder: (context, state) => CustomElevatedButton(
-          label: 'Oceń',
+          label: 'Zostaw balas',
+          backgroundColor: Palette.goldLeaf,
           onPressed: state is AddReviewValidateRatingsLoading
               ? null
               : () {

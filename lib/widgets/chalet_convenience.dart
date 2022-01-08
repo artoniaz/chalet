@@ -23,7 +23,7 @@ class ChaletConvenience extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      // padding: EdgeInsets.all(Dimentions.small),
+      padding: EdgeInsets.symmetric(vertical: Dimentions.small),
       decoration: BoxDecoration(
         color: Palette.white,
         borderRadius: BorderRadius.circular(
@@ -35,16 +35,17 @@ class ChaletConvenience extends StatelessWidget {
         children: [
           PlatformSvgAsset(
             assetName: convenienceType.type,
-            height: 50.0,
+            height: 40.0,
           ),
-          // Image(
-          //   width: size,
-          //   height: size,
-          //   image: AssetImage('assets/chaletIcons/${convenienceType.type}.png'),
-          // ),
+          
           if (isMainDisplay) VerticalSizedBox8(),
           if (isMainDisplay) Text(convenienceType.name, style: Theme.of(context).textTheme.bodyText2),
-          Text(convenienceScore.toString(), style: Theme.of(context).textTheme.bodyText2),
+          Text(
+              convenienceType.type != ConveniencesTypes.is24Green.type &&
+                      convenienceType.type != ConveniencesTypes.is24Red.type
+                  ? convenienceScore.toString()
+                  : '',
+              style: Theme.of(context).textTheme.bodyText2),
         ],
       ),
     );
