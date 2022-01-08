@@ -71,6 +71,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
             role: FeedInfoRole.rating,
             chaletRating: _chaletRating,
             created: Timestamp.now(),
+            congratsSenderList: [],
           )),
     );
   }

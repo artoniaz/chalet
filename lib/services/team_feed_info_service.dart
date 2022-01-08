@@ -26,4 +26,15 @@ class TeamFeedInfoService implements TeamFeedInfoRepository {
       throw 'Błąd dodawania informacji dla klanu';
     }
   }
+
+  Future<void> sendCongratsToFeed(FeedInfoModel feedInfo, CongratsSenderModel congratsSenderModel) async {
+    try {
+      await _teamsCollection.doc(feedInfo.teamId).collection(FEED_INFOS).doc(feedInfo.id).update({
+        'congratsSentNumber': FieldValue.increment(1),
+        'congratsSenderList': FieldValue.arrayUnion([congratsSenderModel.toJson()])
+      });
+    } catch (e) {
+      throw 'Błąd wysyłania gratulacji. Spróbuj ponownie';
+    }
+  }
 }

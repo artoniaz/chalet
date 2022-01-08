@@ -10,6 +10,8 @@ class TeamFeedInfoStateInitial extends TeamFeedInfoState {}
 
 class TeamFeedInfoStateLoading extends TeamFeedInfoState {}
 
+class TeamFeedInfoStateSendingCongratsLoading extends TeamFeedInfoState {}
+
 class TeamFeedInfoStateLoaded extends TeamFeedInfoState {
   final List<FeedInfoModel> feedInfoList;
   TeamFeedInfoStateLoaded({required this.feedInfoList});

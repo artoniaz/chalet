@@ -2,6 +2,7 @@ import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
+import 'package:chalet/blocs/send_congrats/send_congrats_bloc.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_event.dart';
@@ -90,6 +91,11 @@ class MyApp extends StatelessWidget {
             create: (context) => TeamMembersBloc(
               teamRepository: TeamRepository(),
               userDataRepository: UserDataRepository(),
+            ),
+          ),
+          BlocProvider<SendCongratsBloc>(
+            create: (context) => SendCongratsBloc(
+              teamFeedInfoRepository: TeamFeedInfoRepository(),
             ),
           ),
         ],
