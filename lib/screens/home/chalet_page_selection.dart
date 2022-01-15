@@ -30,8 +30,8 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
     // final byteData = await rootBundle.load('assets/poo/poo_happy.png');
     // Uint8List image = byteData.buffer.asUint8List();
     // final descriptor = await BitmapDescriptor.fromBytes(image);
-    final descriptor =
-        await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), 'assets/poo/chalet_icon.png');
+    final descriptor = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map_marker/map_marker.png');
     _chaletLocationIcon = descriptor;
   }
 
@@ -44,7 +44,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   void _getInitData() async {
     LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
     _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(userLocation);
-    // await _getBitmapDescriptor();
+    await _getBitmapDescriptor();
     setState(() => _isCameraLoading = false);
   }
 

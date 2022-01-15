@@ -86,12 +86,12 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void _addMarker(ChaletModel chalet) {
     var _marker = Marker(
         markerId: MarkerId(chalet.id),
-        // icon: widget.chaletLocationIcon ?? BitmapDescriptor.defaultMarker,
-        icon: BitmapDescriptor.defaultMarker,
+        icon: widget.chaletLocationIcon ?? BitmapDescriptor.defaultMarker,
+        // icon: BitmapDescriptor.defaultMarker,
         position: getLatLngFromGeoPoint(chalet.position['geopoint']),
         infoWindow: InfoWindow(
           title: '${chalet.name}',
-          snippet: 'Ocena: ${chalet.rating}',
+          snippet: 'Ocena: ${chalet.rating.toStringAsFixed(1)}',
         ),
         onTap: () {
           if (_activeChalet == null) _panelController.show();

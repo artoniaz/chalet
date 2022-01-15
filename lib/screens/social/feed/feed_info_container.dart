@@ -36,7 +36,6 @@ class FeedInfoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserModel _user = Provider.of<UserDataBloc>(context).state.props.first as UserModel;
-    print(_hasAlreadyBeenCongratulatedByUser(_user));
     return BlocConsumer<SendCongratsBloc, SendCongratsState>(
         bloc: Provider.of<SendCongratsBloc>(context, listen: false),
         listener: (context, state) {
@@ -105,16 +104,18 @@ class FeedInfoContainer extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: CustomElevatedButton(
-                        label: _hasAlreadyBeenCongratulatedByUser(_user) ? 'Już polajkowałeś' : 'Pogratuluj',
-                        backgroundColor: Palette.goldLeaf,
-                        onPressed: _congratsValidation(_user, state)
-                            ? () => Provider.of<SendCongratsBloc>(context, listen: false).add(SendCongrats(
-                                  feedInfo,
-                                  CongratsSenderModel(userId: _user.uid, userName: _user.displayName ?? 'anonim'),
-                                ))
-                            : null,
-                      ),
+                      child: _user.uid == feedInfo.userId
+                          ? Container()
+                          : CustomElevatedButton(
+                              label: _hasAlreadyBeenCongratulatedByUser(_user) ? 'Już polajkowałeś' : 'Pogratuluj',
+                              backgroundColor: Palette.goldLeaf,
+                              onPressed: _congratsValidation(_user, state)
+                                  ? () => Provider.of<SendCongratsBloc>(context, listen: false).add(SendCongrats(
+                                        feedInfo,
+                                        CongratsSenderModel(userId: _user.uid, userName: _user.displayName ?? 'anonim'),
+                                      ))
+                                  : null,
+                            ),
                     ),
                     Expanded(
                       child: Row(
