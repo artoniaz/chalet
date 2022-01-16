@@ -26,13 +26,16 @@ class _SocialMainPageState extends State<SocialMainPage> with SingleTickerProvid
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            TabBarView(
-              controller: _tabController,
-              children: [
-                TeamFeedPage(),
-                Center(child: Text('social mapa')),
-                Center(child: Text('statystyki')),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  TeamFeedPage(),
+                  Center(child: Text('social mapa')),
+                  Center(child: Text('statystyki')),
+                ],
+              ),
             ),
             Positioned(
               top: Dimentions.small,

@@ -14,6 +14,15 @@ class TeamService {
     }
   }
 
+  Future<List<TeamMemberModel>> getPendingTeamMemberList(String teamId) async {
+    try {
+      final data = await _teamsCollection.doc(teamId).collection('pendingMembers').get();
+      return data.docs.map((doc) => TeamMemberModel.fromJson(doc.data(), doc.id)).toList();
+    } catch (e) {
+      throw 'Błąd pobierania informacji o oczekujących zaproszeniach';
+    }
+  }
+
   Future<String> createTeam(String userId, String userName, String teamName) async {
     try {
       DocumentReference<Object?> res = await _teamsCollection.add(TeamModel(id: '', name: teamName).toJson());
@@ -25,6 +34,18 @@ class TeamService {
       return res.id;
     } catch (e) {
       throw 'Nie udało się dodać klanu';
+    }
+  }
+
+  Future<void> createPendingTeamMember(String pendingUserId, String userName, String teamId) async {
+    try {
+      await _teamsCollection
+          .doc(teamId)
+          .collection('pendingMembers')
+          .doc(pendingUserId)
+          .set(TeamMemberModel(id: pendingUserId, name: userName, isAdmin: false).toJson());
+    } catch (e) {
+      throw 'Nie udało się wysłać zaposzenia użytkownikowi';
     }
   }
 }
