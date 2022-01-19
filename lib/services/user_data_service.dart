@@ -51,4 +51,14 @@ class UserDataService {
       throw 'Nie znaleziono użytkownika o podanym adresie email';
     }
   }
+
+  Future<void> addUserInvitationToTeam(String userId, String invitingTeamId) async {
+    try {
+      await _usersCollection.doc(userId).update({
+        'pendingInvitationsIds': FieldValue.arrayUnion([invitingTeamId]),
+      });
+    } catch (e) {
+      throw 'Nie udało się wysłać zaproszenia użytkownikowi.';
+    }
+  }
 }

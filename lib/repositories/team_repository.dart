@@ -14,4 +14,7 @@ class TeamRepository {
 
   Future<void> createPendingTeamMember(String pendingUserId, String userName, String teamId) =>
       _teamService.createPendingTeamMember(pendingUserId, userName, teamId);
+
+  Future<void> deleteTeamMember(String userToDeleteId, String teamId) =>
+      _teamService.deleteTeamMember(userToDeleteId, teamId);
 }

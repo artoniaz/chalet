@@ -12,8 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMembersState> {
   final TeamRepository teamRepository;
+  final UserDataRepository userDataRepository;
   PendingTeamMembersBloc({
     required this.teamRepository,
+    required this.userDataRepository,
   }) : super(PendingTeamMembersStateInitial());
 
   List<TeamMemberModel> _pendingTeamMembers = [];
@@ -55,7 +57,15 @@ class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMe
   Stream<PendingTeamMembersState> _handleInviteTeamMemberEvent(InviteTeamMember event) async* {
     yield PendingTeamMembersStateLoading();
     try {
-      await teamRepository.createPendingTeamMember(event.pendingUserId, event.pendingUserName, event.teamId);
+      Future _createPendingTeamMember() =>
+          teamRepository.createPendingTeamMember(event.pendingUserId, event.pendingUserName, event.teamId);
+      Future _addUserInvitationToTeam() =>
+          userDataRepository.addUserInvitationToTeam(event.pendingUserId, event.teamId);
+      var futures = [
+        _createPendingTeamMember(),
+        _addUserInvitationToTeam(),
+      ];
+      await Future.wait(futures);
       yield PendingTeamMembersStateInvited();
       this.add(GetPendingMembers(event.teamId));
     } catch (e) {

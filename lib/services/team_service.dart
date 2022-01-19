@@ -25,7 +25,8 @@ class TeamService {
 
   Future<String> createTeam(String userId, String userName, String teamName) async {
     try {
-      DocumentReference<Object?> res = await _teamsCollection.add(TeamModel(id: '', name: teamName).toJson());
+      DocumentReference<Object?> res =
+          await _teamsCollection.add(TeamModel(id: '', name: teamName, teamAdminId: userId).toJson());
       _teamsCollection
           .doc(res.id)
           .collection("members")
@@ -46,6 +47,14 @@ class TeamService {
           .set(TeamMemberModel(id: pendingUserId, name: userName, isAdmin: false).toJson());
     } catch (e) {
       throw 'Nie udało się wysłać zaposzenia użytkownikowi';
+    }
+  }
+
+  Future<void> deleteTeamMember(String userToDeleteId, String teamId) async {
+    try {
+      await _teamsCollection.doc(teamId).collection('members').doc(userToDeleteId).delete();
+    } catch (e) {
+      throw 'Nie udało się usunąć użytkownika z klanu';
     }
   }
 }

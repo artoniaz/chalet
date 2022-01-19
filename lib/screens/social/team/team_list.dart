@@ -30,6 +30,7 @@ class _TeamListState extends State<TeamList> {
   late TeamMembersBloc _teamMembersBloc;
   late UserModel _user;
   final double _circleAvatarRadius = 30.0;
+
   @override
   void initState() {
     _user = Provider.of<UserDataBloc>(context, listen: false).user;

@@ -1,7 +1,16 @@
+import 'package:chalet/blocs/delete_team_member/delete_team_member_bloc.dart';
+import 'package:chalet/blocs/delete_team_member/delete_team_member_event.dart';
+import 'package:chalet/blocs/team_member/team_member_bloc.dart';
+import 'package:chalet/blocs/team_member/team_member_state.dart';
+import 'package:chalet/blocs/team_members/team_members_bloc.dart';
+import 'package:chalet/blocs/team_members/team_members_state.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/team_member_model.dart';
+import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TeamMemberContainer extends StatelessWidget {
   final TeamMemberModel teamMember;
@@ -14,25 +23,54 @@ class TeamMemberContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 6.0),
-      child: Column(children: [
-        CircleAvatar(
-          radius: circleAvatarRadius + 5.0,
-          backgroundColor: teamMember.isAdmin ? Palette.goldLeaf : Palette.chaletBlue,
-          child: CircleAvatar(
-            backgroundImage: AssetImage(
-              'assets/poo/poo_happy.png',
-            ),
-            radius: circleAvatarRadius,
+    UserModel _user = Provider.of<UserDataBloc>(context, listen: false).user;
+    var _teamMembersBloc = Provider.of<TeamMembersBloc>(context, listen: false);
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: (circleAvatarRadius + 20.0) * 2,
+      ),
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(right: 6.0),
+            child: Column(children: [
+              CircleAvatar(
+                radius: circleAvatarRadius + 5.0,
+                backgroundColor: teamMember.isAdmin ? Palette.goldLeaf : Palette.chaletBlue,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(
+                    'assets/poo/poo_happy.png',
+                  ),
+                  radius: circleAvatarRadius,
+                ),
+              ),
+              VerticalSizedBox8(),
+              Text(
+                teamMember.name,
+                style: Theme.of(context).textTheme.bodyText1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ]),
           ),
-        ),
-        VerticalSizedBox8(),
-        Text(
-          teamMember.name,
-          style: Theme.of(context).textTheme.bodyText1,
-        ),
-      ]),
+          if (!teamMember.isAdmin && _teamMembersBloc.isAdmin(_user))
+            Positioned(
+                top: 0,
+                right: 5.0,
+                child: FractionalTranslation(
+                  translation: Offset(0, 0),
+                  child: CustomRoundedIconButton(
+                      iconData: Icons.delete,
+                      iconSize: 20.0,
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => CustomAlertDialog(
+                              headline: 'Czy chcesz usunąć tego użytownika z klanu?',
+                              approveFunction: () => Provider.of<DeleteTeamMemberBloc>(context, listen: false)
+                                  .add(DeleteTeamMember(teamMember.id, _user.teamId!)),
+                              approveFunctionButtonLabel: 'Usuń z klanu'))),
+                )),
+        ],
+      ),
     );
   }
 }

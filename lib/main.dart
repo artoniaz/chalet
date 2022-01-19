@@ -1,5 +1,6 @@
 import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/delete_team_member/delete_team_member_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
@@ -102,6 +103,13 @@ class MyApp extends StatelessWidget {
           BlocProvider<PendingTeamMembersBloc>(
             create: (context) => PendingTeamMembersBloc(
               teamRepository: TeamRepository(),
+              userDataRepository: UserDataRepository(),
+            ),
+          ),
+          BlocProvider<DeleteTeamMemberBloc>(
+            create: (context) => DeleteTeamMemberBloc(
+              teamRepository: TeamRepository(),
+              teamMembersBloc: BlocProvider.of<TeamMembersBloc>(context),
             ),
           ),
         ],

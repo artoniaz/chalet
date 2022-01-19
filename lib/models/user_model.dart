@@ -7,6 +7,7 @@ class UserModel {
   final String? photoURL;
   final String? teamId;
   final String? teamName;
+  final List<String>? pendingInvitationsIds;
   const UserModel({
     required this.uid,
     required this.email,
@@ -14,17 +15,20 @@ class UserModel {
     this.photoURL,
     this.teamId,
     this.teamName,
+    this.pendingInvitationsIds,
   });
 
   factory UserModel.fromJson(Object? json) {
     return UserModel(
-      uid: (json as dynamic)['uid']?.toString() ?? '',
-      email: (json as dynamic)['email']?.toString() ?? '',
-      displayName: (json as dynamic)['displayName']?.toString() ?? '',
-      photoURL: (json as dynamic)['photoURL']?.toString() ?? '',
-      teamName: (json as dynamic)['teamName']?.toString() ?? '',
-      teamId: (json as dynamic)['teamId']?.toString() ?? '',
-    );
+        uid: (json as dynamic)['uid']?.toString() ?? '',
+        email: (json as dynamic)['email']?.toString() ?? '',
+        displayName: (json as dynamic)['displayName']?.toString() ?? '',
+        photoURL: (json as dynamic)['photoURL']?.toString() ?? '',
+        teamName: (json as dynamic)['teamName']?.toString() ?? '',
+        teamId: (json as dynamic)['teamId']?.toString() ?? '',
+        pendingInvitationsIds: (json as dynamic)['pendingInvitationsIds'] == null
+            ? []
+            : List<String>.from((json as dynamic)['pendingInvitationsIds'].map((el) => el)));
   }
 
   factory UserModel.userModelFromFirebaseUser(User firebaseUser) {
@@ -52,5 +56,6 @@ class UserModel {
         'photoURL': photoURL,
         'teamId': teamId,
         'teamName': teamName,
+        'pendingInvitationsIds': pendingInvitationsIds,
       };
 }

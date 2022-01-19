@@ -18,4 +18,7 @@ class UserDataRepository {
   Future<void> removeUserData(String userId) => _userDataService.removeUserData(userId);
 
   Future<UserModel> findUser(String userLookedForEmail) => _userDataService.findUser(userLookedForEmail);
+
+  Future<void> addUserInvitationToTeam(String userId, String invitingTeamId) =>
+      _userDataService.addUserInvitationToTeam(userId, invitingTeamId);
 }

@@ -9,6 +9,7 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 class CreateTeam extends StatefulWidget {
@@ -41,8 +42,15 @@ class _CreateTeamState extends State<CreateTeam> {
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
-        child: BlocBuilder<TeamBloc, TeamState>(
+        child: BlocConsumer<TeamBloc, TeamState>(
             bloc: _teamBloc,
+            listener: (context, state) async {
+              if (state is TeamStateError) {
+                await _whenComleteModalCreateTeam();
+                Navigator.of(context).pop();
+                EasyLoading.showError(state.errorMessage);
+              }
+            },
             builder: (context, state) {
               return Container(
                 height: MediaQuery.of(context).size.height,
