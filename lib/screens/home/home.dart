@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebaseUser;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:nil/nil.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -23,12 +24,6 @@ class _HomeState extends State<Home> {
   late GeolocationBloc _geolocatinBloc;
   late UserDataBloc _userDataBloc;
   int _currentIndex = 0;
-
-  final List<Widget> tabs = [
-    ChaletPageSelection(),
-    SocialHome(),
-    ProfileCard(),
-  ];
 
   void handleTabChange(int index) => setState(() => _currentIndex = index);
 
@@ -45,7 +40,6 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     _geolocatinBloc.close();
-    // _userDataBloc.close();
     super.dispose();
   }
 
@@ -64,10 +58,18 @@ class _HomeState extends State<Home> {
                 else if ((geolocationState is GeolocationStateLoaded || geolocationState is GeolocationStateError) &&
                     userDataState is UserDataStateLoaded)
                   return Scaffold(
+                    appBar: userDataState.user.pendingInvitationsIds == null ||
+                            userDataState.user.pendingInvitationsIds!.isEmpty
+                        ? null
+                        : CustomAppBars.customPendingTeamInfoAppBar(context),
                     extendBody: true,
                     body: IndexedStack(
                       index: _currentIndex,
-                      children: tabs,
+                      children: [
+                        ChaletPageSelection(),
+                        SocialHome(),
+                        ProfileCard(),
+                      ],
                     ),
                     bottomNavigationBar: BottomNavBar(
                       currentIndex: _currentIndex,

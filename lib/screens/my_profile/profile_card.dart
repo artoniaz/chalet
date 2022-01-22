@@ -1,6 +1,7 @@
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
+import 'package:chalet/config/routes/routes_definitions.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:chalet/screens/my_profile/personal_number_dialogs.dart';
@@ -172,6 +173,24 @@ class _ProfileCardState extends State<ProfileCard> {
                                   user.email,
                                   style: Theme.of(context).textTheme.headline6!.copyWith(color: Palette.grey),
                                 ),
+                                VerticalSizedBox16(),
+                                if (user.pendingInvitationsIds != null && user.pendingInvitationsIds!.isNotEmpty)
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      CustomElevatedButton(
+                                        label: 'Zobacz zaproszenia do klanu',
+                                        onPressed: () =>
+                                            Navigator.pushNamed(context, RoutesDefinitions.VIEW_PENDING_INVITATIONS),
+                                      ),
+                                      VerticalSizedBox8(),
+                                      Text(
+                                        'Możesz mieć tylko 2 aktywne zaproszenia. Decyduj szybko!',
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.grey),
+                                      ),
+                                    ],
+                                  ),
                               ],
                             )),
                           ],

@@ -45,3 +45,5 @@ export 'package:chalet/screens/social/create_team/add_member_to_team.dart';
 export 'package:chalet/screens/social/team/team_list.dart';
 export 'package:chalet/screens/social/team/team_member_container.dart';
 export 'package:chalet/screens/social/team/add_member_icon.dart';
+export 'package:chalet/screens/social/pending_invitation/pending_invitations.dart';
+export 'package:chalet/screens/social/pending_invitation/pending_team_invitation_container.dart';

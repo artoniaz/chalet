@@ -15,6 +15,8 @@ class TeamMemberStateLoading extends TeamMemberState {}
 class TeamMemberStateUserFound extends TeamMemberState {
   final UserModel userLookedFor;
   TeamMemberStateUserFound({required this.userLookedFor});
+  @override
+  List<Object> get props => [userLookedFor];
 }
 
 class TeamMemberStateError extends TeamMemberState {

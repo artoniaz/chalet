@@ -1,10 +1,17 @@
+import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
+import 'package:chalet/blocs/pending_members/pending_members_event.dart';
+import 'package:chalet/blocs/pending_members/pending_members_state.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team/team_event.dart';
 import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/team_member/team_member_bloc.dart';
 import 'package:chalet/blocs/team_member/team_member_event.dart';
 import 'package:chalet/blocs/team_member/team_member_state.dart';
+import 'package:chalet/blocs/team_members/team_members_event.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
+import 'package:chalet/models/team_member_model.dart';
+import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/input_decoration.dart';
@@ -25,8 +32,22 @@ class AddMemberToTeam extends StatefulWidget {
 
 class _AddMemberToTeamState extends State<AddMemberToTeam> {
   late TeamMemberBloc _teamMemberBloc;
+  late PendingTeamMembersBloc _pendingTeamMembersBloc;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _teamNameController = TextEditingController();
+  late UserModel _user;
+  late List<TeamMemberModel> _pendingTeamMembers;
+
+  bool _handleCanBeInvitedValidation(TeamMemberState teamMemberState, PendingTeamMembersState pendingTeamMembersState) {
+    if (teamMemberState is TeamMemberStateLoading) return false;
+    if (teamMemberState is TeamMemberStateUserFound &&
+        _pendingTeamMembers.indexWhere((el) => el.id == teamMemberState.userLookedFor.uid) > -1) return false;
+    if (pendingTeamMembersState is PendingTeamMembersStateLoading ||
+        pendingTeamMembersState is PendingTeamMembersStateInvited)
+      return false;
+    else
+      return true;
+  }
 
   void _searchUser() {
     if (_formKey.currentState!.validate()) {
@@ -34,9 +55,29 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
     }
   }
 
+  void _inviteUser(TeamMemberState teamMemberState) {
+    if (teamMemberState is TeamMemberStateUserFound) if (teamMemberState.userLookedFor.pendingInvitationsIds?.length !=
+            null &&
+        teamMemberState.userLookedFor.pendingInvitationsIds!.length <= 1) {
+      _pendingTeamMembersBloc.add(InviteTeamMember(TeamMemberModel(
+        id: teamMemberState.userLookedFor.uid,
+        name: teamMemberState.userLookedFor.displayName ?? '',
+        isAdmin: false,
+        teamId: _user.teamId!,
+        teamName: _user.teamName!,
+      )));
+    } else {
+      EasyLoading.showInfo(
+          'Nie możesz dodać tego użytkownika. ${teamMemberState.userLookedFor.displayName} ma zbyt wiele aktywnych zaproszeń');
+    }
+  }
+
   @override
   void initState() {
     _teamMemberBloc = Provider.of<TeamMemberBloc>(context, listen: false);
+    _pendingTeamMembersBloc = Provider.of<PendingTeamMembersBloc>(context, listen: false);
+    _user = Provider.of<UserDataBloc>(context, listen: false).user;
+    _pendingTeamMembers = _pendingTeamMembersBloc.pendingTeamMembers;
     super.initState();
   }
 
@@ -74,7 +115,11 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
                 TextFormField(
                   controller: _teamNameController,
                   decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                  validator: (val) => val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
+                  validator: (val) => val! == _user.email
+                      ? 'Nie możesz dodać siebie do swojego klanu'
+                      : val.isEmpty || !val.contains('@')
+                          ? 'Podaj poprawny adres email'
+                          : null,
                   onEditingComplete: teamMemberState is TeamMemberStateLoading ? null : _searchUser,
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -95,18 +140,37 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
                       ListTile(
                         contentPadding: EdgeInsets.zero,
                         leading: CircleAvatar(),
-                        title: Text(teamMemberState.userLookedFor.displayName ?? ''),
+                        title: Text(
+                            _pendingTeamMembers.indexWhere((el) => el.id == teamMemberState.userLookedFor.uid) > -1
+                                ? teamMemberState.userLookedFor.displayName.toString() + ' - wysłano'
+                                : teamMemberState.userLookedFor.displayName.toString()),
                         subtitle: Text(teamMemberState.userLookedFor.email),
-                        trailing: Container(
-                          color: Palette.chaletBlue,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Palette.white,
-                            ),
-                            //TODO: dodać metodę która powiadomi o zaporoszeniu do klanu
-                            onPressed: teamMemberState is TeamMemberStateLoading ? null : () {},
-                          ),
+                        trailing: Column(
+                          children: [
+                            BlocConsumer<PendingTeamMembersBloc, PendingTeamMembersState>(
+                                bloc: _pendingTeamMembersBloc,
+                                listener: (context, pendingTeamMembersState) {
+                                  if (pendingTeamMembersState is PendingTeamMembersStateInvited) {
+                                    EasyLoading.showSuccess('Wysłano zaproszenie');
+                                  }
+                                },
+                                builder: (context, pendingTeamMembersState) {
+                                  return Container(
+                                    color: _handleCanBeInvitedValidation(teamMemberState, pendingTeamMembersState)
+                                        ? Palette.chaletBlue
+                                        : Palette.grey,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.add,
+                                        color: Palette.white,
+                                      ),
+                                      onPressed: _handleCanBeInvitedValidation(teamMemberState, pendingTeamMembersState)
+                                          ? () => _inviteUser(teamMemberState)
+                                          : null,
+                                    ),
+                                  );
+                                }),
+                          ],
                         ),
                       )
                     ],

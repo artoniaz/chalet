@@ -5,6 +5,7 @@ import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/palette.dart';
+import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,9 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChaletPageSelection extends StatefulWidget {
-  const ChaletPageSelection({Key? key}) : super(key: key);
+  const ChaletPageSelection({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ChaletPageSelectionState createState() => _ChaletPageSelectionState();
@@ -30,8 +33,8 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
     // final byteData = await rootBundle.load('assets/poo/poo_happy.png');
     // Uint8List image = byteData.buffer.asUint8List();
     // final descriptor = await BitmapDescriptor.fromBytes(image);
-    final descriptor =
-        await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), 'assets/poo/chalet_icon.png');
+    final descriptor = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map_marker/map_marker.png');
     _chaletLocationIcon = descriptor;
   }
 
@@ -44,7 +47,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   void _getInitData() async {
     LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
     _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(userLocation);
-    // await _getBitmapDescriptor();
+    await _getBitmapDescriptor();
     setState(() => _isCameraLoading = false);
   }
 

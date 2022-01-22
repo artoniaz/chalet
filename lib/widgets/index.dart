@@ -36,3 +36,4 @@ export 'package:chalet/widgets/bottom_container.dart';
 export 'package:chalet/widgets/text_divider.dart';
 export 'package:chalet/widgets/platform_svg.dart';
 export 'package:chalet/widgets/custom_modal_bottom_sheet.dart';
+export 'package:chalet/widgets/custom_alert_dialog.dart';

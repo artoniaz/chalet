@@ -1,3 +1,4 @@
+import 'package:chalet/models/team_member_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/services/index.dart';
 
@@ -18,4 +19,13 @@ class UserDataRepository {
   Future<void> removeUserData(String userId) => _userDataService.removeUserData(userId);
 
   Future<UserModel> findUser(String userLookedForEmail) => _userDataService.findUser(userLookedForEmail);
+
+  Future<void> addUserInvitationToTeam(String userId, String invitingTeamId) =>
+      _userDataService.addUserInvitationToTeam(userId, invitingTeamId);
+
+  Future<void> deletePendingInvitationOnAccept(TeamMemberModel teamMember) =>
+      _userDataService.deletePendingInvitationOnAccept(teamMember);
+
+  Future<void> deletePendingInvitationOnDecline(String teamToDeclineId, String decliningUserId) =>
+      _userDataService.deletePendingInvitationOnDecline(teamToDeclineId, decliningUserId);
 }
