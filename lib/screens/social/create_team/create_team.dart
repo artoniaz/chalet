@@ -53,9 +53,9 @@ class _CreateTeamState extends State<CreateTeam> {
             },
             builder: (context, state) {
               return Container(
-                height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.all(Dimentions.medium),
+                padding: const EdgeInsets.fromLTRB(Dimentions.medium, 180.0, Dimentions.medium, Dimentions.medium),
                 child: Column(
+                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [

@@ -7,6 +7,7 @@ import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/team_repository.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:chalet/screens/index.dart';
+import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -50,20 +51,31 @@ class _PendingInvitationsState extends State<PendingInvitations> {
               return Loading();
             }
             if (state is PendingInvitationsTeamsStateLoaded) {
-              return SafeArea(
+              return Padding(
+                padding: const EdgeInsets.all(Dimentions.medium),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: state.pendingInvitationsTeamsMemberList
+                      .asMap()
                       .map(
-                        (teamMemberList) => BlocProvider(
-                          create: (context) => ReactToPendingInvitationBloc(
-                            teamRepository: TeamRepository(),
-                            userDataRepository: UserDataRepository(),
-                          ),
-                          child: PendingTeamInvitationContainer(
-                            teamMemberList: teamMemberList,
+                        (i, teamMemberList) => MapEntry(
+                          i,
+                          BlocProvider(
+                            create: (context) => ReactToPendingInvitationBloc(
+                              teamRepository: TeamRepository(),
+                              userDataRepository: UserDataRepository(),
+                            ),
+                            child: PendingTeamInvitationContainer(
+                                teamMemberList: teamMemberList,
+                                otherTeamId: state.pendingInvitationsTeamsMemberList.length > 1
+                                    ? i == 0
+                                        ? state.pendingInvitationsTeamsMemberList[1][0].teamId
+                                        : state.pendingInvitationsTeamsMemberList[0][0].teamId
+                                    : null),
                           ),
                         ),
                       )
+                      .values
                       .toList(),
                 ),
               );

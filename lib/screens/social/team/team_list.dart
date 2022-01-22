@@ -68,8 +68,8 @@ class _TeamListState extends State<TeamList> {
                         PendingMembersContainer(
                           circleAvatarRadius: _circleAvatarRadius,
                         ),
-                        if (teamMembersState.teamMemberList.length < 10 &&
-                            teamMembersState.teamMemberList.firstWhere((el) => el.id == _user.uid).isAdmin)
+                        if (teamMembersState.teamMemberList.length < 10)
+                          // teamMembersState.teamMemberList.indexWhere((el) => el.isAdmin == _user.uid)
                           AddMemberIcon(
                             circleAvatarRadius: _circleAvatarRadius,
                           )

@@ -60,15 +60,25 @@ class TeamService {
     }
   }
 
-  Future<void> acceptInvitation(TeamMemberModel teamMember) async {
+  Future<void> acceptInvitation(TeamMemberModel teamMember, String? otherTeamId) async {
     try {
       List<Future> futures = [
         _teamsCollection.doc(teamMember.teamId).collection(MEMBERS).doc(teamMember.id).set(teamMember.toJson()),
         _teamsCollection.doc(teamMember.teamId).collection(PENDING_MEMBERS).doc(teamMember.id).delete(),
+        if (otherTeamId != null)
+          _teamsCollection.doc(otherTeamId).collection(PENDING_MEMBERS).doc(teamMember.id).delete(),
       ];
       await Future.wait(futures);
     } catch (e) {
       throw 'Nie udało się zaakceptować zaproszenia. Spróbuj ponownie';
+    }
+  }
+
+  Future<void> declineInvitation(String teamToDeclineId, String decliningUserId) async {
+    try {
+      await _teamsCollection.doc(teamToDeclineId).collection(PENDING_MEMBERS).doc(decliningUserId).delete();
+    } catch (e) {
+      throw 'Nie udało się odrzucić zaproszenia';
     }
   }
 }

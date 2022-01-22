@@ -56,7 +56,9 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
   }
 
   void _inviteUser(TeamMemberState teamMemberState) {
-    if (teamMemberState is TeamMemberStateUserFound)
+    if (teamMemberState is TeamMemberStateUserFound) if (teamMemberState.userLookedFor.pendingInvitationsIds?.length !=
+            null &&
+        teamMemberState.userLookedFor.pendingInvitationsIds!.length <= 1) {
       _pendingTeamMembersBloc.add(InviteTeamMember(TeamMemberModel(
         id: teamMemberState.userLookedFor.uid,
         name: teamMemberState.userLookedFor.displayName ?? '',
@@ -64,6 +66,10 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
         teamId: _user.teamId!,
         teamName: _user.teamName!,
       )));
+    } else {
+      EasyLoading.showInfo(
+          'Nie możesz dodać tego użytkownika. ${teamMemberState.userLookedFor.displayName} ma zbyt wiele aktywnych zaproszeń');
+    }
   }
 
   @override
@@ -158,7 +164,6 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
                                         Icons.add,
                                         color: Palette.white,
                                       ),
-                                      //TODO: dodać metodę która powiadomi o zaporoszeniu do klanu
                                       onPressed: _handleCanBeInvitedValidation(teamMemberState, pendingTeamMembersState)
                                           ? () => _inviteUser(teamMemberState)
                                           : null,

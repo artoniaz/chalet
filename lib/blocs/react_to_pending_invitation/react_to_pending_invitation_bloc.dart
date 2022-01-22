@@ -26,17 +26,35 @@ class ReactToPendingInvitationBloc extends Bloc<ReactToPendingInvitationEvent, R
     if (event is AcceptPendingInvitation) {
       yield* _handleAcceptPendingInvitation(event);
     }
+    if (event is DeclinePendingInvitation) {
+      yield* _handleDeclinePendingInvitation(event);
+    }
   }
 
   Stream<ReactToPendingInvitationState> _handleAcceptPendingInvitation(AcceptPendingInvitation event) async* {
     yield ReactToPendingInvitationStateLoading();
     try {
       List<Future> futures = [
-        userDataRepository.deletePendingInvitation(event.teamMember.id, event.invitingTeamId),
-        teamRepository.acceptInvitation(event.teamMember),
+        userDataRepository.deletePendingInvitationOnAccept(event.teamMember),
+        teamRepository.acceptInvitation(event.teamMember, event.otherTeamId),
       ];
       await Future.wait(futures);
       yield ReactToPendingInvitationStateAccepted();
+    } catch (e) {
+      print(e.toString());
+      yield ReactToPendingInvitationStateError(e.toString());
+    }
+  }
+
+  Stream<ReactToPendingInvitationState> _handleDeclinePendingInvitation(DeclinePendingInvitation event) async* {
+    yield ReactToPendingInvitationStateLoading();
+    try {
+      List<Future> futures = [
+        userDataRepository.deletePendingInvitationOnDecline(event.declinedTeamId, event.userId),
+        teamRepository.declineInvitation(event.declinedTeamId, event.userId),
+      ];
+      await Future.wait(futures);
+      yield ReactToPendingInvitationStateDeclined();
     } catch (e) {
       print(e.toString());
       yield ReactToPendingInvitationStateError(e.toString());

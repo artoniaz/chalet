@@ -16,9 +16,11 @@ import 'package:provider/provider.dart';
 
 class PendingTeamInvitationContainer extends StatefulWidget {
   final List<TeamMemberModel> teamMemberList;
+  final String? otherTeamId;
   const PendingTeamInvitationContainer({
     Key? key,
     required this.teamMemberList,
+    required this.otherTeamId,
   }) : super(key: key);
 
   @override
@@ -38,8 +40,10 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
           teamId: _admin.teamId,
           teamName: _admin.teamName,
         ),
-        _admin.teamId,
+        widget.otherTeamId,
       ));
+
+  void _declineInvitation() => _reactToPendingInvitationBloc.add(DeclinePendingInvitation(_admin.teamId, _user.uid));
 
   @override
   void initState() {
@@ -54,28 +58,68 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
     return BlocConsumer<ReactToPendingInvitationBloc, ReactToPendingInvitationState>(listener: (context, state) {
       if (state is ReactToPendingInvitationStateAccepted) {
         EasyLoading.showSuccess('Udało się! Jesteś członkiem klanu ${_admin.teamName}');
+        Navigator.of(context).pop();
+      }
+      if (state is ReactToPendingInvitationStateDeclined) {
+        EasyLoading.showSuccess('Odrzucono zaproszenie do klanu');
       }
       if (state is ReactToPendingInvitationStateError) {
         EasyLoading.showError(state.errorMessage);
       }
     }, builder: (context, state) {
-      return Column(
-        children: [
-          Text('Nazwa klanu'),
-          Text('${_admin.teamName}'),
-          Text('Członkowie'),
-          ...widget.teamMemberList.map((member) => Text(member.name)),
-          CustomElevatedButton(
-            label: 'Zaakceptuj zaproszenie',
-            onPressed: state is ReactToPendingInvitationStateLoading ? null : _acceptInvitation,
-          ),
-          CustomTextButton(
-            onPressed: () {},
-            label: 'Odrzuć zaproszenie',
-            color: Palette.ivoryBlack,
-          ),
-        ],
-      );
+      return state is ReactToPendingInvitationStateDeclined
+          ? Container()
+          : Container(
+              margin: EdgeInsets.symmetric(vertical: Dimentions.medium),
+              padding: EdgeInsets.all(Dimentions.small),
+              decoration: BoxDecoration(
+                border: Border.all(color: Palette.lightGrey),
+                borderRadius: BorderRadius.circular(Dimentions.medium),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Nazwa klanu',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  Text(
+                    '${_admin.teamName}',
+                    style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                  VerticalSizedBox8(),
+                  Text(
+                    'Członkowie',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  ...widget.teamMemberList.map((member) => Text(
+                        member.name,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w700),
+                      )),
+                  VerticalSizedBox8(),
+                  CustomElevatedButton(
+                    label: 'Zaakceptuj zaproszenie',
+                    onPressed: state is ReactToPendingInvitationStateLoading
+                        ? null
+                        : widget.otherTeamId == null
+                            ? _acceptInvitation
+                            : () => showDialog(
+                                context: context,
+                                builder: (context) => CustomAlertDialog(
+                                      headline: 'Czy chcesz zaakceptować to zaproszenie',
+                                      text: 'Przyjęcie tego zaproszenia spowoduje odrzucenie pozostałych',
+                                      approveFunction: _acceptInvitation,
+                                      approveFunctionButtonLabel: 'Zaakcpetuj',
+                                    )),
+                  ),
+                  CustomTextButton(
+                    onPressed: state is ReactToPendingInvitationStateLoading ? null : _declineInvitation,
+                    label: 'Odrzuć zaproszenie',
+                    color: Palette.ivoryBlack,
+                  ),
+                ],
+              ),
+            );
     });
   }
 }

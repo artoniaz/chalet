@@ -18,5 +18,9 @@ class TeamRepository {
   Future<void> deleteTeamMember(String userToDeleteId, String teamId) =>
       _teamService.deleteTeamMember(userToDeleteId, teamId);
 
-  Future<void> acceptInvitation(TeamMemberModel teamMember) => _teamService.acceptInvitation(teamMember);
+  Future<void> acceptInvitation(TeamMemberModel teamMember, String? otherTeamId) =>
+      _teamService.acceptInvitation(teamMember, otherTeamId);
+
+  Future<void> declineInvitation(String teamToDeclineId, String decliningUserId) =>
+      _teamService.declineInvitation(teamToDeclineId, decliningUserId);
 }

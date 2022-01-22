@@ -23,6 +23,7 @@ class CustomAlertDialog extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         children: [
           Container(
+            color: Palette.backgroundWhite,
             padding: EdgeInsets.fromLTRB(24.0, 50.0, 24.0, 24.0),
             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
             child: Column(

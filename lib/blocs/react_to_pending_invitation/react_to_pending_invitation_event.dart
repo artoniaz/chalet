@@ -8,11 +8,12 @@ abstract class ReactToPendingInvitationEvent extends Equatable {
 
 class AcceptPendingInvitation extends ReactToPendingInvitationEvent {
   final TeamMemberModel teamMember;
-  final String invitingTeamId;
-  AcceptPendingInvitation(this.teamMember, this.invitingTeamId);
+  final String? otherTeamId;
+  AcceptPendingInvitation(this.teamMember, this.otherTeamId);
 }
 
 class DeclinePendingInvitation extends ReactToPendingInvitationEvent {
-  final String teamId;
-  DeclinePendingInvitation(this.teamId);
+  final String declinedTeamId;
+  final String userId;
+  DeclinePendingInvitation(this.declinedTeamId, this.userId);
 }
