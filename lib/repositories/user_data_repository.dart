@@ -21,4 +21,7 @@ class UserDataRepository {
 
   Future<void> addUserInvitationToTeam(String userId, String invitingTeamId) =>
       _userDataService.addUserInvitationToTeam(userId, invitingTeamId);
+
+  Future<void> deletePendingInvitation(String userId, String invitingTeamId) =>
+      _userDataService.deletePendingInvitation(userId, invitingTeamId);
 }

@@ -17,6 +17,11 @@ class TeamMembersStateLoaded extends TeamMembersState {
   TeamMembersStateLoaded({required this.teamMemberList});
 }
 
+class TeamMembersPendingTeamsStateLoaded extends TeamMembersState {
+  final List<List<TeamMemberModel>> teamMemberPendingTeamsList;
+  TeamMembersPendingTeamsStateLoaded({required this.teamMemberPendingTeamsList});
+}
+
 class TeamMembersStateError extends TeamMembersState {
   final String errorMessage;
   TeamMembersStateError(this.errorMessage);

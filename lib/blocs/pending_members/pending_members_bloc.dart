@@ -57,17 +57,16 @@ class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMe
   Stream<PendingTeamMembersState> _handleInviteTeamMemberEvent(InviteTeamMember event) async* {
     yield PendingTeamMembersStateLoading();
     try {
-      Future _createPendingTeamMember() =>
-          teamRepository.createPendingTeamMember(event.pendingUserId, event.pendingUserName, event.teamId);
+      Future _createPendingTeamMember() => teamRepository.createPendingTeamMember(event.teamMemberModel);
       Future _addUserInvitationToTeam() =>
-          userDataRepository.addUserInvitationToTeam(event.pendingUserId, event.teamId);
+          userDataRepository.addUserInvitationToTeam(event.teamMemberModel.id, event.teamMemberModel.teamId);
       var futures = [
         _createPendingTeamMember(),
         _addUserInvitationToTeam(),
       ];
       await Future.wait(futures);
       yield PendingTeamMembersStateInvited();
-      this.add(GetPendingMembers(event.teamId));
+      this.add(GetPendingMembers(event.teamMemberModel.teamId));
     } catch (e) {
       yield PendingTeamMembersStateError(e.toString());
       print(e.toString());

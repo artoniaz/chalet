@@ -5,6 +5,7 @@ import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/palette.dart';
+import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,9 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChaletPageSelection extends StatefulWidget {
-  const ChaletPageSelection({Key? key}) : super(key: key);
+  const ChaletPageSelection({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ChaletPageSelectionState createState() => _ChaletPageSelectionState();

@@ -61,4 +61,14 @@ class UserDataService {
       throw 'Nie udało się wysłać zaproszenia użytkownikowi.';
     }
   }
+
+  Future<void> deletePendingInvitation(String userId, String invitingTeamId) async {
+    try {
+      await _usersCollection.doc(userId).update({
+        'pendingInvitationsIds': FieldValue.arrayRemove([invitingTeamId]),
+      });
+    } catch (e) {
+      throw 'Nie udało się usunąć zaproszenia z profilu użytkownika';
+    }
+  }
 }

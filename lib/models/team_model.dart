@@ -1,12 +1,12 @@
 class TeamModel {
   String id;
   String name;
-  String teamAdminId;
+  String? teamAdminId;
 
   TeamModel({
     required this.id,
     required this.name,
-    required this.teamAdminId,
+    this.teamAdminId,
   });
 
   factory TeamModel.fromJson(Object? json, String id) {

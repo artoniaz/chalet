@@ -57,11 +57,13 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
 
   void _inviteUser(TeamMemberState teamMemberState) {
     if (teamMemberState is TeamMemberStateUserFound)
-      _pendingTeamMembersBloc.add(InviteTeamMember(
-        teamMemberState.userLookedFor.uid,
-        teamMemberState.userLookedFor.displayName ?? '',
-        _user.teamId!,
-      ));
+      _pendingTeamMembersBloc.add(InviteTeamMember(TeamMemberModel(
+        id: teamMemberState.userLookedFor.uid,
+        name: teamMemberState.userLookedFor.displayName ?? '',
+        isAdmin: false,
+        teamId: _user.teamId!,
+        teamName: _user.teamName!,
+      )));
   }
 
   @override

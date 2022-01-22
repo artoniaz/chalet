@@ -11,6 +11,8 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute() => (settings) {
           return PageTransition(child: AddChaletRoot(), type: PageTransitionType.fade, settings: settings);
         case RoutesDefinitions.SHARE_PROBLEM:
           return PageTransition(child: ReportProblem(), type: PageTransitionType.rightToLeft, settings: settings);
+        case RoutesDefinitions.VIEW_PENDING_INVITATIONS:
+          return PageTransition(child: PendingInvitations(), type: PageTransitionType.rightToLeft, settings: settings);
         default:
           return null;
       }

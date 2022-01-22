@@ -12,9 +12,11 @@ class TeamRepository {
   Future<List<TeamMemberModel>> getPendingTeamMemberList(String teamId) =>
       _teamService.getPendingTeamMemberList(teamId);
 
-  Future<void> createPendingTeamMember(String pendingUserId, String userName, String teamId) =>
-      _teamService.createPendingTeamMember(pendingUserId, userName, teamId);
+  Future<void> createPendingTeamMember(TeamMemberModel teamMemberModel) =>
+      _teamService.createPendingTeamMember(teamMemberModel);
 
   Future<void> deleteTeamMember(String userToDeleteId, String teamId) =>
       _teamService.deleteTeamMember(userToDeleteId, teamId);
+
+  Future<void> acceptInvitation(TeamMemberModel teamMember) => _teamService.acceptInvitation(teamMember);
 }
