@@ -6,16 +6,18 @@ class UserModel {
   final String? displayName;
   final String? photoURL;
   final String? teamId;
-  final String? teamName;
   final List<String>? pendingInvitationsIds;
+  final int chaletsAddedNumber;
+  final int chaletReviewsNumber;
   const UserModel({
     required this.uid,
     required this.email,
     this.displayName,
     this.photoURL,
     this.teamId,
-    this.teamName,
     this.pendingInvitationsIds,
+    this.chaletsAddedNumber = 0,
+    this.chaletReviewsNumber = 0,
   });
 
   factory UserModel.fromJson(Object? json) {
@@ -24,8 +26,9 @@ class UserModel {
         email: (json as dynamic)['email']?.toString() ?? '',
         displayName: (json as dynamic)['displayName']?.toString() ?? '',
         photoURL: (json as dynamic)['photoURL']?.toString() ?? '',
-        teamName: (json as dynamic)['teamName']?.toString() ?? '',
         teamId: (json as dynamic)['teamId']?.toString() ?? '',
+        chaletsAddedNumber: (json as dynamic)['chaletsAddedNumber']?.toInt() ?? 0,
+        chaletReviewsNumber: (json as dynamic)['chaletReviewsNumber']?.toInt() ?? 0,
         pendingInvitationsIds: (json as dynamic)['pendingInvitationsIds'] == null
             ? []
             : List<String>.from((json as dynamic)['pendingInvitationsIds'].map((el) => el)));
@@ -55,7 +58,8 @@ class UserModel {
         'displayName': displayName,
         'photoURL': photoURL,
         'teamId': teamId,
-        'teamName': teamName,
         'pendingInvitationsIds': pendingInvitationsIds,
+        'chaletsAddedNumber': chaletsAddedNumber,
+        'chaletReviewsNumber': chaletReviewsNumber,
       };
 }

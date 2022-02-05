@@ -30,13 +30,13 @@ class _PendingInvitationsState extends State<PendingInvitations> {
   void initState() {
     _user = Provider.of<UserDataBloc>(context, listen: false).user;
     _pendingInvitationsTeamsBloc = Provider.of<PendingInvitationsTeamsBloc>(context, listen: false);
-    _pendingInvitationsTeamsBloc.add(GetPendingInvitationsTeamMembers(_user.pendingInvitationsIds ?? []));
+    _pendingInvitationsTeamsBloc.add(GetPendingInvitationsTeams(_user.pendingInvitationsIds ?? []));
     super.initState();
   }
 
   @override
   void dispose() {
-    _pendingInvitationsTeamsBloc.add(ResetPendingInvitationsTeamMembers());
+    _pendingInvitationsTeamsBloc.add(ResetPendingInvitationsTeam());
     super.dispose();
   }
 
@@ -55,10 +55,10 @@ class _PendingInvitationsState extends State<PendingInvitations> {
                 padding: const EdgeInsets.all(Dimentions.medium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: state.pendingInvitationsTeamsMemberList
+                  children: state.pendingInvitationsTeamList
                       .asMap()
                       .map(
-                        (i, teamMemberList) => MapEntry(
+                        (i, team) => MapEntry(
                           i,
                           BlocProvider(
                             create: (context) => ReactToPendingInvitationBloc(
@@ -66,11 +66,11 @@ class _PendingInvitationsState extends State<PendingInvitations> {
                               userDataRepository: UserDataRepository(),
                             ),
                             child: PendingTeamInvitationContainer(
-                                teamMemberList: teamMemberList,
-                                otherTeamId: state.pendingInvitationsTeamsMemberList.length > 1
+                                team: team,
+                                otherTeamId: state.pendingInvitationsTeamList.length > 1
                                     ? i == 0
-                                        ? state.pendingInvitationsTeamsMemberList[1][0].teamId
-                                        : state.pendingInvitationsTeamsMemberList[0][0].teamId
+                                        ? state.pendingInvitationsTeamList[1].id
+                                        : state.pendingInvitationsTeamList[0].id
                                     : null),
                           ),
                         ),

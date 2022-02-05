@@ -202,7 +202,7 @@ class _ChaletCardState extends State<ChaletCard> {
                     TextSpan(
                       text: 'Dodany przez: ',
                     ),
-                    TextSpan(text: widget.chalet!.creator, style: TextStyle(color: Palette.goldLeaf)),
+                    TextSpan(text: widget.chalet!.creatorName, style: TextStyle(color: Palette.goldLeaf)),
                   ]),
             ),
             VerticalSizedBox16(),

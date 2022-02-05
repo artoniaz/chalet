@@ -2,19 +2,14 @@ import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
 import 'package:chalet/blocs/pending_members/pending_members_event.dart';
 import 'package:chalet/blocs/pending_members/pending_members_state.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
-import 'package:chalet/blocs/team/team_event.dart';
-import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/team_member/team_member_bloc.dart';
 import 'package:chalet/blocs/team_member/team_member_event.dart';
 import 'package:chalet/blocs/team_member/team_member_state.dart';
-import 'package:chalet/blocs/team_members/team_members_event.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
-import 'package:chalet/models/team_member_model.dart';
+import 'package:chalet/models/team_model.dart';
 import 'package:chalet/models/user_model.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
-import 'package:chalet/styles/input_decoration.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,15 +28,16 @@ class AddMemberToTeam extends StatefulWidget {
 class _AddMemberToTeamState extends State<AddMemberToTeam> {
   late TeamMemberBloc _teamMemberBloc;
   late PendingTeamMembersBloc _pendingTeamMembersBloc;
+  late TeamModel _team;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _teamNameController = TextEditingController();
   late UserModel _user;
-  late List<TeamMemberModel> _pendingTeamMembers;
+  late List<UserModel> _pendingTeamMembers;
 
   bool _handleCanBeInvitedValidation(TeamMemberState teamMemberState, PendingTeamMembersState pendingTeamMembersState) {
     if (teamMemberState is TeamMemberStateLoading) return false;
     if (teamMemberState is TeamMemberStateUserFound &&
-        _pendingTeamMembers.indexWhere((el) => el.id == teamMemberState.userLookedFor.uid) > -1) return false;
+        _pendingTeamMembers.indexWhere((el) => el.uid == teamMemberState.userLookedFor.uid) > -1) return false;
     if (pendingTeamMembersState is PendingTeamMembersStateLoading ||
         pendingTeamMembersState is PendingTeamMembersStateInvited)
       return false;
@@ -59,13 +55,10 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
     if (teamMemberState is TeamMemberStateUserFound) if (teamMemberState.userLookedFor.pendingInvitationsIds?.length !=
             null &&
         teamMemberState.userLookedFor.pendingInvitationsIds!.length <= 1) {
-      _pendingTeamMembersBloc.add(InviteTeamMember(TeamMemberModel(
-        id: teamMemberState.userLookedFor.uid,
-        name: teamMemberState.userLookedFor.displayName ?? '',
-        isAdmin: false,
-        teamId: _user.teamId!,
-        teamName: _user.teamName!,
-      )));
+      _pendingTeamMembersBloc.add(InviteTeamMember(
+        _team,
+        teamMemberState.userLookedFor.uid,
+      ));
     } else {
       EasyLoading.showInfo(
           'Nie możesz dodać tego użytkownika. ${teamMemberState.userLookedFor.displayName} ma zbyt wiele aktywnych zaproszeń');
@@ -77,6 +70,7 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
     _teamMemberBloc = Provider.of<TeamMemberBloc>(context, listen: false);
     _pendingTeamMembersBloc = Provider.of<PendingTeamMembersBloc>(context, listen: false);
     _user = Provider.of<UserDataBloc>(context, listen: false).user;
+    _team = Provider.of<TeamBloc>(context, listen: false).team;
     _pendingTeamMembers = _pendingTeamMembersBloc.pendingTeamMembers;
     super.initState();
   }
@@ -141,7 +135,7 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
                         contentPadding: EdgeInsets.zero,
                         leading: CircleAvatar(),
                         title: Text(
-                            _pendingTeamMembers.indexWhere((el) => el.id == teamMemberState.userLookedFor.uid) > -1
+                            _pendingTeamMembers.indexWhere((el) => el.uid == teamMemberState.userLookedFor.uid) > -1
                                 ? teamMemberState.userLookedFor.displayName.toString() + ' - wysłano'
                                 : teamMemberState.userLookedFor.displayName.toString()),
                         subtitle: Text(teamMemberState.userLookedFor.email),

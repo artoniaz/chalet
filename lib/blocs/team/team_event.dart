@@ -13,3 +13,8 @@ class AddTeamEvent extends TeamEvent {
   final String userName;
   AddTeamEvent(this.userId, this.userName, this.teamName);
 }
+
+class GetTeamEvent extends TeamEvent {
+  final String teamId;
+  GetTeamEvent(this.teamId);
+}

@@ -1,5 +1,4 @@
 import 'package:chalet/models/index.dart';
-import 'package:chalet/models/team_member_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserDataService {
@@ -13,6 +12,7 @@ class UserDataService {
     return _usersCollection.doc(userId).snapshots().map((snapshot) => UserModel.fromJson(snapshot));
   }
 
+  //TODO: przenieść jako cloud fn
   Future<void> setUserDataOnRegister(String userId, UserModel user) async {
     return await _usersCollection.doc(userId).set(user.toJson());
   }
@@ -26,11 +26,10 @@ class UserDataService {
     }
   }
 
-  Future<void> updateUserTeamData(String userId, String teamId, String teamName) async {
+  Future<void> updateUserTeamData(String userId, String teamId) async {
     try {
       await _usersCollection.doc(userId).update({
         TEAM_ID: teamId,
-        TEAM_NAME: teamName,
       });
     } catch (e) {
       print(e);
@@ -65,12 +64,11 @@ class UserDataService {
     }
   }
 
-  Future<void> deletePendingInvitationOnAccept(TeamMemberModel teamMember) async {
+  Future<void> deletePendingInvitationOnAccept(String userId, String teamId) async {
     try {
-      await _usersCollection.doc(teamMember.id).update({
+      await _usersCollection.doc(userId).update({
         PENDING_INVITATIONS_IDS: null,
-        TEAM_ID: teamMember.teamId,
-        TEAM_NAME: teamMember.teamName,
+        TEAM_ID: teamId,
       });
     } catch (e) {
       throw 'Nie udało się usunąć zaproszenia z profilu użytkownika';

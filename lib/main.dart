@@ -94,7 +94,6 @@ class MyApp extends StatelessWidget {
           BlocProvider<TeamMembersBloc>(
             create: (context) => TeamMembersBloc(
               teamRepository: TeamRepository(),
-              userDataRepository: UserDataRepository(),
             ),
           ),
           BlocProvider<SendCongratsBloc>(
@@ -112,6 +111,7 @@ class MyApp extends StatelessWidget {
             create: (context) => DeleteTeamMemberBloc(
               teamRepository: TeamRepository(),
               teamMembersBloc: BlocProvider.of<TeamMembersBloc>(context),
+              userDataRepository: UserDataRepository(),
             ),
           ),
           BlocProvider<PendingInvitationsTeamsBloc>(

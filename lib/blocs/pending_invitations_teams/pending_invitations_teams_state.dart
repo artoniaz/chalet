@@ -1,4 +1,4 @@
-import 'package:chalet/models/team_member_model.dart';
+import 'package:chalet/models/team_model.dart';
 import 'package:equatable/equatable.dart';
 
 class PendingInvitationsTeamsState extends Equatable {
@@ -13,10 +13,10 @@ class PendingInvitationsTeamsStateInitial extends PendingInvitationsTeamsState {
 class PendingInvitationsTeamsStateLoading extends PendingInvitationsTeamsState {}
 
 class PendingInvitationsTeamsStateLoaded extends PendingInvitationsTeamsState {
-  final List<List<TeamMemberModel>> pendingInvitationsTeamsMemberList;
-  PendingInvitationsTeamsStateLoaded({required this.pendingInvitationsTeamsMemberList});
+  final List<TeamModel> pendingInvitationsTeamList;
+  PendingInvitationsTeamsStateLoaded({required this.pendingInvitationsTeamList});
   @override
-  List<Object> get props => [pendingInvitationsTeamsMemberList];
+  List<Object> get props => [pendingInvitationsTeamList];
 }
 
 class PendingInvitationsTeamsStateError extends PendingInvitationsTeamsState {
