@@ -26,7 +26,9 @@ exports.deleteUserProfilePhotoOnUserDelete = functions.auth.user().onDelete((use
 exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/reviews/{chaletId}/chalet_reviews/{reviewId}')
     .onCreate((snapshot, context) => {
         const chaletId = snapshot.data().chaletId;
+        const userId = snapshot.data().userId;
         const chaletDocRef = admin.firestore().collection('chalets').doc(chaletId);
+        const userDocRef = admin.firestore().collection('users').doc(userId);
 
         chaletDocRef.get().then(chalet => {
             const newNumberRatings = chalet.data().numberRating + 1;
@@ -36,6 +38,13 @@ exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/review
             return chaletDocRef.update({
                 rating: newAvgRating,
                 numberRating: newNumberRatings
+            });
+        });
+
+        userDocRef.get().then(user => {
+            const newNumberReviewsAdded = user.data().chaletReviewsNumber + 1;
+            return userDocRef.update({
+                chaletReviewsNumber: newNumberReviewsAdded,
             });
         });
     });
@@ -63,6 +72,19 @@ exports.updateChaletRatingOnReviewUpdate = functions.firestore.document('/review
                 clean: newAvgCleanRating,
                 privacy: newAvgPrivacyRating,
                 numberDetailedRating: newNumberDetailedRatings
+            });
+        });
+    });
+
+exports.updateUserDataOnChaletCreated = functions.firestore.document('/chalets/{chaletId}')
+    .onCreate((snapshot, context) => {
+        const userId = snapshot.data().creatorId;
+        const userDocRef = admin.firestore().collection('users').doc(userId);
+
+        userDocRef.get().then(user => {
+            const newChaletsAddedNumber = user.data().chaletsAddedNumber + 1;
+            return userDocRef.update({
+                chaletsAddedNumber: newChaletsAddedNumber,
             });
         });
     });
