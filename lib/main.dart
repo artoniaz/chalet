@@ -7,6 +7,7 @@ import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_bloc.dart';
 import 'package:chalet/blocs/send_congrats/send_congrats_bloc.dart';
+import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_bloc.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_event.dart';
@@ -118,6 +119,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<PendingInvitationsTeamsBloc>(
             create: (context) => PendingInvitationsTeamsBloc(
               teamRepository: TeamRepository(),
+            ),
+          ),
+          BlocProvider<ChaletListForSocialMapBloc>(
+            create: (context) => ChaletListForSocialMapBloc(
+              chaletRepository: ChaletRepository(),
             ),
           ),
         ],

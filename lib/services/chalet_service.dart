@@ -57,4 +57,12 @@ class ChaletService {
   }
 
   Future<void> updateImageDefaultInfo() async {}
+
+  Stream<List<ChaletModel>> getChaletListAddedByUsers(List<String> teamMembersIds) {
+    return chaletCollection
+        .where('creatorId', whereIn: teamMembersIds)
+        .limit(20)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => ChaletModel.fromJson(doc, doc.id)).toList());
+  }
 }
