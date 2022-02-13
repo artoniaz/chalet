@@ -9,6 +9,7 @@ class UserModel {
   final List<String>? pendingInvitationsIds;
   final int chaletsAddedNumber;
   final int chaletReviewsNumber;
+  final List<String>? achievementsIds;
   const UserModel({
     required this.uid,
     required this.email,
@@ -18,20 +19,25 @@ class UserModel {
     this.pendingInvitationsIds,
     this.chaletsAddedNumber = 0,
     this.chaletReviewsNumber = 0,
+    this.achievementsIds,
   });
 
   factory UserModel.fromJson(Object? json) {
     return UserModel(
-        uid: (json as dynamic)['uid']?.toString() ?? '',
-        email: (json as dynamic)['email']?.toString() ?? '',
-        displayName: (json as dynamic)['displayName']?.toString() ?? '',
-        photoURL: (json as dynamic)['photoURL']?.toString() ?? '',
-        teamId: (json as dynamic)['teamId']?.toString() ?? '',
-        chaletsAddedNumber: (json as dynamic)['chaletsAddedNumber']?.toInt() ?? 0,
-        chaletReviewsNumber: (json as dynamic)['chaletReviewsNumber']?.toInt() ?? 0,
-        pendingInvitationsIds: (json as dynamic)['pendingInvitationsIds'] == null
-            ? []
-            : List<String>.from((json as dynamic)['pendingInvitationsIds'].map((el) => el)));
+      uid: (json as dynamic)['uid']?.toString() ?? '',
+      email: (json as dynamic)['email']?.toString() ?? '',
+      displayName: (json as dynamic)['displayName']?.toString() ?? '',
+      photoURL: (json as dynamic)['photoURL']?.toString() ?? '',
+      teamId: (json as dynamic)['teamId']?.toString() ?? '',
+      chaletsAddedNumber: (json as dynamic)['chaletsAddedNumber']?.toInt() ?? 0,
+      chaletReviewsNumber: (json as dynamic)['chaletReviewsNumber']?.toInt() ?? 0,
+      pendingInvitationsIds: (json as dynamic)['pendingInvitationsIds'] == null
+          ? []
+          : List<String>.from((json as dynamic)['pendingInvitationsIds'].map((el) => el)),
+      achievementsIds: (json as dynamic)['achievementsIds'] == null
+          ? []
+          : List<String>.from((json as dynamic)['achievementsIds'].map((el) => el)),
+    );
   }
 
   factory UserModel.userModelFromFirebaseUser(User firebaseUser) {
@@ -61,5 +67,6 @@ class UserModel {
         'pendingInvitationsIds': pendingInvitationsIds,
         'chaletsAddedNumber': chaletsAddedNumber,
         'chaletReviewsNumber': chaletReviewsNumber,
+        'achievementsIds': achievementsIds,
       };
 }

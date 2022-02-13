@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class PlatformSvgAsset extends StatelessWidget {
   final String assetName;
+  final String folder;
   final double? width;
   final double? height;
   final BoxFit fit;
@@ -20,12 +21,13 @@ class PlatformSvgAsset extends StatelessWidget {
     this.alignment = Alignment.center,
     this.semanticsLabel,
     this.colorBlenMode,
+    this.folder = 'chaletIcons',
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
-      'assets/chaletIcons/$assetName.svg',
+      'assets/$folder/$assetName.svg',
       width: width,
       height: height,
       fit: fit,

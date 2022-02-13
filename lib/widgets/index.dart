@@ -37,3 +37,7 @@ export 'package:chalet/widgets/text_divider.dart';
 export 'package:chalet/widgets/platform_svg.dart';
 export 'package:chalet/widgets/custom_modal_bottom_sheet.dart';
 export 'package:chalet/widgets/custom_alert_dialog.dart';
+export 'package:chalet/widgets/team_stats.dart';
+export 'package:chalet/widgets/profile_card_header.dart';
+export 'package:chalet/widgets/achievements_list.dart';
+export 'package:chalet/widgets/achievement_container.dart';

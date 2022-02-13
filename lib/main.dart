@@ -94,6 +94,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<TeamMembersBloc>(
             create: (context) => TeamMembersBloc(
               teamRepository: TeamRepository(),
+              teamBloc: Provider.of<TeamBloc>(context, listen: false),
             ),
           ),
           BlocProvider<SendCongratsBloc>(

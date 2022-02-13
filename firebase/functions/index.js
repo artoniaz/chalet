@@ -42,10 +42,22 @@ exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/review
         });
 
         userDocRef.get().then(user => {
-            const newNumberReviewsAdded = user.data().chaletReviewsNumber + 1;
-            return userDocRef.update({
-                chaletReviewsNumber: newNumberReviewsAdded,
-            });
+            const chaletsReviewsCreatedByUser = user.data().chaletReviewsNumber;
+
+            const sittingKingAchievementName = 'sittingKing';
+            const userAchievementsCompleted = user.data().achievementsIds;
+            const newNumberReviewsAdded = chaletsReviewsCreatedByUser + 1;
+            if (newNumberReviewsAdded > 4 && userAchievementsCompleted.indexOf(sittingKingAchievementName) == -1) {
+                userAchievementsCompleted.push(sittingKingAchievementName);
+                return userDocRef.update({
+                    chaletReviewsNumber: newNumberReviewsAdded,
+                    achievementsIds: userAchievementsCompleted,
+                });
+            } else {
+                return userDocRef.update({
+                    chaletReviewsNumber: newNumberReviewsAdded,
+                });
+            }
         });
     });
 
@@ -83,8 +95,19 @@ exports.updateUserDataOnChaletCreated = functions.firestore.document('/chalets/{
 
         userDocRef.get().then(user => {
             const newChaletsAddedNumber = user.data().chaletsAddedNumber + 1;
-            return userDocRef.update({
-                chaletsAddedNumber: newChaletsAddedNumber,
-            });
+            const achievementName = 'traveller';
+            const userAchievementsCompleted = user.data().achievementsIds;
+
+            if (newChaletsAddedNumber > 9 && userAchievementsCompleted.indexOf(achievementName) == -1) {
+                userAchievementsCompleted.push(achievementName);
+                return userDocRef.update({
+                    chaletsAddedNumber: newChaletsAddedNumber,
+                    achievementsIds: userAchievementsCompleted,
+                });
+            } else {
+                return userDocRef.update({
+                    chaletsAddedNumber: newChaletsAddedNumber,
+                });
+            }
         });
     });

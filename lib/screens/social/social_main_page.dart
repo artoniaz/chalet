@@ -51,7 +51,7 @@ class _SocialMainPageState extends State<SocialMainPage> with SingleTickerProvid
                         children: [
                           TeamFeedPage(),
                           SocialMap(),
-                          Center(child: Text('statystyki')),
+                          TeamStats(),
                         ],
                       ),
                     ),

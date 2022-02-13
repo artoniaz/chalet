@@ -46,7 +46,7 @@ class _TeamListState extends State<TeamList> {
           if (teamMembersState is TeamMembersStateLoading) return Loading();
           if (teamMembersState is TeamMembersStateLoaded) {
             return Padding(
-              padding: const EdgeInsets.all(Dimentions.medium),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: Dimentions.medium),
               child: Column(
                 children: [
                   Text(

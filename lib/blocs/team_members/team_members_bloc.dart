@@ -1,3 +1,5 @@
+import 'package:chalet/blocs/team/team_bloc.dart';
+import 'package:chalet/blocs/team/team_event.dart';
 import 'package:chalet/blocs/team_members/team_members_event.dart';
 import 'package:chalet/blocs/team_members/team_members_state.dart';
 import 'package:chalet/models/user_model.dart';
@@ -9,8 +11,10 @@ import 'package:collection/collection.dart';
 
 class TeamMembersBloc extends Bloc<TeamMembersEvent, TeamMembersState> {
   final TeamRepository teamRepository;
+  final TeamBloc teamBloc;
   TeamMembersBloc({
     required this.teamRepository,
+    required this.teamBloc,
   }) : super(TeamMembersStateInitial());
 
   List<UserModel> _teamMemberList = [];
@@ -35,11 +39,18 @@ class TeamMembersBloc extends Bloc<TeamMembersEvent, TeamMembersState> {
     try {
       if (event.teamMembersIds.length == 1) {
         yield TeamMembersStateLoaded(teamMemberList: [event.user]);
+        _teamMemberList.clear();
+        _teamMemberList.addAll([event.user]);
+        teamBloc.add(UpdateTeamStats(event.user.chaletsAddedNumber, event.user.chaletReviewsNumber));
       } else {
         final res = await teamRepository.getTeamMembers(event.teamMembersIds);
         _teamMemberList.clear();
         _teamMemberList.addAll(res);
+
+        int chaletAddedNumber = res.fold(0, (a, b) => a + b.chaletsAddedNumber);
+        int chaletReviewsNumber = res.fold(0, (a, b) => a + b.chaletReviewsNumber);
         yield TeamMembersStateLoaded(teamMemberList: res);
+        teamBloc.add(UpdateTeamStats(chaletAddedNumber, chaletReviewsNumber));
       }
     } catch (e) {
       yield TeamMembersStateError(e.toString());

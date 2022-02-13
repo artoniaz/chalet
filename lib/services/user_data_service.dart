@@ -1,3 +1,4 @@
+import 'package:chalet/config/helpers/achievements_ids.dart';
 import 'package:chalet/models/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,6 +8,7 @@ class UserDataService {
   final String PENDING_INVITATIONS_IDS = 'pendingInvitationsIds';
   final String TEAM_ID = 'teamId';
   final String TEAM_NAME = 'teamName';
+  final String ACHIEVEMENTS_IDS = 'achievementsIds';
   @override
   Stream<UserModel> getUserData(String userId) {
     return _usersCollection.doc(userId).snapshots().map((snapshot) => UserModel.fromJson(snapshot));
@@ -82,6 +84,16 @@ class UserDataService {
       });
     } catch (e) {
       throw 'Nie udało się odrzucić zaproszenia z profilu użytkownika';
+    }
+  }
+
+  Future<void> addCompletedAchievement(String userId, achievementsIds completedAchievement) async {
+    try {
+      await _usersCollection.doc(userId).update({
+        ACHIEVEMENTS_IDS: FieldValue.arrayUnion([completedAchievement]),
+      });
+    } catch (e) {
+      throw 'Nie udało się zapisać osiągnięcia.';
     }
   }
 }

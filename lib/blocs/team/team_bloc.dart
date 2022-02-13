@@ -31,6 +31,9 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
     if (event is GetTeamEvent) {
       yield* _handleGetTeamEvent(event);
     }
+    if (event is UpdateTeamStats) {
+      yield* _handleUpdateTeamStatsEvent(event);
+    }
   }
 
   Stream<TeamState> _handleGetTeamEvent(GetTeamEvent event) async* {
@@ -49,6 +52,18 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
       String teamId = await teamRepository.createTeam(event.userId, event.userName, event.teamName);
       await userDataRepository.updateUserTeamData(event.userId, teamId);
       yield TeamStateTeamCreated();
+    } catch (e) {
+      yield TeamStateError(e.toString());
+    }
+  }
+
+  Stream<TeamState> _handleUpdateTeamStatsEvent(UpdateTeamStats event) async* {
+    yield TeamStateLoading();
+    try {
+      TeamModel teamModel = team;
+      teamModel.chaletAddedNumber = event.chaletAddedNumber;
+      teamModel.chaletReviewsNumber = event.chaletReviewsNumber;
+      yield TeamStateTeamLoaded(team: teamModel);
     } catch (e) {
       yield TeamStateError(e.toString());
     }
