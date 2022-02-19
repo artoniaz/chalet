@@ -55,7 +55,8 @@ class _AddChaletState extends State<AddChalet> {
     position: GeoFirePoint(0, 0),
     isVerified: false,
     is24: false,
-    creator: '',
+    creatorName: '',
+    creatorId: '',
   );
 
   String? _chaletLocalizationAddress;
@@ -107,7 +108,8 @@ class _AddChaletState extends State<AddChalet> {
     if (_formKey.currentState!.validate()) {
       ImageFileListModel imageListModel = Provider.of<ImageFileListModel>(context, listen: false);
       if (_chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0 && imageListModel.images.isNotEmpty) {
-        _chalet.creator = _user?.displayName ?? 'anonimowy użytkownik';
+        _chalet.creatorName = _user?.displayName ?? 'anonimowy użytkownik';
+        _chalet.creatorId = _user?.uid ?? '';
         _addChaletBloc.add(CreateChalet(_chalet, imageListModel.images));
       } else
         setState(() => isFormAllowed = false);

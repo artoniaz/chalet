@@ -1,10 +1,6 @@
 import 'package:chalet/blocs/pending_members/pending_members_event.dart';
 import 'package:chalet/blocs/pending_members/pending_members_state.dart';
-import 'package:chalet/blocs/team/team_event.dart';
-import 'package:chalet/blocs/team/team_state.dart';
-import 'package:chalet/blocs/team_member/team_member_event.dart';
 import 'package:chalet/blocs/team_member/team_member_state.dart';
-import 'package:chalet/models/team_member_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/team_repository.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
@@ -18,8 +14,8 @@ class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMe
     required this.userDataRepository,
   }) : super(PendingTeamMembersStateInitial());
 
-  List<TeamMemberModel> _pendingTeamMembers = [];
-  List<TeamMemberModel> get pendingTeamMembers => _pendingTeamMembers;
+  List<UserModel> _pendingTeamMembers = [];
+  List<UserModel> get pendingTeamMembers => _pendingTeamMembers;
 
   TeamMemberState get initialState => TeamMemberStateInitial();
 
@@ -33,7 +29,7 @@ class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMe
     if (event is InviteTeamMember) {
       yield* _handleInviteTeamMemberEvent(event);
     }
-    if (event is GetPendingMembers) {
+    if (event is GetPendingTeamMembers) {
       yield* _handleGetPendingTeamListEvent(event);
     }
     if (event is ResetPendingTeamMembersBloc) {
@@ -41,10 +37,12 @@ class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMe
     }
   }
 
-  Stream<PendingTeamMembersState> _handleGetPendingTeamListEvent(GetPendingMembers event) async* {
+  Stream<PendingTeamMembersState> _handleGetPendingTeamListEvent(GetPendingTeamMembers event) async* {
     yield PendingTeamMembersStateLoading();
     try {
-      List<TeamMemberModel> pendingMembers = await teamRepository.getPendingTeamMemberList(event.teamId);
+      List<String> pendingMembersIds = event.team.pendingMembersIds ?? [];
+      if (event.newPendingUserId != null) pendingMembersIds.add(event.newPendingUserId!);
+      List<UserModel> pendingMembers = await teamRepository.getPendingTeamMembers(pendingMembersIds);
       _pendingTeamMembers.clear();
       _pendingTeamMembers.addAll(pendingMembers);
       yield PendingTeamMemberListLoaded(pendingTeamMemberList: pendingMembers);
@@ -57,16 +55,16 @@ class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMe
   Stream<PendingTeamMembersState> _handleInviteTeamMemberEvent(InviteTeamMember event) async* {
     yield PendingTeamMembersStateLoading();
     try {
-      Future _createPendingTeamMember() => teamRepository.createPendingTeamMember(event.teamMemberModel);
+      Future _createPendingTeamMember() => teamRepository.createPendingTeamMember(event.team.id, event.pendingMemberId);
       Future _addUserInvitationToTeam() =>
-          userDataRepository.addUserInvitationToTeam(event.teamMemberModel.id, event.teamMemberModel.teamId);
+          userDataRepository.addUserInvitationToTeam(event.pendingMemberId, event.team.id);
       var futures = [
         _createPendingTeamMember(),
         _addUserInvitationToTeam(),
       ];
       await Future.wait(futures);
       yield PendingTeamMembersStateInvited();
-      this.add(GetPendingMembers(event.teamMemberModel.teamId));
+      this.add(GetPendingTeamMembers(event.team, event.pendingMemberId));
     } catch (e) {
       yield PendingTeamMembersStateError(e.toString());
       print(e.toString());

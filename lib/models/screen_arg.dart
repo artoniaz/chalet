@@ -18,3 +18,10 @@ class ReportProblemArgs {
     required this.chaletName,
   });
 }
+
+class UserModelArg {
+  final UserModel userModel;
+  UserModelArg({
+    required this.userModel,
+  });
+}

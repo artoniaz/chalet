@@ -1,6 +1,7 @@
 import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
 import 'package:chalet/blocs/pending_members/pending_members_event.dart';
 import 'package:chalet/blocs/pending_members/pending_members_state.dart';
+import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/index.dart';
@@ -24,13 +25,15 @@ class PendingMembersContainer extends StatefulWidget {
 
 class _PendingMembersContainerState extends State<PendingMembersContainer> {
   late PendingTeamMembersBloc _pendingTeamMembersBloc;
+  late TeamBloc _teamBloc;
   late UserModel _user;
 
   @override
   void initState() {
     _user = Provider.of<UserDataBloc>(context, listen: false).user;
     _pendingTeamMembersBloc = Provider.of<PendingTeamMembersBloc>(context, listen: false);
-    _pendingTeamMembersBloc.add(GetPendingMembers(_user.teamId!));
+    _teamBloc = Provider.of<TeamBloc>(context, listen: false);
+    _pendingTeamMembersBloc.add(GetPendingTeamMembers(_teamBloc.team));
     super.initState();
   }
 
@@ -90,7 +93,7 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
                                               ),
                                               ...pendingTeamMembersState.pendingTeamMemberList.map((el) => ListTile(
                                                     leading: CircleAvatar(),
-                                                    title: Text(el.name),
+                                                    title: Text(el.displayName ?? ''),
                                                   ))
                                             ]),
                                           ),

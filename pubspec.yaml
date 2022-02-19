@@ -64,6 +64,7 @@ dependencies:
   equatable: ^2.0.0
   flutter_svg: ^1.0.0
   nil: ^1.1.1
+  flex_color_picker: ^2.2.0
 
 
 dev_dependencies:
@@ -89,6 +90,7 @@ flutter:
     - assets/poo/
     - assets/snake/
     - assets/map_marker/
+    - assets/achievementsIcons/
 
     # - images/a_dot_ham.jpeg
 

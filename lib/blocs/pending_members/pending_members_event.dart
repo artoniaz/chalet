@@ -1,4 +1,4 @@
-import 'package:chalet/models/team_member_model.dart';
+import 'package:chalet/models/team_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PendingTeamMembersEvent extends Equatable {
@@ -6,14 +6,16 @@ abstract class PendingTeamMembersEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetPendingMembers extends PendingTeamMembersEvent {
-  final String teamId;
-  GetPendingMembers(this.teamId);
+class GetPendingTeamMembers extends PendingTeamMembersEvent {
+  final TeamModel team;
+  final String? newPendingUserId;
+  GetPendingTeamMembers(this.team, [this.newPendingUserId]);
 }
 
 class InviteTeamMember extends PendingTeamMembersEvent {
-  final TeamMemberModel teamMemberModel;
-  InviteTeamMember(this.teamMemberModel);
+  final TeamModel team;
+  final String pendingMemberId;
+  InviteTeamMember(this.team, this.pendingMemberId);
 }
 
 class ResetPendingTeamMembersBloc extends PendingTeamMembersEvent {}

@@ -1,9 +1,13 @@
+import 'package:chalet/blocs/team/team_bloc.dart';
+import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/config/routes/routes_definitions.dart';
+import 'package:chalet/models/team_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
+import 'package:chalet/screens/index.dart';
 import 'package:chalet/screens/my_profile/personal_number_dialogs.dart';
 import 'package:chalet/screens/my_profile/profile_drawer.dart';
 import 'package:chalet/services/index.dart';
@@ -96,7 +100,7 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
   void initState() {
     _userDataBloc = Provider.of<UserDataBloc>(context, listen: false);
-    _user = context.read<UserDataBloc>().state.props.first as UserModel;
+    _user = Provider.of<UserDataBloc>(context, listen: false).user;
 
     _getPackageInfo();
     _checkIsUpdateButtonActive();
@@ -142,114 +146,133 @@ class _ProfileCardState extends State<ProfileCard> {
                 packageInfo: _packageInfo,
                 user: user,
               ),
-              body: Stack(
-                children: [
-                  CustomScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: SafeArea(
-                          child: CustomCircleAvatar(
-                            photoURL: user.photoURL,
+              body: SafeArea(
+                child: Stack(
+                  children: [
+                    CustomScrollView(
+                      // physics: NeverScrollableScrollPhysics(),
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: ProfileCardHeader(
+                            user: user,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Divider(),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.all(Dimentions.medium),
+                            child: Text(
+                              'Statystyki',
+                              style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium),
+                          sliver: StatsGrid(
+                            chaletReviewsNumber: user.chaletReviewsNumber,
+                            chaletAddedNumber: user.chaletsAddedNumber,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.all(Dimentions.medium),
+                            child: Text(
+                              'Osiągnięcia',
+                              style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(Dimentions.medium, 0, Dimentions.medium, Dimentions.medium),
+                          sliver: BlocBuilder<UserDataBloc, UserDataState>(
+                            bloc: Provider.of<UserDataBloc>(context, listen: false),
+                            builder: (context, userState) {
+                              if (userState is UserDataStateLoaded) {
+                                return AchievementsList(
+                                  user: userState.user,
+                                );
+                              } else
+                                return Loading();
+                            },
+                          ),
+                        ),
+                        if (user.pendingInvitationsIds != null && user.pendingInvitationsIds!.isNotEmpty)
+                          SliverToBoxAdapter(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomElevatedButton(
+                                  label: 'Zobacz zaproszenia do klanu',
+                                  onPressed: () =>
+                                      Navigator.pushNamed(context, RoutesDefinitions.VIEW_PENDING_INVITATIONS),
+                                ),
+                                VerticalSizedBox8(),
+                                Text(
+                                  'Możesz mieć tylko 2 aktywne zaproszenia. Decyduj szybko!',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                    SlidingUpPanel(
+                      padding: EdgeInsets.fromLTRB(
+                          Dimentions.medium, Dimentions.large, Dimentions.medium, Dimentions.medium),
+                      backdropEnabled: true,
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
+                      minHeight: 0.0,
+                      maxHeight: MediaQuery.of(context).size.height * 0.6,
+                      onPanelClosed: () {
+                        _personalNumberFocusNode.unfocus();
+                        _userNameFocusNode.unfocus();
+                        _personalNumberTextController.clear();
+                        _userDisplayNameController.clear();
+                        setState(() => _isUpdateButtonActive = false);
+                      },
+                      // onPanelOpened: () => _userDisplayNameController.text = user.displayName ?? '',
+                      controller: _panelController,
+                      panel: GestureDetector(
+                        onTap: () => dissmissCurrentFocus(context),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: user.displayName == '' ? 'Nazwa użytkownika' : user.displayName),
+                                controller: _userDisplayNameController,
+                                focusNode: _userNameFocusNode,
+                                keyboardType: TextInputType.text,
+                                validator: (val) => val!.length > 0 && val.length < 3
+                                    ? 'Nazwa użytkownika musi zawierać miniumum 3 znaki'
+                                    : null,
+                              ),
+                              VerticalSizedBox16(),
+                              TextFormField(
+                                controller: _personalNumberTextController,
+                                decoration: textInputDecoration.copyWith(hintText: 'Numer PESEL'),
+                                keyboardType: _hasPersonalNumberBeenFocused ? TextInputType.number : TextInputType.none,
+                                focusNode: _personalNumberFocusNode,
+                                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                                maxLength: 9,
+                              ),
+                              VerticalSizedBox16(),
+                              CustomElevatedButton(
+                                label: 'Zapisz dane',
+                                onPressed: _isUpdateButtonActive ? _updateDisplayname : null,
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      SliverFillRemaining(
-                        hasScrollBody: true,
-                        fillOverscroll: true,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                                child: Column(
-                              children: [
-                                Divider(),
-                                Text(
-                                  user.displayName ?? '',
-                                  style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
-                                ),
-                                VerticalSizedBox16(),
-                                Text(
-                                  user.email,
-                                  style: Theme.of(context).textTheme.headline6!.copyWith(color: Palette.grey),
-                                ),
-                                VerticalSizedBox16(),
-                                if (user.pendingInvitationsIds != null && user.pendingInvitationsIds!.isNotEmpty)
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      CustomElevatedButton(
-                                        label: 'Zobacz zaproszenia do klanu',
-                                        onPressed: () =>
-                                            Navigator.pushNamed(context, RoutesDefinitions.VIEW_PENDING_INVITATIONS),
-                                      ),
-                                      VerticalSizedBox8(),
-                                      Text(
-                                        'Możesz mieć tylko 2 aktywne zaproszenia. Decyduj szybko!',
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.grey),
-                                      ),
-                                    ],
-                                  ),
-                              ],
-                            )),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SlidingUpPanel(
-                    padding:
-                        EdgeInsets.fromLTRB(Dimentions.medium, Dimentions.large, Dimentions.medium, Dimentions.medium),
-                    backdropEnabled: true,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
-                    minHeight: 0.0,
-                    maxHeight: MediaQuery.of(context).size.height * 0.6,
-                    onPanelClosed: () {
-                      _personalNumberFocusNode.unfocus();
-                      _userNameFocusNode.unfocus();
-                      _personalNumberTextController.clear();
-                      _userDisplayNameController.clear();
-                      setState(() => _isUpdateButtonActive = false);
-                    },
-                    // onPanelOpened: () => _userDisplayNameController.text = user.displayName ?? '',
-                    controller: _panelController,
-                    panel: GestureDetector(
-                      onTap: () => dissmissCurrentFocus(context),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(
-                                  hintText: user.displayName == '' ? 'Nazwa użytkownika' : user.displayName),
-                              controller: _userDisplayNameController,
-                              focusNode: _userNameFocusNode,
-                              keyboardType: TextInputType.text,
-                              validator: (val) => val!.length > 0 && val.length < 3
-                                  ? 'Nazwa użytkownika musi zawierać miniumum 3 znaki'
-                                  : null,
-                            ),
-                            VerticalSizedBox16(),
-                            TextFormField(
-                              controller: _personalNumberTextController,
-                              decoration: textInputDecoration.copyWith(hintText: 'Numer PESEL'),
-                              keyboardType: _hasPersonalNumberBeenFocused ? TextInputType.number : TextInputType.none,
-                              focusNode: _personalNumberFocusNode,
-                              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                              maxLength: 9,
-                            ),
-                            VerticalSizedBox16(),
-                            CustomElevatedButton(
-                              label: 'Zapisz dane',
-                              onPressed: _isUpdateButtonActive ? _updateDisplayname : null,
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           } else

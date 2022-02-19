@@ -1,3 +1,4 @@
+import 'package:chalet/models/team_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class TeamEvent extends Equatable {
@@ -12,4 +13,15 @@ class AddTeamEvent extends TeamEvent {
   final String userId;
   final String userName;
   AddTeamEvent(this.userId, this.userName, this.teamName);
+}
+
+class GetTeamEvent extends TeamEvent {
+  final String teamId;
+  GetTeamEvent(this.teamId);
+}
+
+class UpdateTeamStats extends TeamEvent {
+  final int chaletAddedNumber;
+  final int chaletReviewsNumber;
+  UpdateTeamStats(this.chaletAddedNumber, this.chaletReviewsNumber);
 }

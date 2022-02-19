@@ -13,6 +13,8 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute() => (settings) {
           return PageTransition(child: ReportProblem(), type: PageTransitionType.rightToLeft, settings: settings);
         case RoutesDefinitions.VIEW_PENDING_INVITATIONS:
           return PageTransition(child: PendingInvitations(), type: PageTransitionType.rightToLeft, settings: settings);
+        case RoutesDefinitions.OTHER_USER_PROFILE:
+          return PageTransition(child: OtherUserProfile(), type: PageTransitionType.rightToLeft, settings: settings);
         default:
           return null;
       }

@@ -1,4 +1,4 @@
-import 'package:chalet/models/team_member_model.dart';
+import 'package:chalet/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 class TeamMembersState extends Equatable {
@@ -13,13 +13,8 @@ class TeamMembersStateInitial extends TeamMembersState {}
 class TeamMembersStateLoading extends TeamMembersState {}
 
 class TeamMembersStateLoaded extends TeamMembersState {
-  final List<TeamMemberModel> teamMemberList;
+  final List<UserModel> teamMemberList;
   TeamMembersStateLoaded({required this.teamMemberList});
-}
-
-class TeamMembersPendingTeamsStateLoaded extends TeamMembersState {
-  final List<List<TeamMemberModel>> teamMemberPendingTeamsList;
-  TeamMembersPendingTeamsStateLoaded({required this.teamMemberPendingTeamsList});
 }
 
 class TeamMembersStateError extends TeamMembersState {

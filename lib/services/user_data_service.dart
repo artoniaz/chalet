@@ -1,5 +1,5 @@
+import 'package:chalet/config/helpers/achievements_ids.dart';
 import 'package:chalet/models/index.dart';
-import 'package:chalet/models/team_member_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserDataService {
@@ -8,11 +8,14 @@ class UserDataService {
   final String PENDING_INVITATIONS_IDS = 'pendingInvitationsIds';
   final String TEAM_ID = 'teamId';
   final String TEAM_NAME = 'teamName';
+  final String ACHIEVEMENTS_IDS = 'achievementsIds';
+  final String CHOOSEN_COLOR = 'choosenColor';
   @override
   Stream<UserModel> getUserData(String userId) {
     return _usersCollection.doc(userId).snapshots().map((snapshot) => UserModel.fromJson(snapshot));
   }
 
+  //TODO: przenieść jako cloud fn
   Future<void> setUserDataOnRegister(String userId, UserModel user) async {
     return await _usersCollection.doc(userId).set(user.toJson());
   }
@@ -26,11 +29,11 @@ class UserDataService {
     }
   }
 
-  Future<void> updateUserTeamData(String userId, String teamId, String teamName) async {
+  Future<void> updateUserTeamData(String userId, String teamId) async {
     try {
       await _usersCollection.doc(userId).update({
         TEAM_ID: teamId,
-        TEAM_NAME: teamName,
+        CHOOSEN_COLOR: null,
       });
     } catch (e) {
       print(e);
@@ -65,12 +68,12 @@ class UserDataService {
     }
   }
 
-  Future<void> deletePendingInvitationOnAccept(TeamMemberModel teamMember) async {
+  Future<void> updateUserDataOnAcceptPendingInvitation(String userId, String teamId, double choosenColor) async {
     try {
-      await _usersCollection.doc(teamMember.id).update({
+      await _usersCollection.doc(userId).update({
         PENDING_INVITATIONS_IDS: null,
-        TEAM_ID: teamMember.teamId,
-        TEAM_NAME: teamMember.teamName,
+        TEAM_ID: teamId,
+        CHOOSEN_COLOR: choosenColor,
       });
     } catch (e) {
       throw 'Nie udało się usunąć zaproszenia z profilu użytkownika';
@@ -84,6 +87,16 @@ class UserDataService {
       });
     } catch (e) {
       throw 'Nie udało się odrzucić zaproszenia z profilu użytkownika';
+    }
+  }
+
+  Future<void> addCompletedAchievement(String userId, achievementsIds completedAchievement) async {
+    try {
+      await _usersCollection.doc(userId).update({
+        ACHIEVEMENTS_IDS: FieldValue.arrayUnion([completedAchievement]),
+      });
+    } catch (e) {
+      throw 'Nie udało się zapisać osiągnięcia.';
     }
   }
 }

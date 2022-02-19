@@ -1,7 +1,5 @@
-import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams_event.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_event.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_state.dart';
-import 'package:chalet/models/team_member_model.dart';
 import 'package:chalet/repositories/team_repository.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,8 +33,17 @@ class ReactToPendingInvitationBloc extends Bloc<ReactToPendingInvitationEvent, R
     yield ReactToPendingInvitationStateLoading();
     try {
       List<Future> futures = [
-        userDataRepository.deletePendingInvitationOnAccept(event.teamMember),
-        teamRepository.acceptInvitation(event.teamMember, event.otherTeamId),
+        userDataRepository.updateUserDataOnAcceptPendingInvitation(
+          event.userId,
+          event.teamId,
+          event.choosenColor,
+        ),
+        teamRepository.acceptInvitation(
+          event.teamId,
+          event.userId,
+          event.otherTeamId,
+          event.choosenColor,
+        ),
       ];
       await Future.wait(futures);
       yield ReactToPendingInvitationStateAccepted();

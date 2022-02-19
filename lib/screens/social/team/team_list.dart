@@ -1,17 +1,14 @@
-import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
-import 'package:chalet/blocs/pending_members/pending_members_event.dart';
-import 'package:chalet/blocs/pending_members/pending_members_state.dart';
+import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team_members/team_members_bloc.dart';
 import 'package:chalet/blocs/team_members/team_members_event.dart';
 import 'package:chalet/blocs/team_members/team_members_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
-import 'package:chalet/models/team_member_model.dart';
+import 'package:chalet/models/team_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/screens/social/team/pending_members_container.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
-import 'package:chalet/widgets/horizontal_sized_boxes.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/gestures.dart';
@@ -29,13 +26,15 @@ class TeamList extends StatefulWidget {
 class _TeamListState extends State<TeamList> {
   late TeamMembersBloc _teamMembersBloc;
   late UserModel _user;
+  late TeamModel _team;
   final double _circleAvatarRadius = 30.0;
 
   @override
   void initState() {
     _user = Provider.of<UserDataBloc>(context, listen: false).user;
+    _team = Provider.of<TeamBloc>(context, listen: false).team;
     _teamMembersBloc = Provider.of<TeamMembersBloc>(context, listen: false);
-    _teamMembersBloc.add(GetTeamMembers(_user.teamId!));
+    _teamMembersBloc.add(GetTeamMembers(_team.membersIds!, _user));
     super.initState();
   }
 
@@ -47,11 +46,11 @@ class _TeamListState extends State<TeamList> {
           if (teamMembersState is TeamMembersStateLoading) return Loading();
           if (teamMembersState is TeamMembersStateLoaded) {
             return Padding(
-              padding: const EdgeInsets.all(Dimentions.medium),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: Dimentions.medium),
               child: Column(
                 children: [
                   Text(
-                    'Brązowi rycerze klanu ${_user.teamName}',
+                    'Brązowi rycerze klanu ${_team.name}',
                     style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.w700),
                   ),
                   VerticalSizedBox16(),
@@ -68,8 +67,7 @@ class _TeamListState extends State<TeamList> {
                         PendingMembersContainer(
                           circleAvatarRadius: _circleAvatarRadius,
                         ),
-                        if (teamMembersState.teamMemberList.length < 10)
-                          // teamMembersState.teamMemberList.indexWhere((el) => el.isAdmin == _user.uid)
+                        if (teamMembersState.teamMemberList.length < 10 && _team.teamAdminId == _user.uid)
                           AddMemberIcon(
                             circleAvatarRadius: _circleAvatarRadius,
                           )

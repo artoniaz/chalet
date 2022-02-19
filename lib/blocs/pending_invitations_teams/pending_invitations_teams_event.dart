@@ -5,9 +5,9 @@ abstract class PendingInvitationsTeamEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetPendingInvitationsTeamMembers extends PendingInvitationsTeamEvent {
+class GetPendingInvitationsTeams extends PendingInvitationsTeamEvent {
   final List<String> teamIds;
-  GetPendingInvitationsTeamMembers(this.teamIds);
+  GetPendingInvitationsTeams(this.teamIds);
 }
 
-class ResetPendingInvitationsTeamMembers extends PendingInvitationsTeamEvent {}
+class ResetPendingInvitationsTeam extends PendingInvitationsTeamEvent {}

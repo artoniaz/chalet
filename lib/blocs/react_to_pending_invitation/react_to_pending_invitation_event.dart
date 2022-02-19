@@ -1,4 +1,3 @@
-import 'package:chalet/models/team_member_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ReactToPendingInvitationEvent extends Equatable {
@@ -7,9 +6,11 @@ abstract class ReactToPendingInvitationEvent extends Equatable {
 }
 
 class AcceptPendingInvitation extends ReactToPendingInvitationEvent {
-  final TeamMemberModel teamMember;
+  final String userId;
+  final String teamId;
   final String? otherTeamId;
-  AcceptPendingInvitation(this.teamMember, this.otherTeamId);
+  final double choosenColor;
+  AcceptPendingInvitation(this.userId, this.teamId, this.otherTeamId, this.choosenColor);
 }
 
 class DeclinePendingInvitation extends ReactToPendingInvitationEvent {

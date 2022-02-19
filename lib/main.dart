@@ -7,6 +7,7 @@ import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_bloc.dart';
 import 'package:chalet/blocs/send_congrats/send_congrats_bloc.dart';
+import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_bloc.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_event.dart';
@@ -94,7 +95,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<TeamMembersBloc>(
             create: (context) => TeamMembersBloc(
               teamRepository: TeamRepository(),
-              userDataRepository: UserDataRepository(),
+              teamBloc: Provider.of<TeamBloc>(context, listen: false),
             ),
           ),
           BlocProvider<SendCongratsBloc>(
@@ -112,11 +113,18 @@ class MyApp extends StatelessWidget {
             create: (context) => DeleteTeamMemberBloc(
               teamRepository: TeamRepository(),
               teamMembersBloc: BlocProvider.of<TeamMembersBloc>(context),
+              userDataRepository: UserDataRepository(),
             ),
           ),
           BlocProvider<PendingInvitationsTeamsBloc>(
             create: (context) => PendingInvitationsTeamsBloc(
               teamRepository: TeamRepository(),
+            ),
+          ),
+          BlocProvider<ChaletListForSocialMapBloc>(
+            create: (context) => ChaletListForSocialMapBloc(
+              chaletRepository: ChaletRepository(),
+              teamMembersBloc: BlocProvider.of<TeamMembersBloc>(context),
             ),
           ),
         ],
