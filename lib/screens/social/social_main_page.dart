@@ -68,7 +68,7 @@ class _SocialMainPageState extends State<SocialMainPage> with SingleTickerProvid
                               TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
                           selectedBackgroundColors: [Palette.chaletBlue],
                           labels: [
-                            "Mój team",
+                            "Mój klan",
                             "Mapa",
                             "Statystyki",
                           ],

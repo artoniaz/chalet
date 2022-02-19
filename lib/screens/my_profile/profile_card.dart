@@ -187,7 +187,17 @@ class _ProfileCardState extends State<ProfileCard> {
                         ),
                         SliverPadding(
                           padding: EdgeInsets.fromLTRB(Dimentions.medium, 0, Dimentions.medium, Dimentions.medium),
-                          sliver: AchievementsList(),
+                          sliver: BlocBuilder<UserDataBloc, UserDataState>(
+                            bloc: Provider.of<UserDataBloc>(context, listen: false),
+                            builder: (context, userState) {
+                              if (userState is UserDataStateLoaded) {
+                                return AchievementsList(
+                                  user: userState.user,
+                                );
+                              } else
+                                return Loading();
+                            },
+                          ),
                         ),
                         if (user.pendingInvitationsIds != null && user.pendingInvitationsIds!.isNotEmpty)
                           SliverToBoxAdapter(

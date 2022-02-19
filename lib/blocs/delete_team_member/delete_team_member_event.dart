@@ -11,5 +11,6 @@ class DeleteTeamMember extends DeleteTeamMemberEvent {
   final TeamModel team;
   final String userToDeleteId;
   final UserModel adminUser;
-  DeleteTeamMember(this.team, this.userToDeleteId, this.adminUser);
+  final double choosenColor;
+  DeleteTeamMember(this.team, this.userToDeleteId, this.adminUser, this.choosenColor);
 }

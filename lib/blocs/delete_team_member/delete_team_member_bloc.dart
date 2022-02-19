@@ -35,7 +35,7 @@ class DeleteTeamMemberBloc extends Bloc<DeleteTeamMemberEvent, DeleteTeamMemberS
   Stream<DeleteTeamMemberState> _handleDeleteTeamMembersEvent(DeleteTeamMember event) async* {
     yield DeleteTeamMemberStateLoading();
     try {
-      await teamRepository.deleteTeamMember(event.team.id, event.userToDeleteId);
+      await teamRepository.deleteTeamMember(event.team.id, event.userToDeleteId, event.choosenColor);
       yield DeleteTeamMemberStateDeleted();
       List<String> teamMembersIds = event.team.membersIds ?? [];
       teamMembersIds.remove(event.userToDeleteId);

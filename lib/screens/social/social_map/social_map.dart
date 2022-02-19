@@ -5,6 +5,8 @@ import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_state
 import 'package:chalet/blocs/team_members/team_members_bloc.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/index.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,6 +72,16 @@ class _SocialMapState extends State<SocialMap> with AutomaticKeepAliveClientMixi
                 } else
                   return Loading();
               }),
+          Positioned(
+            top: Dimentions.medium,
+            left: MediaQuery.of(context).size.width / 2,
+            child: FractionalTranslation(
+              translation: Offset(-0.5, 0),
+              child: CustomTextButtonRounded(
+                label: 'Wyświetlono najnowsze 8 Szaletów dodanych przez członków klanu',
+              ),
+            ),
+          ),
         ],
       ),
     );

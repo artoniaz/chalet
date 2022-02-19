@@ -27,7 +27,6 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppBars.customAppBarChaletBlue(context, _userProfile.displayName ?? ''),
       appBar: CustomAppBars.customTransparentAppBar(context),
       body: CustomScrollView(
         slivers: [
@@ -66,7 +65,9 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
           ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(Dimentions.medium, 0, Dimentions.medium, Dimentions.medium),
-            sliver: AchievementsList(),
+            sliver: AchievementsList(
+              user: _userProfile,
+            ),
           ),
         ],
       ),

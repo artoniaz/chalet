@@ -7,6 +7,7 @@ class TeamModel {
   List<String>? pendingMembersIds;
   int? chaletAddedNumber;
   int? chaletReviewsNumber;
+  List<double>? choosenColors;
 
   TeamModel({
     required this.id,
@@ -17,6 +18,7 @@ class TeamModel {
     required this.pendingMembersIds,
     this.chaletAddedNumber,
     this.chaletReviewsNumber,
+    this.choosenColors,
   });
 
   factory TeamModel.fromJson(Object? json, String id) {
@@ -31,6 +33,9 @@ class TeamModel {
       pendingMembersIds: (json as dynamic)['pendingMembersIds'] == null
           ? []
           : List<String>.from((json as dynamic)['pendingMembersIds'].map((el) => el)),
+      choosenColors: (json as dynamic)['choosenColors'] == null
+          ? []
+          : List<double>.from((json as dynamic)['choosenColors'].map((el) => el.toDouble())),
     );
   }
 
@@ -40,5 +45,6 @@ class TeamModel {
         'teamAdminName': teamAdminName,
         'membersIds': membersIds,
         'pendingMembersIds': pendingMembersIds,
+        'choosenColors': choosenColors,
       };
 }

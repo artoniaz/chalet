@@ -16,11 +16,11 @@ class TeamRepository {
   Future<void> createPendingTeamMember(String teamId, String pendingMemberId) =>
       _teamService.createPendingTeamMember(teamId, pendingMemberId);
 
-  Future<void> deleteTeamMember(String teamId, String userToDeleteId) =>
-      _teamService.deleteTeamMember(teamId, userToDeleteId);
+  Future<void> deleteTeamMember(String teamId, String userToDeleteId, double choosenColor) =>
+      _teamService.deleteTeamMember(teamId, userToDeleteId, choosenColor);
 
-  Future<void> acceptInvitation(String teamId, String userId, String? otherTeamId) =>
-      _teamService.acceptInvitation(teamId, userId, otherTeamId);
+  Future<void> acceptInvitation(String teamId, String userId, String? otherTeamId, double choosenColor) =>
+      _teamService.acceptInvitation(teamId, userId, otherTeamId, choosenColor);
 
   Future<void> declineInvitation(String teamToDeclineId, String decliningUserId) =>
       _teamService.declineInvitation(teamToDeclineId, decliningUserId);

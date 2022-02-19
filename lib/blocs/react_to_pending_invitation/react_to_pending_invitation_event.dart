@@ -9,7 +9,8 @@ class AcceptPendingInvitation extends ReactToPendingInvitationEvent {
   final String userId;
   final String teamId;
   final String? otherTeamId;
-  AcceptPendingInvitation(this.userId, this.teamId, this.otherTeamId);
+  final double choosenColor;
+  AcceptPendingInvitation(this.userId, this.teamId, this.otherTeamId, this.choosenColor);
 }
 
 class DeclinePendingInvitation extends ReactToPendingInvitationEvent {

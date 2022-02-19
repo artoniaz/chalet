@@ -124,6 +124,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<ChaletListForSocialMapBloc>(
             create: (context) => ChaletListForSocialMapBloc(
               chaletRepository: ChaletRepository(),
+              teamMembersBloc: BlocProvider.of<TeamMembersBloc>(context),
             ),
           ),
         ],

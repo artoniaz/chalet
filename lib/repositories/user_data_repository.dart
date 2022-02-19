@@ -22,10 +22,13 @@ class UserDataRepository {
   Future<void> addUserInvitationToTeam(String userId, String invitingTeamId) =>
       _userDataService.addUserInvitationToTeam(userId, invitingTeamId);
 
-  Future<void> deletePendingInvitationOnAccept(String userId, String teamId) =>
-      _userDataService.deletePendingInvitationOnAccept(userId, teamId);
+  Future<void> updateUserDataOnAcceptPendingInvitation(String userId, String teamId, double choosenColor) =>
+      _userDataService.updateUserDataOnAcceptPendingInvitation(userId, teamId, choosenColor);
 
-  Future<void> deletePendingInvitationOnDecline(String teamToDeclineId, String decliningUserId) =>
+  Future<void> deletePendingInvitationOnDecline(
+    String teamToDeclineId,
+    String decliningUserId,
+  ) =>
       _userDataService.deletePendingInvitationOnDecline(teamToDeclineId, decliningUserId);
 
   Future<void> addCompletedAchievement(String userId, achievementsIds completedAchievement) =>

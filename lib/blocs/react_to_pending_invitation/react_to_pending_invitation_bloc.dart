@@ -33,8 +33,17 @@ class ReactToPendingInvitationBloc extends Bloc<ReactToPendingInvitationEvent, R
     yield ReactToPendingInvitationStateLoading();
     try {
       List<Future> futures = [
-        userDataRepository.deletePendingInvitationOnAccept(event.userId, event.teamId),
-        teamRepository.acceptInvitation(event.teamId, event.userId, event.otherTeamId),
+        userDataRepository.updateUserDataOnAcceptPendingInvitation(
+          event.userId,
+          event.teamId,
+          event.choosenColor,
+        ),
+        teamRepository.acceptInvitation(
+          event.teamId,
+          event.userId,
+          event.otherTeamId,
+          event.choosenColor,
+        ),
       ];
       await Future.wait(futures);
       yield ReactToPendingInvitationStateAccepted();

@@ -4,10 +4,7 @@ import 'package:chalet/blocs/team_members/team_members_event.dart';
 import 'package:chalet/blocs/team_members/team_members_state.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/team_repository.dart';
-import 'package:chalet/repositories/user_data_repository.dart';
-import 'package:chalet/services/user_data_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:collection/collection.dart';
 
 class TeamMembersBloc extends Bloc<TeamMembersEvent, TeamMembersState> {
   final TeamRepository teamRepository;

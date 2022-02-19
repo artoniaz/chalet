@@ -61,7 +61,7 @@ class ChaletService {
   Stream<List<ChaletModel>> getChaletListAddedByUsers(List<String> teamMembersIds) {
     return chaletCollection
         .where('creatorId', whereIn: teamMembersIds)
-        .limit(20)
+        .limit(8)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => ChaletModel.fromJson(doc, doc.id)).toList());
   }

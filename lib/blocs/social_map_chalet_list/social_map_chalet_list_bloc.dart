@@ -1,16 +1,23 @@
 import 'dart:async';
 import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_event.dart';
 import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_state.dart';
+import 'package:chalet/blocs/team_members/team_members_bloc.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/repositories/chalet_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:collection/collection.dart';
 
 class ChaletListForSocialMapBloc extends Bloc<ChaletListForSocialMapEvent, ChaletListForSocialMapState> {
   final ChaletRepository chaletRepository;
+  final TeamMembersBloc teamMembersBloc;
 
-  ChaletListForSocialMapBloc({required this.chaletRepository}) : super(ChaletListForSocialMapStateInitial());
+  ChaletListForSocialMapBloc({
+    required this.chaletRepository,
+    required this.teamMembersBloc,
+  }) : super(ChaletListForSocialMapStateInitial());
 
   StreamSubscription? chaletListForSocialMapSubscription;
 
@@ -45,7 +52,9 @@ class ChaletListForSocialMapBloc extends Bloc<ChaletListForSocialMapEvent, Chale
     final List<Marker> chaletListMarkers = event.chaletListForSocialMap
         .map((chalet) => Marker(
               markerId: MarkerId(chalet.id),
-              icon: BitmapDescriptor.defaultMarker,
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  teamMembersBloc.teamMemberList.firstWhereOrNull((el) => chalet.creatorId == el.uid)?.choosenColor ??
+                      0.0),
               position: getLatLngFromGeoPoint(chalet.position['geopoint']),
               infoWindow: InfoWindow(
                 title: chalet.name,

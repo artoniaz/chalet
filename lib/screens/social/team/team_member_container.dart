@@ -63,8 +63,13 @@ class TeamMemberContainer extends StatelessWidget {
                           context: context,
                           builder: (context) => CustomAlertDialog(
                               headline: 'Czy chcesz usunąć tego użytownika z klanu?',
-                              approveFunction: () => Provider.of<DeleteTeamMemberBloc>(context, listen: false)
-                                  .add(DeleteTeamMember(_team, teamMember.uid, _user)),
+                              approveFunction: () =>
+                                  Provider.of<DeleteTeamMemberBloc>(context, listen: false).add(DeleteTeamMember(
+                                    _team,
+                                    teamMember.uid,
+                                    _user,
+                                    teamMember.choosenColor!,
+                                  )),
                               approveFunctionButtonLabel: 'Usuń z klanu'))),
                 )),
         ],

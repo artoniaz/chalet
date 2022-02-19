@@ -9,6 +9,7 @@ class UserDataService {
   final String TEAM_ID = 'teamId';
   final String TEAM_NAME = 'teamName';
   final String ACHIEVEMENTS_IDS = 'achievementsIds';
+  final String CHOOSEN_COLOR = 'choosenColor';
   @override
   Stream<UserModel> getUserData(String userId) {
     return _usersCollection.doc(userId).snapshots().map((snapshot) => UserModel.fromJson(snapshot));
@@ -32,6 +33,7 @@ class UserDataService {
     try {
       await _usersCollection.doc(userId).update({
         TEAM_ID: teamId,
+        CHOOSEN_COLOR: null,
       });
     } catch (e) {
       print(e);
@@ -66,11 +68,12 @@ class UserDataService {
     }
   }
 
-  Future<void> deletePendingInvitationOnAccept(String userId, String teamId) async {
+  Future<void> updateUserDataOnAcceptPendingInvitation(String userId, String teamId, double choosenColor) async {
     try {
       await _usersCollection.doc(userId).update({
         PENDING_INVITATIONS_IDS: null,
         TEAM_ID: teamId,
+        CHOOSEN_COLOR: choosenColor,
       });
     } catch (e) {
       throw 'Nie udało się usunąć zaproszenia z profilu użytkownika';

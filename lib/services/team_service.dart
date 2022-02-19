@@ -10,6 +10,7 @@ class TeamService {
   final String MEMBERS = 'members';
   final String PENDING_MEMBERS_IDS = 'pendingMembersIds';
   final String MEMBERS_IDS = 'membersIds';
+  final String CHOOSEN_COLORS = 'choosenColors';
 
   Future<TeamModel> getTeam(String teamId) async {
     try {
@@ -64,20 +65,22 @@ class TeamService {
     }
   }
 
-  Future<void> deleteTeamMember(String teamId, String userToDeleteId) async {
+  Future<void> deleteTeamMember(String teamId, String userToDeleteId, double choosenColor) async {
     try {
       await _teamsCollection.doc(teamId).update({
         MEMBERS_IDS: FieldValue.arrayRemove([userToDeleteId]),
+        CHOOSEN_COLORS: FieldValue.arrayRemove([choosenColor]),
       });
     } catch (e) {
       throw 'Nie udało się usunąć użytkownika z klanu';
     }
   }
 
-  Future<void> acceptInvitation(String teamId, String userId, String? otherTeamId) async {
+  Future<void> acceptInvitation(String teamId, String userId, String? otherTeamId, double choosenColor) async {
     try {
       await _teamsCollection.doc(teamId).update({
         MEMBERS_IDS: FieldValue.arrayUnion([userId]),
+        CHOOSEN_COLORS: FieldValue.arrayUnion([choosenColor]),
         PENDING_MEMBERS_IDS: FieldValue.arrayRemove([userId]),
       });
       if (otherTeamId != null)
