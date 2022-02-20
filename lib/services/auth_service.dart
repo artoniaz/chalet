@@ -1,11 +1,7 @@
-import 'package:chalet/blocs/user_data/user_data_bloc.dart';
-import 'package:chalet/blocs/user_data/user_data_event.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-import 'package:provider/provider.dart';
 
 class AuthService {
   final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
@@ -49,7 +45,6 @@ class AuthService {
     try {
       firebaseAuth.UserCredential res =
           await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      await res.user?.updateDisplayName(nick);
       final userId = res.user!.uid;
       UserDataRepository().setUserDataOnRegister(userId, UserModel.fromData(userId, email, nick));
     } catch (e) {
