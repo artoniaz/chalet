@@ -150,7 +150,6 @@ class _ProfileCardState extends State<ProfileCard> {
                 child: Stack(
                   children: [
                     CustomScrollView(
-                      // physics: NeverScrollableScrollPhysics(),
                       slivers: [
                         SliverToBoxAdapter(
                           child: ProfileCardHeader(
