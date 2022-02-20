@@ -122,6 +122,7 @@ class AuthService {
       firebaseAuth.AuthCredential credentials =
           firebaseAuth.EmailAuthProvider.credential(email: email, password: password);
       firebaseAuth.UserCredential result = await user.reauthenticateWithCredential(credentials);
+      await UserDataRepository().removeUserData(user.uid);
       await result.user?.delete();
       return true;
     } catch (e) {

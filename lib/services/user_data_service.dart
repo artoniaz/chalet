@@ -15,7 +15,6 @@ class UserDataService {
     return _usersCollection.doc(userId).snapshots().map((snapshot) => UserModel.fromJson(snapshot));
   }
 
-  //TODO: przenieść jako cloud fn
   Future<void> setUserDataOnRegister(String userId, UserModel user) async {
     return await _usersCollection.doc(userId).set(user.toJson());
   }
