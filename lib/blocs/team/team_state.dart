@@ -13,8 +13,6 @@ class TeamStateInitial extends TeamState {}
 
 class TeamStateLoading extends TeamState {}
 
-class TeamStateTeamCreated extends TeamState {}
-
 class TeamStateTeamLoaded extends TeamState {
   final TeamModel team;
   TeamStateTeamLoaded({required this.team});

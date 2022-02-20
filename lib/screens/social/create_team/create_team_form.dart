@@ -1,5 +1,6 @@
-import 'package:chalet/blocs/team/team_bloc.dart';
-import 'package:chalet/blocs/team/team_event.dart';
+import 'package:chalet/blocs/create_team/create_team_bloc.dart';
+import 'package:chalet/blocs/create_team/create_team_event.dart';
+import 'package:chalet/blocs/create_team/create_team_state.dart';
 import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/user_model.dart';
@@ -8,14 +9,15 @@ import 'package:chalet/styles/input_decoration.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 class CreateTeamForm extends StatefulWidget {
-  final TeamBloc teamBloc;
+  final CreateTeamBloc createTeamBloc;
   final TextEditingController teamNameController;
   const CreateTeamForm({
     Key? key,
-    required this.teamBloc,
+    required this.createTeamBloc,
     required this.teamNameController,
   }) : super(key: key);
 
@@ -29,14 +31,14 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
   void _addTeam() {
     if (_formKey.currentState!.validate()) {
       UserModel user = Provider.of<UserDataBloc>(context, listen: false).state.props.first as UserModel;
-      widget.teamBloc.add(AddTeamEvent(user.uid, user.displayName ?? '', widget.teamNameController.text));
+      widget.createTeamBloc.add(AddCreateTeamEvent(user.uid, user.displayName ?? '', widget.teamNameController.text));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TeamBloc, TeamState>(
-      bloc: widget.teamBloc,
+    return BlocConsumer<CreateTeamBloc, CreateTeamState>(
+      bloc: widget.createTeamBloc,
       listener: (context, teamState) {},
       builder: (context, teamState) {
         return Container(

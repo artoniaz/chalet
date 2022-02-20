@@ -96,7 +96,7 @@ class _SocialMainPageState extends State<SocialMainPage> with SingleTickerProvid
               ),
             );
           else
-            return Container();
+            return Loading();
         });
   }
 }

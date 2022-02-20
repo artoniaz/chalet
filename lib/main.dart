@@ -1,5 +1,6 @@
 import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/create_team/create_team_bloc.dart';
 import 'package:chalet/blocs/delete_team_member/delete_team_member_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams_bloc.dart';
@@ -125,6 +126,12 @@ class MyApp extends StatelessWidget {
             create: (context) => ChaletListForSocialMapBloc(
               chaletRepository: ChaletRepository(),
               teamMembersBloc: BlocProvider.of<TeamMembersBloc>(context),
+            ),
+          ),
+          BlocProvider<CreateTeamBloc>(
+            create: (context) => CreateTeamBloc(
+              teamRepository: TeamRepository(),
+              userDataRepository: UserDataRepository(),
             ),
           ),
         ],
