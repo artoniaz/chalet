@@ -1,9 +1,6 @@
 import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/team_members/team_members_bloc.dart';
-import 'package:chalet/blocs/team_members/team_members_state.dart';
-import 'package:chalet/models/stat_model.dart';
-import 'package:chalet/models/team_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/screens/social/team_stats/team_name_container.dart';
 import 'package:chalet/styles/dimentions.dart';

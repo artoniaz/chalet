@@ -1,12 +1,10 @@
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
-import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/models/review_model.dart';
-import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/screens/review/rating_dialogs/dialog_types.dart';
 import 'package:chalet/screens/review/rating_dialogs/full_rating_dialog.dart';
@@ -19,7 +17,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:provider/provider.dart';
 
 class AddReviewModule extends StatefulWidget {
   final ChaletModel chalet;

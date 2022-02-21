@@ -6,7 +6,6 @@ import 'package:chalet/config/functions/feed_display_info_helpers.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/user_model.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_elevated_button.dart';
 import 'package:chalet/widgets/custom_modal_bottom_sheet.dart';

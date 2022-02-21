@@ -10,7 +10,7 @@ class UserDataService {
   final String TEAM_NAME = 'teamName';
   final String ACHIEVEMENTS_IDS = 'achievementsIds';
   final String CHOOSEN_COLOR = 'choosenColor';
-  @override
+
   Stream<UserModel> getUserData(String userId) {
     return _usersCollection.doc(userId).snapshots().map((snapshot) => UserModel.fromJson(snapshot));
   }

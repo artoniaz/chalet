@@ -19,8 +19,7 @@ class AuthService {
     String password,
   ) async {
     try {
-      firebaseAuth.UserCredential res =
-          await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {

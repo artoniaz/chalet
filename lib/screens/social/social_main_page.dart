@@ -4,7 +4,6 @@ import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';

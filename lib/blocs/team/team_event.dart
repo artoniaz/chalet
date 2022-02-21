@@ -1,4 +1,3 @@
-import 'package:chalet/models/team_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class TeamEvent extends Equatable {

@@ -1,17 +1,12 @@
-import 'package:chalet/blocs/team/team_bloc.dart';
-import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
 import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/config/routes/routes_definitions.dart';
-import 'package:chalet/models/team_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/screens/my_profile/personal_number_dialogs.dart';
 import 'package:chalet/screens/my_profile/profile_drawer.dart';
-import 'package:chalet/services/index.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';

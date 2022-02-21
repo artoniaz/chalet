@@ -4,14 +4,12 @@ import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_event.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
-import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseUser;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:nil/nil.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

@@ -3,7 +3,6 @@ import 'package:chalet/models/image_model_file.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
-import 'package:chalet/widgets/photo_carusel/image_slider_presentational.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 

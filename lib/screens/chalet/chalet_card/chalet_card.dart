@@ -1,4 +1,3 @@
-import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/review/review_bloc.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
@@ -6,7 +5,6 @@ import 'package:chalet/models/chalet_model.dart';
 import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/screens/review/add_review_module.dart';
 import 'package:chalet/services/review_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';

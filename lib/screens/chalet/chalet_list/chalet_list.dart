@@ -6,7 +6,6 @@ import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/chalet/chalet_list/sorting_dropown.dart';
 import 'package:chalet/screens/chalet/chalet_list/sorting_values.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';

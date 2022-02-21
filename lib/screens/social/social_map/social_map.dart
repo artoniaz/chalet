@@ -3,11 +3,9 @@ import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_bloc.
 import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_event.dart';
 import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_state.dart';
 import 'package:chalet/blocs/team_members/team_members_bloc.dart';
-import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
-import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,15 +20,10 @@ class SocialMap extends StatefulWidget {
 
 class _SocialMapState extends State<SocialMap> with AutomaticKeepAliveClientMixin<SocialMap> {
   late LatLng _cameraCenterPosition;
-  late GoogleMapController _googleMapController;
   late ChaletListForSocialMapBloc _chaletListForSocialMapBloc;
   late List<UserModel> _teamMemberList;
 
   void _onCameraMove(CameraPosition position) => _cameraCenterPosition = position.target;
-
-  void _onMapCreated(controller) {
-    _googleMapController = controller;
-  }
 
   void getInitData() async {
     LatLng userLocation = Provider.of<GeolocationBloc>(context, listen: false).state.props.first as LatLng;
@@ -64,7 +57,6 @@ class _SocialMapState extends State<SocialMap> with AutomaticKeepAliveClientMixi
                     initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 18.0),
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
-                    onMapCreated: _onMapCreated,
                     onCameraMove: (pos) => _onCameraMove(pos),
                     markers: state.chaletListMarkers.toSet(),
                     myLocationEnabled: true,

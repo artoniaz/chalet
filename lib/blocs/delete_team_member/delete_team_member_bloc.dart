@@ -6,7 +6,6 @@ import 'package:chalet/blocs/team_members/team_members_state.dart';
 import 'package:chalet/repositories/team_repository.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:collection/collection.dart';
 
 class DeleteTeamMemberBloc extends Bloc<DeleteTeamMemberEvent, DeleteTeamMemberState> {
   final TeamRepository teamRepository;
