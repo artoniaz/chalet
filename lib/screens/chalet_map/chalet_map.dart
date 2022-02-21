@@ -59,6 +59,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   //   }
   // }
 
+  late Set<Circle> centerCircle;
+
   void _centerCamera() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(CameraPosition(target: _userLocation, zoom: 15.0)),
@@ -69,6 +71,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void _handleSearchThisAreaButton() {
     widget.updateQuery(_cameraCenterPosition);
     setState(() => _isSearchThisAreaButtonActive = false);
+    updateCenterCirclePosition();
   }
 
   void _onCameraIdle() {
@@ -117,6 +120,19 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     }
   }
 
+  void updateCenterCirclePosition() {
+    centerCircle = Set.from([
+      Circle(
+        circleId: CircleId('centerCircle'),
+        center: _cameraCenterPosition,
+        radius: 200,
+        fillColor: Palette.chaletBlue.withOpacity(0.2),
+        strokeColor: Palette.chaletBlue,
+        strokeWidth: 2,
+      )
+    ]);
+  }
+
   void _updateMarkers(List<ChaletModel> chaletlist) {
     setState(() => markers.clear());
     chaletlist.forEach((chalet) => _addMarker(chalet));
@@ -128,6 +144,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
 
     _cameraCenterPosition = userLocation;
     _userLocation = userLocation;
+
+    updateCenterCirclePosition();
   }
 
   @override
@@ -196,7 +214,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               });
             },
             body: GoogleMap(
-              initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 18.0),
+              initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 16.0),
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               onMapCreated: _onMapCreated,
@@ -205,6 +223,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
               myLocationEnabled: true,
               markers: markers.toSet(),
               onTap: _onMapTap,
+              circles: centerCircle,
               polylines: {
                 if (_directionsInfo != null)
                   Polyline(
