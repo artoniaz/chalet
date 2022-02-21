@@ -159,6 +159,25 @@ class _ProfileCardState extends State<ProfileCard> {
                         SliverToBoxAdapter(
                           child: Divider(),
                         ),
+                        if (user.pendingInvitationsIds != null && user.pendingInvitationsIds!.isNotEmpty)
+                          SliverToBoxAdapter(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomElevatedButton(
+                                  label: 'Zobacz zaproszenia do klanu',
+                                  onPressed: () =>
+                                      Navigator.pushNamed(context, RoutesDefinitions.VIEW_PENDING_INVITATIONS),
+                                ),
+                                VerticalSizedBox8(),
+                                Text(
+                                  'Możesz mieć tylko 2 aktywne zaproszenia. Decyduj szybko!',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.grey),
+                                ),
+                              ],
+                            ),
+                          ),
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: const EdgeInsets.all(Dimentions.medium),
@@ -198,25 +217,6 @@ class _ProfileCardState extends State<ProfileCard> {
                             },
                           ),
                         ),
-                        if (user.pendingInvitationsIds != null && user.pendingInvitationsIds!.isNotEmpty)
-                          SliverToBoxAdapter(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CustomElevatedButton(
-                                  label: 'Zobacz zaproszenia do klanu',
-                                  onPressed: () =>
-                                      Navigator.pushNamed(context, RoutesDefinitions.VIEW_PENDING_INVITATIONS),
-                                ),
-                                VerticalSizedBox8(),
-                                Text(
-                                  'Możesz mieć tylko 2 aktywne zaproszenia. Decyduj szybko!',
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.grey),
-                                ),
-                              ],
-                            ),
-                          ),
                       ],
                     ),
                     SlidingUpPanel(

@@ -75,6 +75,7 @@ class _SocialMapState extends State<SocialMap> with AutomaticKeepAliveClientMixi
           Positioned(
             top: Dimentions.medium,
             left: MediaQuery.of(context).size.width / 2,
+            width: MediaQuery.of(context).size.width - 2 * Dimentions.medium,
             child: FractionalTranslation(
               translation: Offset(-0.5, 0),
               child: CustomTextButtonRounded(

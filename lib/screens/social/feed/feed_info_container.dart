@@ -9,6 +9,7 @@ import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_elevated_button.dart';
+import 'package:chalet/widgets/custom_modal_bottom_sheet.dart';
 import 'package:chalet/widgets/horizontal_sized_boxes.dart';
 import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class FeedInfoContainer extends StatelessWidget {
                       child: _user.uid == feedInfo.userId
                           ? Container()
                           : CustomElevatedButton(
-                              label: _hasAlreadyBeenCongratulatedByUser(_user) ? 'Już polajkowałeś' : 'Pogratuluj',
+                              label: _hasAlreadyBeenCongratulatedByUser(_user) ? 'Już gratulowałeś' : 'Pogratuluj',
                               backgroundColor: Palette.goldLeaf,
                               onPressed: _congratsValidation(_user, state)
                                   ? () => Provider.of<SendCongratsBloc>(context, listen: false).add(SendCongrats(
@@ -121,11 +122,31 @@ class FeedInfoContainer extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.emoji_emotions,
-                            color: Palette.chaletBlue,
-                            size: 36.0,
-                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.emoji_emotions,
+                                color: Palette.chaletBlue,
+                                size: 36.0,
+                              ),
+                              onPressed: () => showCustomModalBottomSheet(
+                                    context,
+                                    (context) => Padding(
+                                      padding: const EdgeInsets.all(Dimentions.medium),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Polubienia',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(fontWeight: FontWeight.bold),
+                                          ),
+                                          ...feedInfo.congratsSenderList.map((el) => ListTile(title: Text(el.userName)))
+                                        ],
+                                      ),
+                                    ),
+                                  )),
                           Text(
                             feedInfo.congratsSenderList.length.toString(),
                             style: Theme.of(context).textTheme.headline6,

@@ -4,6 +4,7 @@ Future showCustomModalBottomSheet(BuildContext context, Widget Function(BuildCon
         [Future? whenComplete]) =>
     showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height * 0.3,
               maxHeight: MediaQuery.of(context).size.height * 0.7,
