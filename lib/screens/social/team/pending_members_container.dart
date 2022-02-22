@@ -7,7 +7,6 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:nil/nil.dart';
 
 class PendingMembersContainer extends StatefulWidget {
   final double circleAvatarRadius;
@@ -40,7 +39,7 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
         builder: (context, pendingTeamMembersState) {
           return pendingTeamMembersState is PendingTeamMemberListLoaded &&
                   pendingTeamMembersState.pendingTeamMemberList.isEmpty
-              ? nil
+              ? Container()
               : Container(
                   width: (widget.circleAvatarRadius + 5.0) * 2,
                   margin: EdgeInsets.only(right: 6.0),
