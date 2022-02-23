@@ -9,6 +9,7 @@ import 'package:chalet/widgets/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseUser;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -46,8 +47,13 @@ class _HomeState extends State<Home> {
     return BlocBuilder<UserDataBloc, UserDataState>(
         bloc: _userDataBloc,
         builder: (context, userDataState) {
-          return BlocBuilder<GeolocationBloc, GeolocationState>(
+          return BlocConsumer<GeolocationBloc, GeolocationState>(
               bloc: _geolocatinBloc,
+              listener: (context, geolocationState) {
+                if (geolocationState is GeolocationStateError) {
+                  EasyLoading.showInfo(geolocationState.errorMessage);
+                }
+              },
               builder: (context, geolocationState) {
                 if (geolocationState is GeolocationStateInitial ||
                     geolocationState is GeolocationStateLoading ||

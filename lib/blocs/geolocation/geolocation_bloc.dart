@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chalet/blocs/geolocation/geolocation_event.dart';
 import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/repositories/geolocation_repository.dart';
