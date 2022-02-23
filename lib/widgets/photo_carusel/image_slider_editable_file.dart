@@ -43,20 +43,20 @@ class ImageSliderEditFile extends StatelessWidget {
                 iconSize: 35.0,
               ),
             ),
-            if (allowAddMoreImg)
-              Positioned(
-                right: Dimentions.small,
-                bottom: Dimentions.small,
-                child: CustomRoundedIconButton(
-                  onPressed: () => imageSourceBottomSheet(
-                    context,
-                    handleGalleryImg: imageFileList.getImageGallery,
-                    handleCameraImg: imageFileList.getImageCamera,
-                  ),
-                  iconData: Icons.add,
-                  iconSize: 35.0,
-                ),
-              ),
+            // if (allowAddMoreImg)
+            //   Positioned(
+            //     right: Dimentions.small,
+            //     bottom: Dimentions.small,
+            //     child: CustomRoundedIconButton(
+            //       onPressed: () => imageSourceBottomSheet(
+            //         context,
+            //         handleGalleryImg: imageFileList.getImageGallery,
+            //         handleCameraImg: imageFileList.getImageCamera,
+            //       ),
+            //       iconData: Icons.add,
+            //       iconSize: 35.0,
+            //     ),
+            //   ),
           ],
         ));
   }
