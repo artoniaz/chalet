@@ -11,6 +11,7 @@ import 'package:chalet/styles/input_decoration.dart';
 import 'package:chalet/widgets/custom_appBars.dart';
 import 'package:chalet/widgets/custom_elevated_button.dart';
 import 'package:chalet/widgets/vertical_sized_boxes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -28,8 +29,14 @@ class _ReportProblemState extends State<ReportProblem> {
   late UserModel? _user;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  ProblemModel _problem =
-      ProblemModel(chaletId: '', userId: '', chaletName: '', problemDescription: '', isSolved: false);
+  ProblemModel _problem = ProblemModel(
+    chaletId: '',
+    userId: '',
+    chaletName: '',
+    problemDescription: '',
+    isSolved: false,
+    created: Timestamp.now(),
+  );
 
   void _createProblem() {
     if (_formKey.currentState!.validate()) {
