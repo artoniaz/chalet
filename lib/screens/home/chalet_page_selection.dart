@@ -1,10 +1,14 @@
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
+import 'package:chalet/blocs/get_chalets_bloc/get_chalets_bloc.dart';
+import 'package:chalet/blocs/get_chalets_bloc/get_chalets_event.dart';
+import 'package:chalet/blocs/get_chalets_bloc/get_chalets_state.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +27,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   late final TabController _tabController;
   late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
   BitmapDescriptor? _chaletLocationIcon;
-  bool _isCameraLoading = true;
+  late GetChaletsBloc _getChaletsBloc;
 
   Future<void> _getBitmapDescriptor() async {
     // final byteData = await rootBundle.load('assets/poo/poo_happy.png');
@@ -41,10 +45,11 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   }
 
   void _getInitData() async {
+    _getChaletsBloc = Provider.of<GetChaletsBloc>(context, listen: false);
     LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
     _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(userLocation);
+    _getChaletsBloc.add(GetChalets(_cameraPositionBehaviourSubject));
     await _getBitmapDescriptor();
-    setState(() => _isCameraLoading = false);
   }
 
   @override
@@ -63,49 +68,54 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    return _isCameraLoading
-        ? Loading()
-        : StreamProvider<List<ChaletModel>>(
-            initialData: [],
-            create: (context) => ChaletService().getChaletStream(_cameraPositionBehaviourSubject),
-            builder: (context, snapshot) {
-              return Stack(alignment: Alignment.topCenter, children: [
-                TabBarView(
-                  controller: _tabController,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    ChaletList(),
-                    ChaletMap(
-                      updateQuery: _updateCameraPositionBehaviourSubject,
-                      chaletLocationIcon: _chaletLocationIcon,
-                    ),
-                  ],
-                ),
-                Positioned(
-                  top: Dimentions.small,
-                  child: SafeArea(
-                    child: FlutterToggleTab(
-                      width: 100.0 - Dimentions.small,
-                      borderRadius: 30.0,
-                      height: 35.0,
-                      selectedIndex: _tabController.index,
-                      selectedTextStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-                      unSelectedTextStyle:
-                          TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
-                      selectedBackgroundColors: [Palette.chaletBlue],
-                      labels: [
-                        "Lista",
-                        "Mapa",
-                      ],
-                      selectedLabelIndex: (index) {
-                        setState(() {
-                          _tabController.animateTo(index);
-                        });
-                      },
-                    ),
+    return BlocBuilder<GetChaletsBloc, GetChaletsState>(
+      bloc: _getChaletsBloc,
+      builder: (context, chaletsState) {
+        if (chaletsState is Loading) return Loading();
+        if (chaletsState is GetChaletsStateLoaded) {
+          return Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              TabBarView(
+                controller: _tabController,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  ChaletList(),
+                  ChaletMap(
+                    updateQuery: _updateCameraPositionBehaviourSubject,
+                    chaletLocationIcon: _chaletLocationIcon,
+                  ),
+                ],
+              ),
+              Positioned(
+                top: Dimentions.small,
+                child: SafeArea(
+                  child: FlutterToggleTab(
+                    width: 100.0 - Dimentions.small,
+                    borderRadius: 30.0,
+                    height: 35.0,
+                    selectedIndex: _tabController.index,
+                    selectedTextStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                    unSelectedTextStyle:
+                        TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
+                    selectedBackgroundColors: [Palette.chaletBlue],
+                    labels: [
+                      "Lista",
+                      "Mapa",
+                    ],
+                    selectedLabelIndex: (index) {
+                      setState(() {
+                        _tabController.animateTo(index);
+                      });
+                    },
                   ),
                 ),
-              ]);
-            });
+              ),
+            ],
+          );
+        } else
+          return Container();
+      },
+    );
   }
 }
