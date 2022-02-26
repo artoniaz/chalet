@@ -68,7 +68,8 @@ class ProfileCardHeader extends StatelessWidget {
             ),
           ),
           Expanded(
-              child: CircleAvatar(
+              child: UserAvatar(
+            avatarId: user.avatarId!,
             radius: 40,
           )),
         ],

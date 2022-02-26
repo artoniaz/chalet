@@ -10,6 +10,7 @@ import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/custom_elevated_button.dart';
 import 'package:chalet/widgets/custom_modal_bottom_sheet.dart';
 import 'package:chalet/widgets/horizontal_sized_boxes.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,11 +64,11 @@ class FeedInfoContainer extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 15.0,
-                                backgroundImage: AssetImage('assets/poo/poo_happy.png'),
-                              ),
-                              HorizontalSizedBox16(),
+                              // CircleAvatar(
+                              //   radius: 15.0,
+                              //   backgroundImage: AssetImage('assets/poo/poo_happy.png'),
+                              // ),
+                              // HorizontalSizedBox16(),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

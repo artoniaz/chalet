@@ -1,4 +1,5 @@
 import 'package:chalet/config/index.dart';
+import 'package:chalet/screens/avatars/avatar_selection_container.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,15 @@ class _RegisterState extends State<Register> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordRepeatController = TextEditingController();
   String email = '';
+  String avatarId = '';
   String error = '';
 
   bool isLoading = false;
 
+  void _onTapAvatar(String choosenAvatarId) => setState(() => avatarId = choosenAvatarId);
+
   Future registerWithEmailAndPassword() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && avatarId != '') {
       setState(() => isLoading = true);
       email = email.trim();
       passwordController.text = passwordController.text.trim();
@@ -34,6 +38,7 @@ class _RegisterState extends State<Register> {
           email,
           passwordController.text,
           nickController.text,
+          avatarId,
         );
       } catch (e) {
         setState(() {
@@ -103,6 +108,11 @@ class _RegisterState extends State<Register> {
                             obscureText: true,
                             validator: (val) => val != passwordController.text ? 'Podane hasła nie są zgodne' : null,
                             onEditingComplete: () => registerWithEmailAndPassword(),
+                          ),
+                          VerticalSizedBox16(),
+                          AvatarSelectionContainer(
+                            currentAvatarId: avatarId,
+                            onTapAvatar: _onTapAvatar,
                           ),
                           VerticalSizedBox16(),
                           CustomElevatedButton(

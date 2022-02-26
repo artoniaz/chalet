@@ -40,12 +40,13 @@ class AuthService {
     String email,
     String password,
     String nick,
+    String avatarId,
   ) async {
     try {
       firebaseAuth.UserCredential res =
           await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       final userId = res.user!.uid;
-      UserDataRepository().setUserDataOnRegister(userId, UserModel.fromData(userId, email, nick));
+      UserDataRepository().setUserDataOnRegister(userId, UserModel.fromData(userId, email, nick, avatarId));
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {

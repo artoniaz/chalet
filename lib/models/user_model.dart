@@ -4,24 +4,24 @@ class UserModel {
   final String uid;
   final String email;
   final String? displayName;
-  final String? photoURL;
   final String? teamId;
   final List<String>? pendingInvitationsIds;
   final int chaletsAddedNumber;
   final int chaletReviewsNumber;
   final List<String>? achievementsIds;
   final double? choosenColor;
+  final String? avatarId;
   const UserModel({
     required this.uid,
     required this.email,
     this.displayName,
-    this.photoURL,
     this.teamId,
     this.pendingInvitationsIds,
     this.chaletsAddedNumber = 0,
     this.chaletReviewsNumber = 0,
     this.achievementsIds,
     this.choosenColor,
+    this.avatarId,
   });
 
   factory UserModel.fromJson(Object? json) {
@@ -29,8 +29,8 @@ class UserModel {
       uid: (json as dynamic)['uid']?.toString() ?? '',
       email: (json as dynamic)['email']?.toString() ?? '',
       displayName: (json as dynamic)['displayName']?.toString() ?? '',
-      photoURL: (json as dynamic)['photoURL']?.toString() ?? '',
       teamId: (json as dynamic)['teamId']?.toString() ?? '',
+      avatarId: (json as dynamic)['avatarId']?.toString() ?? '',
       chaletsAddedNumber: (json as dynamic)['chaletsAddedNumber']?.toInt() ?? 0,
       chaletReviewsNumber: (json as dynamic)['chaletReviewsNumber']?.toInt() ?? 0,
       choosenColor: (json as dynamic)['choosenColor']?.toDouble() ?? 0.0,
@@ -48,16 +48,15 @@ class UserModel {
       uid: firebaseUser.uid,
       email: firebaseUser.email ?? '',
       displayName: firebaseUser.displayName,
-      photoURL: firebaseUser.photoURL,
     );
   }
 
-  factory UserModel.fromData(String uid, String email, String name) {
+  factory UserModel.fromData(String uid, String email, String name, String avatarId) {
     return UserModel(
       uid: uid,
       email: email,
       displayName: name,
-      photoURL: '',
+      avatarId: avatarId,
     );
   }
 
@@ -65,12 +64,12 @@ class UserModel {
         'uid': uid,
         'email': email,
         'displayName': displayName,
-        'photoURL': photoURL,
         'teamId': teamId,
         'pendingInvitationsIds': pendingInvitationsIds,
         'chaletsAddedNumber': chaletsAddedNumber,
         'chaletReviewsNumber': chaletReviewsNumber,
         'achievementsIds': achievementsIds,
         'choosenColor': choosenColor,
+        'avatarId': avatarId,
       };
 }

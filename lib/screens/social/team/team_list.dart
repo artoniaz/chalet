@@ -27,7 +27,7 @@ class _TeamListState extends State<TeamList> {
   late TeamMembersBloc _teamMembersBloc;
   late UserModel _user;
   late TeamModel _team;
-  final double _circleAvatarRadius = 30.0;
+  final double _circleAvatarRadius = 35.0;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _TeamListState extends State<TeamList> {
                   ),
                   VerticalSizedBox16(),
                   Container(
-                    height: 92,
+                    height: 102,
                     child: ListView(
                       dragStartBehavior: DragStartBehavior.down,
                       scrollDirection: Axis.horizontal,

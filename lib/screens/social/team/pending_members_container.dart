@@ -87,7 +87,11 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
                                                     .copyWith(fontWeight: FontWeight.w700),
                                               ),
                                               ...pendingTeamMembersState.pendingTeamMemberList.map((el) => ListTile(
-                                                    leading: CircleAvatar(),
+                                                    leading: UserAvatar(
+                                                      avatarId: el.avatarId!,
+                                                      radius: 15,
+                                                      backgroundColor: Palette.white,
+                                                    ),
                                                     title: Text(el.displayName ?? ''),
                                                   ))
                                             ]),
