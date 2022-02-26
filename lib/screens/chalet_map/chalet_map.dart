@@ -1,7 +1,6 @@
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_bloc.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_state.dart';
-import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_state.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/directions_model.dart';
@@ -18,11 +17,11 @@ import 'package:collection/collection.dart';
 
 class ChaletMap extends StatefulWidget {
   final Function(LatLng) updateQuery;
-  final BitmapDescriptor? chaletLocationIcon;
+  final BitmapDescriptor chaletLocationIcon;
   const ChaletMap({
     Key? key,
     required this.updateQuery,
-    this.chaletLocationIcon,
+    required this.chaletLocationIcon,
   }) : super(key: key);
 
   @override
@@ -34,7 +33,6 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   late GoogleMapController _googleMapController;
   late LatLng _userLocation;
 
-  List<Marker> markers = [];
   final markerKey = GlobalKey();
 
   bool _isPanelDraggagle = true;
@@ -93,7 +91,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   List<Marker> _createChaletListMarkers(List<ChaletModel> chaletList) => chaletList
       .map((chalet) => Marker(
             markerId: MarkerId(chalet.id),
-            icon: widget.chaletLocationIcon ?? BitmapDescriptor.defaultMarker,
+            icon: widget.chaletLocationIcon,
             position: getLatLngFromGeoPoint(chalet.position['geopoint']),
             infoWindow: InfoWindow(
               title: '${chalet.name}',
@@ -167,7 +165,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     // final _panelHeightClosed = _activeChalet == null ? 0.0 : screenHeight * 0.3;
     final _panelHeightClosed = _activeChalet == null ? 0.0 : 170.0;
     final _panelHeightOpen = screenHeight * 0.6;
-    return BlocBuilder<GetChaletsBloc, GetChaletsState>(
+    return BlocConsumer<GetChaletsBloc, GetChaletsState>(
+      listener: (context, chaletsState) {},
       builder: (context, chaletsState) {
         if (chaletsState is GetChaletsStateLoaded) {
           if (_activeChalet != null) {

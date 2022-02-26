@@ -26,7 +26,7 @@ class ChaletPageSelection extends StatefulWidget {
 class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
-  BitmapDescriptor? _chaletLocationIcon;
+  late BitmapDescriptor _chaletLocationIcon;
   late GetChaletsBloc _getChaletsBloc;
 
   Future<void> _getBitmapDescriptor() async {
