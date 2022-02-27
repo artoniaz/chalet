@@ -11,5 +11,11 @@ class AddCreateTeamEvent extends CreateTeamEvent {
   final String teamName;
   final String userId;
   final String userName;
-  AddCreateTeamEvent(this.userId, this.userName, this.teamName);
+  final double color;
+  AddCreateTeamEvent(
+    this.userId,
+    this.userName,
+    this.teamName,
+    this.color,
+  );
 }

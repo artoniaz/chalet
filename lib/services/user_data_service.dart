@@ -28,11 +28,11 @@ class UserDataService {
     }
   }
 
-  Future<void> updateUserTeamData(String userId, String teamId) async {
+  Future<void> updateUserTeamData(String userId, String teamId, double? choosenColor) async {
     try {
       await _usersCollection.doc(userId).update({
         TEAM_ID: teamId,
-        CHOOSEN_COLOR: null,
+        CHOOSEN_COLOR: choosenColor,
       });
     } catch (e) {
       print(e);

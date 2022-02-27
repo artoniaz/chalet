@@ -30,9 +30,14 @@ class CreateTeamBloc extends Bloc<CreateTeamEvent, CreateTeamState> {
   Stream<CreateTeamState> _handleCreateTeamEvent(AddCreateTeamEvent event) async* {
     yield CreateTeamStateLoading();
     try {
-      String teamId = await teamRepository.createTeam(event.userId, event.userName, event.teamName);
+      String teamId = await teamRepository.createTeam(
+        event.userId,
+        event.userName,
+        event.teamName,
+        event.color,
+      );
       yield CreateTeamStateTeamCreated();
-      await userDataRepository.updateUserTeamData(event.userId, teamId);
+      await userDataRepository.updateUserTeamData(event.userId, teamId, event.color);
     } catch (e) {
       yield CreateTeamStateError(e.toString());
     }

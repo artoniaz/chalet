@@ -40,7 +40,7 @@ class DeleteTeamMemberBloc extends Bloc<DeleteTeamMemberEvent, DeleteTeamMemberS
       teamMembersIds.remove(event.userToDeleteId);
       teamMembersBloc.add(GetTeamMembers(teamMembersIds, event.adminUser));
 
-      userDataRepository.updateUserTeamData(event.userToDeleteId, '');
+      userDataRepository.updateUserTeamData(event.userToDeleteId, '', null);
     } catch (e) {
       yield DeleteTeamMemberStateError(e.toString());
       print(e.toString());

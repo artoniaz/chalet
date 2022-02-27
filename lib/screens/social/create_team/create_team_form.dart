@@ -3,6 +3,7 @@ import 'package:chalet/blocs/create_team/create_team_event.dart';
 import 'package:chalet/blocs/create_team/create_team_state.dart';
 import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/models/color_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/input_decoration.dart';
@@ -27,10 +28,22 @@ class CreateTeamForm extends StatefulWidget {
 class _CreateTeamFormState extends State<CreateTeamForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  ColorModel? _choosenColor;
+
+  void _handleChoosenColor(ColorModel color) {
+    setState(() => _choosenColor = color);
+    Navigator.of(context).pop();
+  }
+
   void _addTeam() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _choosenColor != null) {
       UserModel user = Provider.of<UserDataBloc>(context, listen: false).state.props.first as UserModel;
-      widget.createTeamBloc.add(AddCreateTeamEvent(user.uid, user.displayName ?? '', widget.teamNameController.text));
+      widget.createTeamBloc.add(AddCreateTeamEvent(
+        user.uid,
+        user.displayName ?? '',
+        widget.teamNameController.text,
+        _choosenColor!.bitmapDescriptor,
+      ));
     }
   }
 
@@ -64,10 +77,19 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 VerticalSizedBox8(),
-                CustomElevatedButton(
-                  label: 'Dodaj klan',
-                  onPressed: teamState is TeamStateLoading ? null : _addTeam,
-                ),
+                _choosenColor == null
+                    ? CustomElevatedButton(
+                        label: 'Wybierz kolor',
+                        onPressed: () => showDialog(
+                            context: context,
+                            builder: (context) => ColorPickerDialog(
+                                  handleChoosenColor: _handleChoosenColor,
+                                  alreadyChoosenColors: [],
+                                )))
+                    : CustomElevatedButton(
+                        label: 'Dodaj klan',
+                        onPressed: teamState is TeamStateLoading ? null : _addTeam,
+                      ),
               ],
             ),
           ),

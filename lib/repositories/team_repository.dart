@@ -5,8 +5,8 @@ import 'package:chalet/services/team_service.dart';
 class TeamRepository {
   final _teamService = TeamService();
 
-  Future<String> createTeam(String userId, String userName, String teamName) =>
-      _teamService.createTeam(userId, userName, teamName);
+  Future<String> createTeam(String userId, String userName, String teamName, double choosenColor) =>
+      _teamService.createTeam(userId, userName, teamName, choosenColor);
 
   Future<List<UserModel>> getTeamMembers(List<String> teamMembersId) => _teamService.getTeamMembers(teamMembersId);
 
