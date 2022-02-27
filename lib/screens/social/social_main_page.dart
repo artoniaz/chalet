@@ -1,3 +1,5 @@
+import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_bloc.dart';
+import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_state.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team/team_event.dart';
 import 'package:chalet/blocs/team/team_state.dart';
@@ -21,10 +23,11 @@ class SocialMainPage extends StatefulWidget {
 class _SocialMainPageState extends State<SocialMainPage> with SingleTickerProviderStateMixin {
   late TeamBloc _teamBloc;
   late TabController _tabController;
+  late UserModel _user;
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 3, initialIndex: 0);
-    UserModel _user = Provider.of<UserDataBloc>(context, listen: false).user;
+    _user = Provider.of<UserDataBloc>(context, listen: false).user;
     _teamBloc = Provider.of<TeamBloc>(context, listen: false);
     _teamBloc.add(GetTeamEvent(_user.teamId!));
     super.initState();

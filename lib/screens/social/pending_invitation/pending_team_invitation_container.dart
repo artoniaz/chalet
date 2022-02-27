@@ -1,6 +1,8 @@
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_bloc.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_event.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_state.dart';
+import 'package:chalet/blocs/team/team_bloc.dart';
+import 'package:chalet/blocs/team/team_event.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/color_model.dart';
 import 'package:chalet/models/team_model.dart';
@@ -56,6 +58,8 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
     return BlocConsumer<ReactToPendingInvitationBloc, ReactToPendingInvitationState>(listener: (context, state) {
       if (state is ReactToPendingInvitationStateAccepted) {
         EasyLoading.showSuccess('Udało się! Jesteś członkiem klanu ${widget.team.name}');
+        Provider.of<TeamBloc>(context, listen: false).add(GetTeamEvent(widget.team.id));
+
         Navigator.of(context).pop();
       }
       if (state is ReactToPendingInvitationStateDeclined) {
