@@ -45,6 +45,9 @@ class ReactToPendingInvitationBloc extends Bloc<ReactToPendingInvitationEvent, R
           event.choosenColor,
         ),
       ];
+      if (event.previousTeamId != null && event.previousTeamId != '') {
+        futures.add(teamRepository.deleteTeamMember(event.previousTeamId!, event.userId, event.previousTeamColor!));
+      }
       await Future.wait(futures);
       yield ReactToPendingInvitationStateAccepted();
     } catch (e) {

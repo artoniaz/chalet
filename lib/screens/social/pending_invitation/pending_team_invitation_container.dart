@@ -42,6 +42,8 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
         widget.team.id,
         widget.otherTeamId,
         _choosenColor!.bitmapDescriptor,
+        _user.teamId,
+        _user.choosenColor,
       ));
 
   void _declineInvitation() => _reactToPendingInvitationBloc.add(DeclinePendingInvitation(widget.team.id, _user.uid));
