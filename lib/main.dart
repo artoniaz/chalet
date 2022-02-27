@@ -1,5 +1,6 @@
 import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/chalet_icon/chalet_icon_bloc.dart';
 import 'package:chalet/blocs/create_team/create_team_bloc.dart';
 import 'package:chalet/blocs/delete_team_member/delete_team_member_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:chalet/blocs/team_member/team_member_bloc.dart';
 import 'package:chalet/blocs/team_members/team_members_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/index.dart';
+import 'package:chalet/repositories/chalet_icon_repository.dart';
 import 'package:chalet/repositories/chalet_repository.dart';
 import 'package:chalet/repositories/geolocation_repository.dart';
 import 'package:chalet/repositories/problem_repository.dart';
@@ -135,6 +137,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<GetChaletsBloc>(
             create: (context) => GetChaletsBloc(
               chaletRepository: ChaletRepository(),
+            ),
+          ),
+          BlocProvider<ChaletIconBloc>(
+            create: (context) => ChaletIconBloc(
+              chaletIconRepository: ChaletIconRepository(),
             ),
           ),
         ],

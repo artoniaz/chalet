@@ -1,10 +1,11 @@
+import 'package:chalet/blocs/chalet_icon/chalet_icon_bloc.dart';
+import 'package:chalet/blocs/chalet_icon/chalet_icon_event.dart';
+import 'package:chalet/blocs/chalet_icon/chalet_icon_state.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_bloc.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_event.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_state.dart';
-import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +27,8 @@ class ChaletPageSelection extends StatefulWidget {
 class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   late BehaviorSubject<LatLng> _cameraPositionBehaviourSubject;
-  late BitmapDescriptor _chaletLocationIcon;
   late GetChaletsBloc _getChaletsBloc;
-
-  Future<void> _getBitmapDescriptor() async {
-    // final byteData = await rootBundle.load('assets/poo/poo_happy.png');
-    // Uint8List image = byteData.buffer.asUint8List();
-    // final descriptor = await BitmapDescriptor.fromBytes(image);
-    final descriptor = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map_marker/map_marker.png');
-    _chaletLocationIcon = descriptor;
-  }
+  late ChaletIconBloc _chaletIconBloc;
 
   void _updateCameraPositionBehaviourSubject(LatLng value) {
     setState(() {
@@ -46,10 +38,11 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
 
   void _getInitData() async {
     _getChaletsBloc = Provider.of<GetChaletsBloc>(context, listen: false);
+    _chaletIconBloc = Provider.of<ChaletIconBloc>(context, listen: false);
     LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
     _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(userLocation);
     _getChaletsBloc.add(GetChalets(_cameraPositionBehaviourSubject));
-    await _getBitmapDescriptor();
+    _chaletIconBloc.add(GetChaletIcon());
   }
 
   @override
@@ -68,53 +61,58 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetChaletsBloc, GetChaletsState>(
-      bloc: _getChaletsBloc,
-      builder: (context, chaletsState) {
-        if (chaletsState is Loading) return Loading();
-        if (chaletsState is GetChaletsStateLoaded) {
-          return Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              TabBarView(
-                controller: _tabController,
-                physics: NeverScrollableScrollPhysics(),
+    return BlocBuilder<ChaletIconBloc, ChaletIconState>(
+      bloc: _chaletIconBloc,
+      builder: (context, chaletIconState) {
+        return BlocBuilder<GetChaletsBloc, GetChaletsState>(
+          bloc: _getChaletsBloc,
+          builder: (context, chaletsState) {
+            if (chaletsState is GetChaletsStateLoading || chaletIconState is ChaletIconStateLoading) return Loading();
+            if (chaletsState is GetChaletsStateLoaded && chaletIconState is ChaletIconStateLoaded) {
+              return Stack(
+                alignment: Alignment.topCenter,
                 children: [
-                  ChaletList(),
-                  ChaletMap(
-                    updateQuery: _updateCameraPositionBehaviourSubject,
-                    chaletLocationIcon: _chaletLocationIcon,
+                  TabBarView(
+                    controller: _tabController,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      ChaletList(),
+                      ChaletMap(
+                        updateQuery: _updateCameraPositionBehaviourSubject,
+                        chaletLocationIcon: chaletIconState.chaletIcon,
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    top: Dimentions.small,
+                    child: SafeArea(
+                      child: FlutterToggleTab(
+                        width: 100.0 - Dimentions.small,
+                        borderRadius: 30.0,
+                        height: 35.0,
+                        selectedIndex: _tabController.index,
+                        selectedTextStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                        unSelectedTextStyle:
+                            TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
+                        selectedBackgroundColors: [Palette.chaletBlue],
+                        labels: [
+                          "Lista",
+                          "Mapa",
+                        ],
+                        selectedLabelIndex: (index) {
+                          setState(() {
+                            _tabController.animateTo(index);
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ],
-              ),
-              Positioned(
-                top: Dimentions.small,
-                child: SafeArea(
-                  child: FlutterToggleTab(
-                    width: 100.0 - Dimentions.small,
-                    borderRadius: 30.0,
-                    height: 35.0,
-                    selectedIndex: _tabController.index,
-                    selectedTextStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-                    unSelectedTextStyle:
-                        TextStyle(color: Palette.ivoryBlack, fontSize: 12, fontWeight: FontWeight.w500),
-                    selectedBackgroundColors: [Palette.chaletBlue],
-                    labels: [
-                      "Lista",
-                      "Mapa",
-                    ],
-                    selectedLabelIndex: (index) {
-                      setState(() {
-                        _tabController.animateTo(index);
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ],
-          );
-        } else
-          return Container();
+              );
+            } else
+              return Container();
+          },
+        );
       },
     );
   }
