@@ -8,6 +8,7 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class CreateTeam extends StatefulWidget {
@@ -86,9 +87,17 @@ class _CreateTeamState extends State<CreateTeam> {
                                       );
                                     }
                                     if (teamState is CreateTeamStateLoading) {
-                                      return Loading();
-                                    } else
+                                      return SpinKitChasingDots(
+                                        color: Palette.chaletBlue,
+                                        size: 50,
+                                      );
+                                    }
+                                    if (teamState is CreateTeamStateTeamCreated) {
                                       return Container();
+                                    } else
+                                      return Container(
+                                        child: Text('Wystąpił niespodziewany błąd.'),
+                                      );
                                   },
                                 );
                               }).whenComplete(() {
