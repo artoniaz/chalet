@@ -51,8 +51,8 @@ class AuthService {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
           throw 'Zły format adresu email.';
-        } else if (e.code == 'email-already-exists') {
-          throw 'Podany adres e-mail jest już używany przez istniejącego użytkownika.';
+        } else if (e.code == 'email-already-in-use') {
+          throw 'Podany adres e-mail jest już używany.';
         } else {
           throw 'Niepoprawne dane do rejestracji';
         }
