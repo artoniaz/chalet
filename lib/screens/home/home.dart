@@ -1,3 +1,5 @@
+import 'package:chalet/blocs/damaging_model/damaging_model_bloc.dart';
+import 'package:chalet/blocs/damaging_model/damaging_model_event.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_event.dart';
 import 'package:chalet/blocs/geolocation/geolocation_state.dart';
@@ -33,6 +35,7 @@ class _HomeState extends State<Home> {
     _userDataBloc = Provider.of<UserDataBloc>(context, listen: false);
     _geolocatinBloc.add(GetUserGeolocation());
     _userDataBloc.add(GetUserData(user!.uid));
+    Provider.of<DamagingDeviceModelBloc>(context, listen: false).add(CheckDamagingDeviceModelEvent());
     super.initState();
   }
 

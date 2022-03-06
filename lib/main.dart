@@ -2,6 +2,7 @@ import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/chalet_icon/chalet_icon_bloc.dart';
 import 'package:chalet/blocs/create_team/create_team_bloc.dart';
+import 'package:chalet/blocs/damaging_model/damaging_model_bloc.dart';
 import 'package:chalet/blocs/delete_team_member/delete_team_member_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_bloc.dart';
@@ -143,6 +144,9 @@ class MyApp extends StatelessWidget {
             create: (context) => ChaletIconBloc(
               chaletIconRepository: ChaletIconRepository(),
             ),
+          ),
+          BlocProvider<DamagingDeviceModelBloc>(
+            create: (context) => DamagingDeviceModelBloc(),
           ),
         ],
         child: MaterialApp(

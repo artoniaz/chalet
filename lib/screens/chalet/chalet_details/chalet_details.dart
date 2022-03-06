@@ -1,8 +1,11 @@
+import 'package:chalet/blocs/damaging_model/damaging_model_bloc.dart';
+import 'package:chalet/blocs/damaging_model/damaging_model_state.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChaletDetails extends StatefulWidget {
@@ -61,10 +64,21 @@ class _ChaletDetailsState extends State<ChaletDetails> {
             body: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
-                CustomAppBars.customImageSliderSliverAppBar(
-                  _chalet!,
-                  _pictureHeight,
-                  _returnPage,
+                BlocBuilder<DamagingDeviceModelBloc, DamagingDeviceModelState>(
+                  builder: (context, damagingDeviceModelState) {
+                    if (damagingDeviceModelState is DamagingDeviceModelStateChecked) {
+                      return CustomAppBars.customImageSliderSliverAppBar(
+                        _chalet!,
+                        _pictureHeight,
+                        damagingDeviceModelState.isReturnToMapOk ? null : _returnPage,
+                      );
+                    } else
+                      return CustomAppBars.customImageSliderSliverAppBar(
+                        _chalet!,
+                        _pictureHeight,
+                        _returnPage,
+                      );
+                  },
                 ),
                 SliverToBoxAdapter(
                   child: ChaletCard(
