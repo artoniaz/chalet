@@ -1,5 +1,3 @@
-import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_bloc.dart';
-import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_state.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team/team_event.dart';
 import 'package:chalet/blocs/team/team_state.dart';

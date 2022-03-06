@@ -1,6 +1,5 @@
 import 'package:chalet/models/image_model_file.dart';
 import 'package:chalet/providers/image_file_list_provider_model.dart';
-import 'package:chalet/screens/add_chalet/image_source_bottom_sheet.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';

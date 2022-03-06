@@ -1,6 +1,5 @@
 import 'package:chalet/models/index.dart';
 import 'package:equatable/equatable.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GetChaletsState extends Equatable {
   @override
