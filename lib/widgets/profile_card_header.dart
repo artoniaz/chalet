@@ -40,34 +40,36 @@ class ProfileCardHeader extends StatelessWidget {
                       ),
                 ),
                 VerticalSizedBox8(),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.people,
-                      color: Palette.chaletBlue,
-                    ),
-                    HorizontalSizedBox8(),
-                    BlocBuilder<TeamBloc, TeamState>(
-                        bloc: Provider.of<TeamBloc>(context, listen: false),
-                        builder: (context, teamState) {
-                          if (teamState is TeamStateTeamLoaded) {
-                            return Text(
-                              teamState.team.name,
-                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: Palette.chaletBlue,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            );
-                          } else
-                            return CircularProgressIndicator();
-                        }),
-                  ],
-                ),
+                if (user.teamId != null && user.teamId != '')
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.people,
+                        color: Palette.chaletBlue,
+                      ),
+                      HorizontalSizedBox8(),
+                      BlocBuilder<TeamBloc, TeamState>(
+                          bloc: Provider.of<TeamBloc>(context, listen: false),
+                          builder: (context, teamState) {
+                            if (teamState is TeamStateTeamLoaded) {
+                              return Text(
+                                teamState.team.name,
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Palette.chaletBlue,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              );
+                            } else
+                              return CircularProgressIndicator();
+                          }),
+                    ],
+                  ),
               ],
             ),
           ),
           Expanded(
-              child: CircleAvatar(
+              child: UserAvatar(
+            avatarId: user.avatarId!,
             radius: 40,
           )),
         ],

@@ -1,6 +1,3 @@
-import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
-import 'package:chalet/blocs/team_feed/team_feed_event.dart';
-import 'package:chalet/blocs/team_feed/team_feed_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
 import 'package:chalet/screens/index.dart';

@@ -2,14 +2,11 @@ import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
 import 'package:chalet/blocs/pending_members/pending_members_event.dart';
 import 'package:chalet/blocs/pending_members/pending_members_state.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
-import 'package:chalet/blocs/user_data/user_data_bloc.dart';
-import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:nil/nil.dart';
 
 class PendingMembersContainer extends StatefulWidget {
   final double circleAvatarRadius;
@@ -26,11 +23,9 @@ class PendingMembersContainer extends StatefulWidget {
 class _PendingMembersContainerState extends State<PendingMembersContainer> {
   late PendingTeamMembersBloc _pendingTeamMembersBloc;
   late TeamBloc _teamBloc;
-  late UserModel _user;
 
   @override
   void initState() {
-    _user = Provider.of<UserDataBloc>(context, listen: false).user;
     _pendingTeamMembersBloc = Provider.of<PendingTeamMembersBloc>(context, listen: false);
     _teamBloc = Provider.of<TeamBloc>(context, listen: false);
     _pendingTeamMembersBloc.add(GetPendingTeamMembers(_teamBloc.team));
@@ -44,7 +39,7 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
         builder: (context, pendingTeamMembersState) {
           return pendingTeamMembersState is PendingTeamMemberListLoaded &&
                   pendingTeamMembersState.pendingTeamMemberList.isEmpty
-              ? nil
+              ? Container()
               : Container(
                   width: (widget.circleAvatarRadius + 5.0) * 2,
                   margin: EdgeInsets.only(right: 6.0),
@@ -92,7 +87,11 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
                                                     .copyWith(fontWeight: FontWeight.w700),
                                               ),
                                               ...pendingTeamMembersState.pendingTeamMemberList.map((el) => ListTile(
-                                                    leading: CircleAvatar(),
+                                                    leading: UserAvatar(
+                                                      avatarId: el.avatarId!,
+                                                      radius: 15,
+                                                      backgroundColor: Palette.white,
+                                                    ),
                                                     title: Text(el.displayName ?? ''),
                                                   ))
                                             ]),

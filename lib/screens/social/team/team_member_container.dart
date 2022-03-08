@@ -32,15 +32,10 @@ class TeamMemberContainer extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(right: 6.0),
             child: Column(children: [
-              CircleAvatar(
-                radius: circleAvatarRadius + 5.0,
+              UserAvatar(
+                avatarId: teamMember.avatarId!,
+                radius: circleAvatarRadius,
                 backgroundColor: teamMember.uid == _team.teamAdminId ? Palette.goldLeaf : Palette.chaletBlue,
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(
-                    'assets/poo/poo_happy.png',
-                  ),
-                  radius: circleAvatarRadius,
-                ),
               ),
               VerticalSizedBox8(),
               Text(

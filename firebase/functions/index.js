@@ -15,13 +15,11 @@ admin.initializeApp();
 //     });
 // });
 
-exports.deleteUserProfilePhotoOnUserDelete = functions.auth.user().onDelete((user) => {
-    const storage = new Storage();
-    const filePath = `user_images/${user.uid}`;
-    const bucket = storage.bucket('chalet-e78ab.appspot.com');
-    const file = bucket.file(filePath);
-    return file.delete();
-});
+// correct function, currently not used in the project
+// exports.deleteUserDataOnDelete = functions.auth.user().onDelete((user) => {
+//     const userDocRef = admin.firestore().collection('users').doc(userId);
+//     return userDocRef.delete();
+// });
 
 exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/reviews/{chaletId}/chalet_reviews/{reviewId}')
     .onCreate((snapshot, context) => {

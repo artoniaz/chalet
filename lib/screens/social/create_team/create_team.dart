@@ -1,15 +1,13 @@
-import 'package:chalet/blocs/team/team_bloc.dart';
-import 'package:chalet/blocs/team/team_event.dart';
-import 'package:chalet/blocs/team/team_state.dart';
-import 'package:chalet/blocs/team_member/team_member_bloc.dart';
-import 'package:chalet/blocs/team_member/team_member_event.dart';
+import 'package:chalet/blocs/create_team/create_team_bloc.dart';
+import 'package:chalet/blocs/create_team/create_team_event.dart';
+import 'package:chalet/blocs/create_team/create_team_state.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class CreateTeam extends StatefulWidget {
@@ -22,17 +20,17 @@ class CreateTeam extends StatefulWidget {
 }
 
 class _CreateTeamState extends State<CreateTeam> {
-  late TeamBloc _teamBloc;
+  late CreateTeamBloc _createTeamBloc;
   TextEditingController _teamNameController = TextEditingController();
 
   Future _whenComleteModalCreateTeam() async {
     _teamNameController.clear();
-    _teamBloc.add(ResetTeamBloc());
+    _createTeamBloc.add(ResetCreateTeamBloc());
   }
 
   @override
   void initState() {
-    _teamBloc = Provider.of<TeamBloc>(context, listen: false);
+    _createTeamBloc = Provider.of<CreateTeamBloc>(context, listen: false);
     super.initState();
   }
 
@@ -42,13 +40,17 @@ class _CreateTeamState extends State<CreateTeam> {
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
-        child: BlocConsumer<TeamBloc, TeamState>(
-            bloc: _teamBloc,
+        child: BlocConsumer<CreateTeamBloc, CreateTeamState>(
+            bloc: _createTeamBloc,
             listener: (context, state) async {
-              if (state is TeamStateError) {
+              if (state is CreateTeamStateError) {
                 await _whenComleteModalCreateTeam();
                 Navigator.of(context).pop();
                 EasyLoading.showError(state.errorMessage);
+              }
+              if (state is CreateTeamStateTeamCreated) {
+                Navigator.of(context).pop();
+                EasyLoading.showSuccess('Utworzono klan');
               }
             },
             builder: (context, state) {
@@ -72,29 +74,32 @@ class _CreateTeamState extends State<CreateTeam> {
                       VerticalSizedBox16(),
                       CustomElevatedButton(
                           label: 'Załóż swój klan',
-                          onPressed: () => showModalBottomSheet(
-                                  context: context,
-                                  constraints: BoxConstraints(
-                                    minHeight: MediaQuery.of(context).size.height * 0.3,
-                                    maxHeight: MediaQuery.of(context).size.height * 0.7,
-                                  ),
-                                  builder: (context) {
-                                    return BlocBuilder<TeamBloc, TeamState>(
-                                      bloc: _teamBloc,
-                                      builder: (context, teamState) {
-                                        if (teamState is TeamStateInitial) {
-                                          return CreateTeamForm(
-                                            teamBloc: _teamBloc,
-                                            teamNameController: _teamNameController,
-                                          );
-                                        }
-                                        if (teamState is TeamStateTeamCreated) {
-                                          return AddMemberToTeam();
-                                        } else
-                                          return Loading();
-                                      },
-                                    );
-                                  }).whenComplete(() {
+                          onPressed: () => showCustomModalBottomSheet(context, (context) {
+                                return BlocConsumer<CreateTeamBloc, CreateTeamState>(
+                                  bloc: _createTeamBloc,
+                                  listener: (context, teamState) {},
+                                  builder: (context, teamState) {
+                                    if (teamState is CreateTeamStateInitial) {
+                                      return CreateTeamForm(
+                                        createTeamBloc: _createTeamBloc,
+                                        teamNameController: _teamNameController,
+                                      );
+                                    }
+                                    if (teamState is CreateTeamStateLoading) {
+                                      return SpinKitChasingDots(
+                                        color: Palette.chaletBlue,
+                                        size: 50,
+                                      );
+                                    }
+                                    if (teamState is CreateTeamStateTeamCreated) {
+                                      return Container();
+                                    } else
+                                      return Container(
+                                        child: Text('Wystąpił niespodziewany błąd.'),
+                                      );
+                                  },
+                                );
+                              }).whenComplete(() {
                                 _whenComleteModalCreateTeam();
                               }))
                     ]),

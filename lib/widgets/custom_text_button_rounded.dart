@@ -18,7 +18,10 @@ class CustomTextButtonRounded extends StatelessWidget {
         backgroundColor: MaterialStateProperty.all(Palette.backgroundWhite),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0))),
       ),
-      child: Text(label),
+      child: Text(
+        label,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

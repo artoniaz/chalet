@@ -23,6 +23,7 @@ class SwitchBar extends StatelessWidget {
                 )),
         Switch(
           value: value,
+          activeColor: Palette.chaletBlue,
           onChanged: handleis24Update,
         ),
       ],

@@ -40,7 +40,7 @@ class TeamService {
     }
   }
 
-  Future<String> createTeam(String userId, String userName, String teamName) async {
+  Future<String> createTeam(String userId, String userName, String teamName, double choosenColor) async {
     try {
       DocumentReference<Object?> res = await _teamsCollection.add(TeamModel(
           id: '',
@@ -48,6 +48,7 @@ class TeamService {
           teamAdminId: userId,
           teamAdminName: userName,
           membersIds: [userId],
+          choosenColors: [choosenColor],
           pendingMembersIds: []).toJson());
       return res.id;
     } catch (e) {

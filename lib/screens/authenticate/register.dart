@@ -1,10 +1,9 @@
-import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/index.dart';
+import 'package:chalet/screens/avatars/avatar_selection_container.dart';
 import 'package:chalet/services/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:chalet/styles/index.dart';
-import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -18,28 +17,34 @@ class _RegisterState extends State<Register> {
   final AuthService _authService = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  TextEditingController _emailController = TextEditingController();
   TextEditingController nickController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordRepeatController = TextEditingController();
-  String email = '';
+  String avatarId = '';
   String error = '';
 
   bool isLoading = false;
 
+  void _onTapAvatar(String choosenAvatarId) {
+    setState(() => avatarId = choosenAvatarId);
+    dissmissCurrentFocus(context);
+  }
+
   Future registerWithEmailAndPassword() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && avatarId != '') {
       setState(() => isLoading = true);
-      email = email.trim();
-      passwordController.text = passwordController.text.trim();
       try {
         await _authService.registerWithEmailAndPassword(
-          email,
-          passwordController.text,
-          nickController.text,
+          _emailController.text.trim(),
+          passwordController.text.trim(),
+          nickController.text.trim(),
+          avatarId,
         );
       } catch (e) {
         setState(() {
           passwordController.clear();
+          passwordRepeatController.clear();
           error = e.toString();
           isLoading = false;
         });
@@ -76,10 +81,10 @@ class _RegisterState extends State<Register> {
                           ),
                           VerticalSizedBox16(),
                           TextFormField(
+                            controller: _emailController,
                             decoration: textInputDecoration.copyWith(hintText: 'Email'),
                             validator: (val) =>
                                 val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
-                            onChanged: (String val) => setState(() => email = val),
                             onEditingComplete: () => node.nextFocus(),
                             keyboardType: TextInputType.emailAddress,
                           ),
@@ -105,6 +110,11 @@ class _RegisterState extends State<Register> {
                             obscureText: true,
                             validator: (val) => val != passwordController.text ? 'Podane hasła nie są zgodne' : null,
                             onEditingComplete: () => registerWithEmailAndPassword(),
+                          ),
+                          VerticalSizedBox16(),
+                          AvatarSelectionContainer(
+                            currentAvatarId: avatarId,
+                            onTapAvatar: _onTapAvatar,
                           ),
                           VerticalSizedBox16(),
                           CustomElevatedButton(

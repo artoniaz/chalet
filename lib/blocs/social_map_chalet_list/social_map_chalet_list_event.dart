@@ -16,6 +16,7 @@ class GetChaletListForSocialMap extends ChaletListForSocialMapEvent {
 
 class UpdateChaletListForSocialMap extends ChaletListForSocialMapEvent {
   final List<ChaletModel> chaletListForSocialMap;
+
   UpdateChaletListForSocialMap(
     this.chaletListForSocialMap,
   );

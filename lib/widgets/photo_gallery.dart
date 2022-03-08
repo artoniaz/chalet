@@ -54,7 +54,7 @@ class _ProductDetailsPhotoGalleryState extends State<ProductDetailsPhotoGallery>
                 scrollPhysics: const BouncingScrollPhysics(),
                 builder: _buildItem,
                 itemCount: widget.chaletModelUrlList.length,
-                loadingBuilder: (context, e) => Loading(),
+                loadingBuilder: (context, e) => CustomLoadingBuilder(),
                 pageController: pageController,
                 backgroundDecoration: BoxDecoration(),
                 onPageChanged: onPageChanged,

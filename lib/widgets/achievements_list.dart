@@ -28,8 +28,7 @@ class AchievementsList extends StatelessWidget {
         child: Column(
           children: [
             AchievementContainer(
-              isCompleted:
-                  user.achievementsIds != null && user.achievementsIds!.contains(achievementsIds.sittingKing.name),
+              isCompleted: user.achievementsIds.contains(achievementsIds.sittingKing.name),
               iconId: achievementsIds.sittingKing,
               title: 'Siedzący król',
               subtitle: 'Dodaj 5 ocen Szaletu',
@@ -37,8 +36,7 @@ class AchievementsList extends StatelessWidget {
               maxAchievementIndicator: 5,
             ),
             AchievementContainer(
-              isCompleted:
-                  user.achievementsIds != null && user.achievementsIds!.contains(achievementsIds.traveller.name),
+              isCompleted: user.achievementsIds.contains(achievementsIds.traveller.name),
               iconId: achievementsIds.traveller,
               title: 'Obieżyświat',
               subtitle: 'Dodaj 10 Szaletów na mapę',
@@ -46,7 +44,7 @@ class AchievementsList extends StatelessWidget {
               maxAchievementIndicator: 10,
             ),
             AchievementContainer(
-              isCompleted: user.achievementsIds != null && user.achievementsIds!.contains(achievementsIds.writter.name),
+              isCompleted: user.achievementsIds.contains(achievementsIds.writter.name),
               iconId: achievementsIds.writter,
               title: 'Kronikarz',
               //TODO: ustalić jak to ma być liczone
@@ -55,8 +53,7 @@ class AchievementsList extends StatelessWidget {
               maxAchievementIndicator: 5,
             ),
             AchievementContainer(
-              isCompleted:
-                  user.achievementsIds != null && user.achievementsIds!.contains(achievementsIds.timeSpent.name),
+              isCompleted: user.achievementsIds.contains(achievementsIds.timeSpent.name),
               iconId: achievementsIds.timeSpent,
               title: 'Pustelnik',
               subtitle: 'Spędź łacznie 60 minut w Szalecie',

@@ -27,7 +27,7 @@ class _TeamListState extends State<TeamList> {
   late TeamMembersBloc _teamMembersBloc;
   late UserModel _user;
   late TeamModel _team;
-  final double _circleAvatarRadius = 30.0;
+  final double _circleAvatarRadius = 35.0;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _TeamListState extends State<TeamList> {
           if (teamMembersState is TeamMembersStateLoading) return Loading();
           if (teamMembersState is TeamMembersStateLoaded) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: Dimentions.medium),
+              padding: const EdgeInsets.fromLTRB(Dimentions.medium, Dimentions.medium, Dimentions.medium, 0),
               child: Column(
                 children: [
                   Text(
@@ -55,7 +55,7 @@ class _TeamListState extends State<TeamList> {
                   ),
                   VerticalSizedBox16(),
                   Container(
-                    height: 92,
+                    height: 102,
                     child: ListView(
                       dragStartBehavior: DragStartBehavior.down,
                       scrollDirection: Axis.horizontal,

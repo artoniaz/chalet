@@ -43,3 +43,5 @@ export 'package:chalet/widgets/achievements_list.dart';
 export 'package:chalet/widgets/achievement_container.dart';
 export 'package:chalet/widgets/color_picker_dialog.dart';
 export 'package:chalet/widgets/custom_color_indicator.dart';
+export 'package:chalet/widgets/custom_loading_builder.dart';
+export 'package:chalet/widgets/user_avatar.dart';

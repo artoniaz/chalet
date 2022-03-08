@@ -10,12 +10,11 @@ class UserDataService {
   final String TEAM_NAME = 'teamName';
   final String ACHIEVEMENTS_IDS = 'achievementsIds';
   final String CHOOSEN_COLOR = 'choosenColor';
-  @override
+
   Stream<UserModel> getUserData(String userId) {
     return _usersCollection.doc(userId).snapshots().map((snapshot) => UserModel.fromJson(snapshot));
   }
 
-  //TODO: przenieść jako cloud fn
   Future<void> setUserDataOnRegister(String userId, UserModel user) async {
     return await _usersCollection.doc(userId).set(user.toJson());
   }
@@ -29,11 +28,11 @@ class UserDataService {
     }
   }
 
-  Future<void> updateUserTeamData(String userId, String teamId) async {
+  Future<void> updateUserTeamData(String userId, String teamId, double? choosenColor) async {
     try {
       await _usersCollection.doc(userId).update({
         TEAM_ID: teamId,
-        CHOOSEN_COLOR: null,
+        CHOOSEN_COLOR: choosenColor,
       });
     } catch (e) {
       print(e);

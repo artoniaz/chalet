@@ -41,9 +41,16 @@
 }
 /*
 build commands
- flutter build apk --flavor develop
- flutter build apk --flavor demo
- flutter build apk --flavor prod
+    flutter build apk --flavor develop
+    flutter build apk --flavor demo
+    flutter build apk --flavor prod
 */
-// to rebuild icons change assets/icons and run this commands
-// flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons*
+/*
+    to rebuild icons change assets/icons and run this commands
+    flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons*
+*/
+/*
+    switch between firebase projects to deploy cloud functions
+    firebase deploy --only functions
+    https://firebase.google.com/docs/cli
+*/

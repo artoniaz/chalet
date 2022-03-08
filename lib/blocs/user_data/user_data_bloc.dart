@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'package:chalet/blocs/team/team_bloc.dart';
-import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/user_data/user_data_event.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
-import 'package:chalet/models/team_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

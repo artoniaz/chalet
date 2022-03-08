@@ -13,7 +13,6 @@ import 'package:chalet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:nil/nil.dart';
 
 class PendingInvitations extends StatefulWidget {
   const PendingInvitations({Key? key}) : super(key: key);

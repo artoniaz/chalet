@@ -13,7 +13,12 @@ class UserDataRepository {
   Future<void> updateUserDisplayName(String userId, String displayName) =>
       _userDataService.updateUserDisplayName(userId, displayName);
 
-  Future<void> updateUserTeamData(String userId, String teamId) => _userDataService.updateUserTeamData(userId, teamId);
+  Future<void> updateUserTeamData(String userId, String teamId, double? choosenColor) =>
+      _userDataService.updateUserTeamData(
+        userId,
+        teamId,
+        choosenColor,
+      );
 
   Future<void> removeUserData(String userId) => _userDataService.removeUserData(userId);
 

@@ -1,5 +1,4 @@
 import 'package:chalet/config/helpers/achievements_ids.dart';
-import 'package:flutter/cupertino.dart';
 
 class StatModel {
   final achievementsIds iconId;

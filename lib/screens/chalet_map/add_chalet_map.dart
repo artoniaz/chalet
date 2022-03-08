@@ -3,7 +3,6 @@ import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

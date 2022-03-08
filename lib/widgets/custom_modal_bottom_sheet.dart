@@ -4,9 +4,10 @@ Future showCustomModalBottomSheet(BuildContext context, Widget Function(BuildCon
         [Future? whenComplete]) =>
     showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height * 0.3,
-              maxHeight: MediaQuery.of(context).size.height * 0.7,
+              maxHeight: MediaQuery.of(context).size.height * 0.8,
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(48)),
