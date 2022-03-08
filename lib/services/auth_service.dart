@@ -1,11 +1,7 @@
-import 'package:chalet/blocs/user_data/user_data_bloc.dart';
-import 'package:chalet/blocs/user_data/user_data_event.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-import 'package:provider/provider.dart';
 
 class AuthService {
   final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
@@ -23,8 +19,7 @@ class AuthService {
     String password,
   ) async {
     try {
-      firebaseAuth.UserCredential res =
-          await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
@@ -45,19 +40,19 @@ class AuthService {
     String email,
     String password,
     String nick,
+    String avatarId,
   ) async {
     try {
       firebaseAuth.UserCredential res =
           await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      await res.user?.updateDisplayName(nick);
       final userId = res.user!.uid;
-      UserDataRepository().setUserDataOnRegister(userId, UserModel.fromData(userId, email, nick));
+      UserDataRepository().setUserDataOnRegister(userId, UserModel.fromData(userId, email, nick, avatarId));
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
           throw 'Zły format adresu email.';
-        } else if (e.code == 'email-already-exists') {
-          throw 'Podany adres e-mail jest już używany przez istniejącego użytkownika.';
+        } else if (e.code == 'email-already-in-use') {
+          throw 'Podany adres e-mail jest już używany.';
         } else {
           throw 'Niepoprawne dane do rejestracji';
         }
@@ -127,6 +122,7 @@ class AuthService {
       firebaseAuth.AuthCredential credentials =
           firebaseAuth.EmailAuthProvider.credential(email: email, password: password);
       firebaseAuth.UserCredential result = await user.reauthenticateWithCredential(credentials);
+      await UserDataRepository().removeUserData(user.uid);
       await result.user?.delete();
       return true;
     } catch (e) {

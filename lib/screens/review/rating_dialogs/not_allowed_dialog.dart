@@ -1,6 +1,5 @@
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
-import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 
 class NotAllowedDialog extends StatelessWidget {

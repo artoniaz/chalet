@@ -1,3 +1,4 @@
+import 'package:chalet/config/index.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
@@ -58,5 +59,37 @@ class CustomAppBars {
             chalet: chalet,
           ),
         ),
+      );
+
+  static AppBar customPendingTeamInfoAppBar(
+    BuildContext context,
+  ) =>
+      AppBar(
+        backgroundColor: Palette.chaletBlue,
+        bottom: PreferredSize(
+            child: Container(
+              child: ListTile(
+                onTap: () => Navigator.pushNamed(context, RoutesDefinitions.VIEW_PENDING_INVITATIONS),
+                textColor: Palette.white,
+                leading: Icon(
+                  Icons.info,
+                  color: Palette.white,
+                ),
+                title: Text(
+                  'Masz zaproszenie do klanu',
+                ),
+                // subtitle: Text('Odpowiedz w zakładce Mój profil'),
+                subtitle: RichText(
+                    text: TextSpan(
+                        style: DefaultTextStyle.of(context).style.copyWith(
+                              color: Palette.white,
+                            ),
+                        children: [
+                      TextSpan(text: 'Odpowiedz w zakładce '),
+                      TextSpan(text: 'Mój profil', style: TextStyle(decoration: TextDecoration.underline)),
+                    ])),
+              ),
+            ),
+            preferredSize: Size(MediaQuery.of(context).size.width, 16)),
       );
 }

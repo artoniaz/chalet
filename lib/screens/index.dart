@@ -32,6 +32,8 @@ export 'package:chalet/screens/review/review_container.dart';
 export 'package:chalet/screens/my_profile/profile_card.dart';
 export 'package:chalet/screens/my_profile/remove_account_dialog.dart';
 
+export 'package:chalet/screens/other_user_profile/other_user_profile.dart';
+
 export 'package:chalet/screens/problem/report_problem.dart';
 
 //social screens
@@ -45,3 +47,10 @@ export 'package:chalet/screens/social/create_team/add_member_to_team.dart';
 export 'package:chalet/screens/social/team/team_list.dart';
 export 'package:chalet/screens/social/team/team_member_container.dart';
 export 'package:chalet/screens/social/team/add_member_icon.dart';
+export 'package:chalet/screens/social/pending_invitation/pending_invitations.dart';
+export 'package:chalet/screens/social/pending_invitation/pending_team_invitation_container.dart';
+export 'package:chalet/screens/social/social_map/social_map.dart';
+export 'package:chalet/widgets/team_stats.dart';
+export 'package:chalet/screens/social/team_stats/stat_container.dart';
+export 'package:chalet/screens/social/team_stats/stats_grid.dart';
+export 'package:chalet/screens/social/team_stats/team_stats_member_container.dart';

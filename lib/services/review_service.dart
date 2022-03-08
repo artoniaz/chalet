@@ -10,7 +10,7 @@ class ReviewService implements ReviewRepository {
   Future<List<ReviewModel>> getReviewsForChalet(String chaletId) async {
     try {
       final data = await reviewsCollection
-          .doc('reviewsFor:$chaletId')
+          .doc('$chaletId')
           .collection('chalet_reviews')
           .orderBy('created', descending: true)
           .limit(5)
@@ -26,7 +26,7 @@ class ReviewService implements ReviewRepository {
   Future<List<ReviewModel>> getMoreReviewsForChalet(String chaletId, ReviewModel lastReview) async {
     try {
       final data = await reviewsCollection
-          .doc('reviewsFor:$chaletId')
+          .doc('$chaletId')
           .collection('chalet_reviews')
           .orderBy('created', descending: true)
           .startAfter([lastReview.created])
@@ -42,7 +42,7 @@ class ReviewService implements ReviewRepository {
   Future<String> createQuickReview(ReviewModel review) async {
     try {
       DocumentReference<Object?> res =
-          await reviewsCollection.doc('reviewsFor:${review.chaletId}').collection('chalet_reviews').add(ReviewModel(
+          await reviewsCollection.doc('${review.chaletId}').collection('chalet_reviews').add(ReviewModel(
                 id: '',
                 userId: review.userId,
                 chaletId: review.chaletId,
@@ -63,7 +63,7 @@ class ReviewService implements ReviewRepository {
   Future<List<ReviewModel>> getLastUserReviewForChalet(String chaletId, String userId) async {
     try {
       final data = await reviewsCollection
-          .doc('reviewsFor:$chaletId')
+          .doc(chaletId)
           .collection('chalet_reviews')
           .where('userId', isEqualTo: userId)
           .orderBy('created', descending: true)
@@ -81,7 +81,7 @@ class ReviewService implements ReviewRepository {
 
   Future<void> addDetailsReviewToQuickReview(String chaletId, String reviewId, ReviewDetailsModel reviewDetails) async {
     try {
-      reviewsCollection.doc('reviewsFor:$chaletId').collection('chalet_reviews').doc(reviewId).update({
+      reviewsCollection.doc('$chaletId').collection('chalet_reviews').doc(reviewId).update({
         'hasUserAddedFullReview': true,
         'reviewDetails': reviewDetails.toJson(),
       });

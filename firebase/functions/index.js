@@ -15,18 +15,18 @@ admin.initializeApp();
 //     });
 // });
 
-exports.deleteUserProfilePhotoOnUserDelete = functions.auth.user().onDelete((user) => {
-    const storage = new Storage();
-    const filePath = `user_images/${user.uid}`;
-    const bucket = storage.bucket('chalet-e78ab.appspot.com');
-    const file = bucket.file(filePath);
-    return file.delete();
-});
+// correct function, currently not used in the project
+// exports.deleteUserDataOnDelete = functions.auth.user().onDelete((user) => {
+//     const userDocRef = admin.firestore().collection('users').doc(userId);
+//     return userDocRef.delete();
+// });
 
 exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/reviews/{chaletId}/chalet_reviews/{reviewId}')
     .onCreate((snapshot, context) => {
         const chaletId = snapshot.data().chaletId;
+        const userId = snapshot.data().userId;
         const chaletDocRef = admin.firestore().collection('chalets').doc(chaletId);
+        const userDocRef = admin.firestore().collection('users').doc(userId);
 
         chaletDocRef.get().then(chalet => {
             const newNumberRatings = chalet.data().numberRating + 1;
@@ -37,6 +37,25 @@ exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/review
                 rating: newAvgRating,
                 numberRating: newNumberRatings
             });
+        });
+
+        userDocRef.get().then(user => {
+            const chaletsReviewsCreatedByUser = user.data().chaletReviewsNumber;
+
+            const sittingKingAchievementName = 'sittingKing';
+            const userAchievementsCompleted = user.data().achievementsIds;
+            const newNumberReviewsAdded = chaletsReviewsCreatedByUser + 1;
+            if (newNumberReviewsAdded > 4 && userAchievementsCompleted.indexOf(sittingKingAchievementName) == -1) {
+                userAchievementsCompleted.push(sittingKingAchievementName);
+                return userDocRef.update({
+                    chaletReviewsNumber: newNumberReviewsAdded,
+                    achievementsIds: userAchievementsCompleted,
+                });
+            } else {
+                return userDocRef.update({
+                    chaletReviewsNumber: newNumberReviewsAdded,
+                });
+            }
         });
     });
 
@@ -64,5 +83,29 @@ exports.updateChaletRatingOnReviewUpdate = functions.firestore.document('/review
                 privacy: newAvgPrivacyRating,
                 numberDetailedRating: newNumberDetailedRatings
             });
+        });
+    });
+
+exports.updateUserDataOnChaletCreated = functions.firestore.document('/chalets/{chaletId}')
+    .onCreate((snapshot, context) => {
+        const userId = snapshot.data().creatorId;
+        const userDocRef = admin.firestore().collection('users').doc(userId);
+
+        userDocRef.get().then(user => {
+            const newChaletsAddedNumber = user.data().chaletsAddedNumber + 1;
+            const achievementName = 'traveller';
+            const userAchievementsCompleted = user.data().achievementsIds;
+
+            if (newChaletsAddedNumber > 9 && userAchievementsCompleted.indexOf(achievementName) == -1) {
+                userAchievementsCompleted.push(achievementName);
+                return userDocRef.update({
+                    chaletsAddedNumber: newChaletsAddedNumber,
+                    achievementsIds: userAchievementsCompleted,
+                });
+            } else {
+                return userDocRef.update({
+                    chaletsAddedNumber: newChaletsAddedNumber,
+                });
+            }
         });
     });

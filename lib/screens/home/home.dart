@@ -1,15 +1,17 @@
+import 'package:chalet/blocs/damaging_model/damaging_model_bloc.dart';
+import 'package:chalet/blocs/damaging_model/damaging_model_event.dart';
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/geolocation/geolocation_event.dart';
 import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_event.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
-import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseUser;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -24,12 +26,6 @@ class _HomeState extends State<Home> {
   late UserDataBloc _userDataBloc;
   int _currentIndex = 0;
 
-  final List<Widget> tabs = [
-    ChaletPageSelection(),
-    SocialHome(),
-    ProfileCard(),
-  ];
-
   void handleTabChange(int index) => setState(() => _currentIndex = index);
 
   @override
@@ -39,13 +35,13 @@ class _HomeState extends State<Home> {
     _userDataBloc = Provider.of<UserDataBloc>(context, listen: false);
     _geolocatinBloc.add(GetUserGeolocation());
     _userDataBloc.add(GetUserData(user!.uid));
+    Provider.of<DamagingDeviceModelBloc>(context, listen: false).add(CheckDamagingDeviceModelEvent());
     super.initState();
   }
 
   @override
   void dispose() {
     _geolocatinBloc.close();
-    // _userDataBloc.close();
     super.dispose();
   }
 
@@ -54,8 +50,13 @@ class _HomeState extends State<Home> {
     return BlocBuilder<UserDataBloc, UserDataState>(
         bloc: _userDataBloc,
         builder: (context, userDataState) {
-          return BlocBuilder<GeolocationBloc, GeolocationState>(
+          return BlocConsumer<GeolocationBloc, GeolocationState>(
               bloc: _geolocatinBloc,
+              listener: (context, geolocationState) {
+                if (geolocationState is GeolocationStateError) {
+                  EasyLoading.showInfo(geolocationState.errorMessage);
+                }
+              },
               builder: (context, geolocationState) {
                 if (geolocationState is GeolocationStateInitial ||
                     geolocationState is GeolocationStateLoading ||
@@ -64,10 +65,18 @@ class _HomeState extends State<Home> {
                 else if ((geolocationState is GeolocationStateLoaded || geolocationState is GeolocationStateError) &&
                     userDataState is UserDataStateLoaded)
                   return Scaffold(
+                    appBar: userDataState.user.pendingInvitationsIds == null ||
+                            userDataState.user.pendingInvitationsIds!.isEmpty
+                        ? null
+                        : CustomAppBars.customPendingTeamInfoAppBar(context),
                     extendBody: true,
                     body: IndexedStack(
                       index: _currentIndex,
-                      children: tabs,
+                      children: [
+                        ChaletPageSelection(),
+                        SocialHome(),
+                        ProfileCard(),
+                      ],
                     ),
                     bottomNavigationBar: BottomNavBar(
                       currentIndex: _currentIndex,

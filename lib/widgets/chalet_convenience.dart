@@ -1,7 +1,6 @@
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
-import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 
 class ChaletConvenience extends StatelessWidget {
@@ -37,7 +36,6 @@ class ChaletConvenience extends StatelessWidget {
             assetName: convenienceType.type,
             height: 40.0,
           ),
-          
           if (isMainDisplay) VerticalSizedBox8(),
           if (isMainDisplay) Text(convenienceType.name, style: Theme.of(context).textTheme.bodyText2),
           Text(

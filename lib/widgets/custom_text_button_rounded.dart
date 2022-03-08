@@ -2,23 +2,26 @@ import 'package:chalet/styles/palette.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextButtonRounded extends StatelessWidget {
-  final Function onPressed;
+  final Function? onPressed;
   final String label;
   const CustomTextButtonRounded({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
     required this.label,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => onPressed(),
+      onPressed: onPressed == null ? null : () => onPressed!(),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Palette.backgroundWhite),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0))),
       ),
-      child: Text(label),
+      child: Text(
+        label,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

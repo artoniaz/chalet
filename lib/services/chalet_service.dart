@@ -18,7 +18,7 @@ class ChaletService {
     return subject.switchMap((center) {
       return geo
           .collection(collectionRef: chaletCollection)
-          .within(center: getGeoFirePointFromLatLng(center), radius: 2.0, field: 'position', strictMode: true);
+          .within(center: getGeoFirePointFromLatLng(center), radius: 0.2, field: 'position', strictMode: true);
     }).map((documentSnapshotList) => documentSnapshotList
         .map((documentSnapshot) => ChaletModel.fromJson(documentSnapshot.data(), documentSnapshot.id))
         .toList());
@@ -38,24 +38,7 @@ class ChaletService {
 
   Future<String?> createChalet(ChaletModel chalet) async {
     try {
-      DocumentReference<Object?> res = await chaletCollection.add(ChaletModel(
-        id: '',
-        images: [],
-        name: chalet.name,
-        rating: chalet.rating,
-        numberRating: chalet.numberRating,
-        numberDetailedRating: chalet.numberDetailedRating,
-        descriptionHowToGet: chalet.descriptionHowToGet,
-        venueDescription: chalet.venueDescription,
-        clean: chalet.clean,
-        paper: chalet.paper,
-        privacy: chalet.privacy,
-        description: chalet.description,
-        position: chalet.position.data,
-        isVerified: chalet.isVerified,
-        is24: chalet.is24,
-        creator: chalet.creator,
-      ).toJson());
+      DocumentReference<Object?> res = await chaletCollection.add(chalet.toJson());
       return res.id;
     } catch (e) {
       print(e);
@@ -74,4 +57,12 @@ class ChaletService {
   }
 
   Future<void> updateImageDefaultInfo() async {}
+
+  Stream<List<ChaletModel>> getChaletListAddedByUsers(List<String> teamMembersIds) {
+    return chaletCollection
+        .where('creatorId', whereIn: teamMembersIds)
+        .limit(8)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => ChaletModel.fromJson(doc, doc.id)).toList());
+  }
 }

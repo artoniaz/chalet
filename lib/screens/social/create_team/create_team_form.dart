@@ -1,7 +1,10 @@
-import 'package:chalet/blocs/team/team_bloc.dart';
-import 'package:chalet/blocs/team/team_event.dart';
+import 'package:chalet/blocs/create_team/create_team_bloc.dart';
+import 'package:chalet/blocs/create_team/create_team_event.dart';
+import 'package:chalet/blocs/create_team/create_team_state.dart';
 import 'package:chalet/blocs/team/team_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/config/functions/dissmis_focus.dart';
+import 'package:chalet/models/color_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/input_decoration.dart';
@@ -11,11 +14,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class CreateTeamForm extends StatefulWidget {
-  final TeamBloc teamBloc;
+  final CreateTeamBloc createTeamBloc;
   final TextEditingController teamNameController;
   const CreateTeamForm({
     Key? key,
-    required this.teamBloc,
+    required this.createTeamBloc,
     required this.teamNameController,
   }) : super(key: key);
 
@@ -26,18 +29,29 @@ class CreateTeamForm extends StatefulWidget {
 class _CreateTeamFormState extends State<CreateTeamForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  ColorModel? _choosenColor;
+
+  void _handleChoosenColor(ColorModel color) {
+    setState(() => _choosenColor = color);
+    Navigator.of(context).pop();
+  }
+
   void _addTeam() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _choosenColor != null) {
       UserModel user = Provider.of<UserDataBloc>(context, listen: false).state.props.first as UserModel;
-      widget.teamBloc.add(AddTeamEvent(user.uid, user.displayName ?? '', widget.teamNameController.text));
+      widget.createTeamBloc.add(AddCreateTeamEvent(
+        user.uid,
+        user.displayName ?? '',
+        widget.teamNameController.text,
+        _choosenColor!.bitmapDescriptor,
+      ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TeamBloc, TeamState>(
-      bloc: widget.teamBloc,
-      listener: (context, teamState) {},
+    return BlocBuilder<CreateTeamBloc, CreateTeamState>(
+      bloc: widget.createTeamBloc,
       builder: (context, teamState) {
         return Container(
           padding: EdgeInsets.fromLTRB(Dimentions.medium, Dimentions.medium, Dimentions.medium, Dimentions.medium),
@@ -58,15 +72,27 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                 TextFormField(
                   controller: widget.teamNameController,
                   decoration: textInputDecoration.copyWith(hintText: 'Nazwa klanu'),
-                  validator: (val) => val!.isEmpty || val.length < 3 ? 'Podaj poprawny nazwę klanu' : null,
+                  validator: (val) => val!.isEmpty || val.length < 3 ? 'Podaj poprawną nazwę klanu' : null,
                   onEditingComplete: teamState is TeamStateLoading ? null : _addTeam,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 VerticalSizedBox8(),
-                CustomElevatedButton(
-                  label: 'Dodaj klan',
-                  onPressed: teamState is TeamStateLoading ? null : _addTeam,
-                ),
+                _choosenColor == null
+                    ? CustomElevatedButton(
+                        label: 'Wybierz kolor',
+                        onPressed: () {
+                          dissmissCurrentFocus(context);
+                          return showDialog(
+                              context: context,
+                              builder: (context) => ColorPickerDialog(
+                                    handleChoosenColor: _handleChoosenColor,
+                                    alreadyChoosenColors: [],
+                                  ));
+                        })
+                    : CustomElevatedButton(
+                        label: 'Dodaj klan',
+                        onPressed: teamState is TeamStateLoading ? null : _addTeam,
+                      ),
               ],
             ),
           ),

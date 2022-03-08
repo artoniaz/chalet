@@ -6,11 +6,8 @@ import 'package:chalet/config/functions/feed_display_info_helpers.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/user_model.dart';
-import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
-import 'package:chalet/widgets/custom_elevated_button.dart';
-import 'package:chalet/widgets/horizontal_sized_boxes.dart';
-import 'package:chalet/widgets/vertical_sized_boxes.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,7 +33,6 @@ class FeedInfoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserModel _user = Provider.of<UserDataBloc>(context).state.props.first as UserModel;
-    print(_hasAlreadyBeenCongratulatedByUser(_user));
     return BlocConsumer<SendCongratsBloc, SendCongratsState>(
         bloc: Provider.of<SendCongratsBloc>(context, listen: false),
         listener: (context, state) {
@@ -64,11 +60,11 @@ class FeedInfoContainer extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 15.0,
-                                backgroundImage: AssetImage('assets/poo/poo_happy.png'),
-                              ),
-                              HorizontalSizedBox16(),
+                              // CircleAvatar(
+                              //   radius: 15.0,
+                              //   backgroundImage: AssetImage('assets/poo/poo_happy.png'),
+                              // ),
+                              // HorizontalSizedBox16(),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -105,26 +101,48 @@ class FeedInfoContainer extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: CustomElevatedButton(
-                        label: _hasAlreadyBeenCongratulatedByUser(_user) ? 'Już polajkowałeś' : 'Pogratuluj',
-                        backgroundColor: Palette.goldLeaf,
-                        onPressed: _congratsValidation(_user, state)
-                            ? () => Provider.of<SendCongratsBloc>(context, listen: false).add(SendCongrats(
-                                  feedInfo,
-                                  CongratsSenderModel(userId: _user.uid, userName: _user.displayName ?? 'anonim'),
-                                ))
-                            : null,
-                      ),
+                      child: _user.uid == feedInfo.userId
+                          ? Container()
+                          : CustomElevatedButton(
+                              label: _hasAlreadyBeenCongratulatedByUser(_user) ? 'Już gratulowałeś' : 'Pogratuluj',
+                              backgroundColor: Palette.goldLeaf,
+                              onPressed: _congratsValidation(_user, state)
+                                  ? () => Provider.of<SendCongratsBloc>(context, listen: false).add(SendCongrats(
+                                        feedInfo,
+                                        CongratsSenderModel(userId: _user.uid, userName: _user.displayName ?? 'anonim'),
+                                      ))
+                                  : null,
+                            ),
                     ),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.emoji_emotions,
-                            color: Palette.chaletBlue,
-                            size: 36.0,
-                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.emoji_emotions,
+                                color: Palette.chaletBlue,
+                                size: 36.0,
+                              ),
+                              onPressed: () => showCustomModalBottomSheet(
+                                    context,
+                                    (context) => Padding(
+                                      padding: const EdgeInsets.all(Dimentions.medium),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Polubienia',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(fontWeight: FontWeight.bold),
+                                          ),
+                                          ...feedInfo.congratsSenderList.map((el) => ListTile(title: Text(el.userName)))
+                                        ],
+                                      ),
+                                    ),
+                                  )),
                           Text(
                             feedInfo.congratsSenderList.length.toString(),
                             style: Theme.of(context).textTheme.headline6,

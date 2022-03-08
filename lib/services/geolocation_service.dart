@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,8 +11,12 @@ class GeolocationService extends ChangeNotifier {
 
   Future<LatLng> getUserLocation() async {
     try {
-      Position pos = await geo.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position pos =
+          await geo.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).timeout(const Duration(seconds: 5));
       return LatLng(pos.latitude, pos.longitude);
+    } on TimeoutException catch (e) {
+      print(e);
+      throw 'Połączenie z internetem nie pozwoliło na dokładne pobranie Twojej pozycji.';
     } catch (e) {
       print(e);
       throw 'Nie ustalono pozycji użytkownika';
