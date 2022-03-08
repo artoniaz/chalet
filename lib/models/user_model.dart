@@ -8,7 +8,7 @@ class UserModel {
   final List<String>? pendingInvitationsIds;
   final int chaletsAddedNumber;
   final int chaletReviewsNumber;
-  final List<String>? achievementsIds;
+  final List<String> achievementsIds;
   final double? choosenColor;
   final String? avatarId;
   const UserModel({
@@ -19,7 +19,7 @@ class UserModel {
     this.pendingInvitationsIds,
     this.chaletsAddedNumber = 0,
     this.chaletReviewsNumber = 0,
-    this.achievementsIds,
+    required this.achievementsIds,
     this.choosenColor,
     this.avatarId,
   });
@@ -37,9 +37,7 @@ class UserModel {
       pendingInvitationsIds: (json as dynamic)['pendingInvitationsIds'] == null
           ? []
           : List<String>.from((json as dynamic)['pendingInvitationsIds'].map((el) => el)),
-      achievementsIds: (json as dynamic)['achievementsIds'] == null
-          ? []
-          : List<String>.from((json as dynamic)['achievementsIds'].map((el) => el)),
+      achievementsIds: List<String>.from((json as dynamic)['achievementsIds'].map((el) => el)),
     );
   }
 
@@ -48,6 +46,7 @@ class UserModel {
       uid: firebaseUser.uid,
       email: firebaseUser.email ?? '',
       displayName: firebaseUser.displayName,
+      achievementsIds: [],
     );
   }
 
@@ -57,6 +56,7 @@ class UserModel {
       email: email,
       displayName: name,
       avatarId: avatarId,
+      achievementsIds: [],
     );
   }
 
