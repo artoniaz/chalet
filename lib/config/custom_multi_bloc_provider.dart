@@ -16,6 +16,7 @@ import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/team_member/team_member_bloc.dart';
 import 'package:chalet/blocs/team_members/team_members_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/blocs/validate_quick_review/validate_quick_review_bloc.dart';
 import 'package:chalet/repositories/chalet_icon_repository.dart';
 import 'package:chalet/repositories/chalet_repository.dart';
 import 'package:chalet/repositories/geolocation_repository.dart';
@@ -130,6 +131,9 @@ class CustomMultiBlocProvider extends StatelessWidget {
       ),
       BlocProvider<DamagingDeviceModelBloc>(
         create: (context) => DamagingDeviceModelBloc(),
+      ),
+      BlocProvider<ValidateQuickReviewBloc>(
+        create: (context) => ValidateQuickReviewBloc(addReviewBloc: BlocProvider.of<AddReviewBloc>(context)),
       ),
     ], child: child);
   }

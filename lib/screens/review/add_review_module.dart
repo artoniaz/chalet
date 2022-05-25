@@ -2,6 +2,9 @@ import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/blocs/validate_quick_review/validate_quick_review_bloc.dart';
+import 'package:chalet/blocs/validate_quick_review/validate_quick_review_event.dart';
+import 'package:chalet/blocs/validate_quick_review/validate_quick_review_state.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/models/review_model.dart';
@@ -31,6 +34,7 @@ class AddReviewModule extends StatefulWidget {
 
 class _AddReviewModuleState extends State<AddReviewModule> {
   late AddReviewBloc _addReviewBloc;
+  late ValidateQuickReviewBloc _validateQuickReviewBloc;
   late UserModel? _user;
   TextEditingController _chaletDescController = TextEditingController();
   FocusNode _chaletDescFocusNode = FocusNode();
@@ -47,31 +51,32 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   }
 
   void _handleCreateQuickReview() {
-    _addReviewBloc.add(
-      CreateQuickReview(
-          review: ReviewModel(
-            id: '',
-            chaletId: widget.chalet.id,
-            userId: _user!.uid,
-            userName: _user!.displayName ?? '',
-            rating: _chaletRating,
-            description: _chaletDescController.text,
-            created: Timestamp.now(),
-            hasUserAddedFullReview: false,
-          ),
-          feedInfo: FeedInfoModel(
-            id: '',
-            teamId: _user!.teamId ?? '',
-            userId: _user!.uid,
-            chaletId: widget.chalet.id,
-            chaletName: widget.chalet.name,
-            userName: _user!.displayName ?? '',
-            role: FeedInfoRole.rating,
-            chaletRating: _chaletRating,
-            created: Timestamp.now(),
-            congratsSenderList: [],
-          )),
-    );
+    _validateQuickReviewBloc.add(ValidateQuickReview(
+      _chaletRating,
+      _chaletDescController.text,
+      ReviewModel(
+        id: '',
+        chaletId: widget.chalet.id,
+        userId: _user!.uid,
+        userName: _user!.displayName ?? '',
+        rating: _chaletRating,
+        description: _chaletDescController.text,
+        created: Timestamp.now(),
+        hasUserAddedFullReview: false,
+      ),
+      FeedInfoModel(
+        id: '',
+        teamId: _user!.teamId ?? '',
+        userId: _user!.uid,
+        chaletId: widget.chalet.id,
+        chaletName: widget.chalet.name,
+        userName: _user!.displayName ?? '',
+        role: FeedInfoRole.rating,
+        chaletRating: _chaletRating,
+        created: Timestamp.now(),
+        congratsSenderList: [],
+      ),
+    ));
   }
 
   void _handleGoToFullReviewBtn() {
@@ -81,6 +86,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   @override
   void initState() {
     _addReviewBloc = BlocProvider.of<AddReviewBloc>(context, listen: false);
+    _validateQuickReviewBloc = BlocProvider.of<ValidateQuickReviewBloc>(context, listen: false);
     _user = context.read<UserDataBloc>().state.props.first as UserModel;
 
     super.initState();
@@ -106,7 +112,11 @@ class _AddReviewModuleState extends State<AddReviewModule> {
                     validateQuickReview: _validateQuickReview,
                     scrollController: _dialogController,
                     createReview: _handleCreateQuickReview,
-                  ));
+                  )).then((value) {
+            _validateQuickReviewBloc.add(ResetQuickReview());
+            _chaletDescController.text = '';
+            _chaletRating = 0.0;
+          });
         } else if (state is AddReviewStateFullRatingDialog) {
           Navigator.of(context).pop();
           showDialog(
