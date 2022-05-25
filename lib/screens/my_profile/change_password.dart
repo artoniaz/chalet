@@ -74,7 +74,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 VerticalSizedBox16(),
                 TextFormField(
                   controller: _newPasswordConfirmController,
-                  decoration: textInputDecoration.copyWith(hintText: 'Potwierdź hasło hasło'),
+                  decoration: textInputDecoration.copyWith(hintText: 'Potwierdź hasło'),
                   obscureText: true,
                   validator: (val) => val != _newPasswordController.text ? 'Hasła muszą być zgodne' : null,
                   onEditingComplete: () => _updatePassword(),

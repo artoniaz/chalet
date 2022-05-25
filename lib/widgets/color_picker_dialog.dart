@@ -26,7 +26,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     colors = avaliableColors.where((el) => !widget.alreadyChoosenColors.contains(el.bitmapDescriptor)).toList();
 
     return AlertDialog(
-      title: Text('Wybierz kolor'),
+      title: Text('Wybierz swój kolor'),
       content: Scrollbar(
           child: Wrap(
         spacing: Dimentions.small,

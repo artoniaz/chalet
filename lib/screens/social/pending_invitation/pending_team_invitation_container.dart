@@ -127,7 +127,7 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
                   VerticalSizedBox8(),
                   _choosenColor == null
                       ? CustomElevatedButton(
-                          label: 'Wybierz kolor',
+                          label: 'Wybierz swój kolor',
                           onPressed: () => showDialog(
                               context: context,
                               builder: (context) => ColorPickerDialog(

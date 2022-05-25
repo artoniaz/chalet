@@ -201,7 +201,7 @@ class _AddChaletState extends State<AddChalet> {
                                   Divider(),
                                   VerticalSizedBox8(),
                                   Text(
-                                    'Opis budynku',
+                                    'Opis budynku / adres',
                                     style: Theme.of(context).textTheme.headline6!.copyWith(
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -254,14 +254,13 @@ class _AddChaletState extends State<AddChalet> {
                                     onPressed: () => _navigateToLocalizationAndGetChaletLocalization(context),
                                   ),
                                   VerticalSizedBox16(),
-                                  CustomElevatedButtonIcon(
+                                  CustomElevatedButton(
                                     onPressed: state is AddChaletStateLoading ||
                                             state is AddChaletChaletAddedLoadingImages ||
                                             !_isLocalizationChoosen
                                         ? null
                                         : createChalet,
-                                    label: 'Dodaj szalet',
-                                    icon: Icon(Icons.add),
+                                    label: 'Zatwiedź',
                                   ),
                                 ],
                               ),
