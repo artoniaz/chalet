@@ -8,15 +8,20 @@ class DragHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 40.0,
-        height: 5.0,
-        decoration: BoxDecoration(
-            color: Palette.lightGrey,
-            borderRadius: BorderRadius.all(
-              Radius.circular(Dimentions.big),
-            )),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: Dimentions.big,
+      ),
+      child: Center(
+        child: Container(
+          width: 40.0,
+          height: 5.0,
+          decoration: BoxDecoration(
+              color: Palette.lightGrey,
+              borderRadius: BorderRadius.all(
+                Radius.circular(Dimentions.big),
+              )),
+        ),
       ),
     );
   }

@@ -13,3 +13,5 @@ void sortChaletsByLocationAsc(List<ChaletModel> chalets, LatLng userLocation) {
         .compareTo(getDistance(bLatLng.latitude, bLatLng.longitude, userLocation.latitude, userLocation.longitude));
   });
 }
+
+void sortChaletsByIs24(List<ChaletModel> chalets) => chalets.sort((a, b) => b.is24 ? 1 : -1);

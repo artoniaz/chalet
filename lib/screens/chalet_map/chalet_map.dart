@@ -163,7 +163,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     super.build(context);
     double screenHeight = MediaQuery.of(context).size.height;
     // final _panelHeightClosed = _activeChalet == null ? 0.0 : screenHeight * 0.3;
-    final _panelHeightClosed = _activeChalet == null ? 0.0 : 170.0;
+    final _panelHeightClosed = _activeChalet == null ? 0.0 : 180.0;
     final _panelHeightOpen = screenHeight * 0.6;
     return BlocConsumer<GetChaletsBloc, GetChaletsState>(
       listener: (context, chaletsState) {},
@@ -195,9 +195,10 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                           isMapEnabled: false,
                           isGalleryEnabled: true,
                           userLocation: _userLocation,
+                          panelController: _panelController,
                         ),
                   onPanelSlide: (pos) {
-                    final panelMaxScrollExtend = _panelHeightOpen - 170;
+                    final panelMaxScrollExtend = _panelHeightOpen - 180;
                     double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight + 72.0;
                     // if (_activeChalet != null) btnHeight += screenHeight * 0.2;
                     if (_activeChalet != null) btnHeight += 72.0 + Dimentions.big;

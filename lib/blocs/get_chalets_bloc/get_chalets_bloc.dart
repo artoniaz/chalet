@@ -60,6 +60,8 @@ class GetChaletsBloc extends Bloc<GetChaletsEvent, GetChaletsState> {
       sortChaletsByRatingDesc(chalets);
     } else if (event.sortingValue == SortingValues.NEAREST) {
       sortChaletsByLocationAsc(chalets, event.userLocation);
+    } else if (event.sortingValue == SortingValues.IS24) {
+      sortChaletsByIs24(chalets);
     }
     currentSorting = event.sortingValue;
     yield GetChaletsStateLoaded(
