@@ -2,7 +2,6 @@ import 'package:chalet/blocs/add_review/add_review_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
 import 'package:chalet/models/review_details_model.dart';
-import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +33,6 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
     paper: 0.0,
     clean: 0.0,
     privacy: 0.0,
-    describtionExtended: '',
   );
 
   bool _isFormValidated = true;
@@ -42,7 +40,6 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
   void _handleCleanRatingUpdate(double rating) => setState(() => _reviewDetails.clean = rating);
   void _handlePaperRatingUpdate(double rating) => setState(() => _reviewDetails.paper = rating);
   void _handlePrivacyRatingUpdate(double rating) => setState(() => _reviewDetails.privacy = rating);
-  void _handleDetailsExtendedUpdate(String desc) => setState(() => _reviewDetails.describtionExtended = desc);
 
   bool _validateForm() => _reviewDetails.paper > 0 && _reviewDetails.clean > 0 && _reviewDetails.privacy > 0;
 
@@ -108,19 +105,6 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
                   handleRatingUpdate: _handlePrivacyRatingUpdate,
                 ),
                 VerticalSizedBox8(),
-                TextField(
-                    minLines: 2,
-                    maxLines: 4,
-                    onChanged: _handleDetailsExtendedUpdate,
-                    focusNode: _focusNode,
-                    decoration: textInputDecoration.copyWith(
-                      hintText: 'Dokładny opis. Podziel się szczegółami!',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 0.5,
-                      )),
-                    )),
                 if (!_isFormValidated)
                   Text(
                     'Uzupełnij wszystkie oceny',
