@@ -61,7 +61,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   //   }
   // }
 
-  late Set<Circle> centerCircle;
+  late Set<Circle> mapCenterCircles;
 
   void _centerCamera() {
     _googleMapController.animateCamera(
@@ -73,7 +73,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void _handleSearchThisAreaButton() {
     widget.updateQuery(_cameraCenterPosition);
     setState(() => _isSearchThisAreaButtonActive = false);
-    updateCenterCirclePosition();
+    updateSearchCenterCirclePosition();
   }
 
   void _onCameraIdle() {
@@ -84,6 +84,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
       else
         setState(() => _isSearchThisAreaButtonActive = true);
     }
+    updateAreaToLookForCenterCirclePosition();
   }
 
   void _onCameraMove(CameraPosition position) => _cameraCenterPosition = position.target;
@@ -121,8 +122,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     }
   }
 
-  void updateCenterCirclePosition() {
-    centerCircle = Set.from([
+  void updateSearchCenterCirclePosition() {
+    mapCenterCircles = Set.from([
       Circle(
         circleId: CircleId('centerCircle'),
         center: _cameraCenterPosition,
@@ -134,13 +135,23 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     ]);
   }
 
+  void updateAreaToLookForCenterCirclePosition() {
+    mapCenterCircles.add(Circle(
+      circleId: CircleId('centerAreaToLookForCircle'),
+      center: _cameraCenterPosition,
+      radius: 200,
+      strokeColor: Palette.chaletBlue,
+      strokeWidth: 2,
+    ));
+  }
+
   void getInitData() async {
     LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
 
     _cameraCenterPosition = userLocation;
     _userLocation = userLocation;
 
-    updateCenterCirclePosition();
+    updateSearchCenterCirclePosition();
   }
 
   @override
@@ -220,7 +231,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                     myLocationEnabled: true,
                     markers: _createChaletListMarkers(chaletsState.chaletList).toSet(),
                     onTap: _onMapTap,
-                    circles: centerCircle,
+                    circles: mapCenterCircles,
                     polylines: {
                       if (_directionsInfo != null)
                         Polyline(
