@@ -1,3 +1,4 @@
+import 'package:chalet/models/achievement_model.dart';
 import 'package:chalet/models/feed_display_info_model.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/services/team_feed_info_service.dart';
@@ -11,13 +12,39 @@ class TeamFeedInfoRepository {
       _teamFeedInfoService.sendCongratsToFeed(feedInfo, congratsSenderModel);
 }
 
-enum FeedInfoRole {
+enum FeedInfoEvent {
   rating,
+  addChalet,
+  newMember,
+  memberNewAchievement,
+}
+
+class AchievementIds {
+  static AchievementModel TRAVELLER = AchievementModel(
+    achievementId: 'traveller',
+    achievementDescribtion: 'Obieżyświat',
+  );
+  static AchievementModel SITTING_KING = AchievementModel(
+    achievementId: 'sittingKing',
+    achievementDescribtion: 'Siedzący król',
+  );
 }
 
 List<FeedDisplayInfoModel> feedDisplayInfoModelList = List<FeedDisplayInfoModel>.from([
   FeedDisplayInfoModel(
-    feedInfoRole: FeedInfoRole.rating,
+    feedInfoRole: FeedInfoEvent.rating,
     feedDescription: 'Wysrał się w kiblu',
+  ),
+  FeedDisplayInfoModel(
+    feedInfoRole: FeedInfoEvent.addChalet,
+    feedDescription: 'Dodał Szalet',
+  ),
+  FeedDisplayInfoModel(
+    feedInfoRole: FeedInfoEvent.newMember,
+    feedDescription: 'Nowy członek klanu',
+  ),
+  FeedDisplayInfoModel(
+    feedInfoRole: FeedInfoEvent.memberNewAchievement,
+    feedDescription: 'Zdobył osiągnięcie',
   ),
 ]).toList();

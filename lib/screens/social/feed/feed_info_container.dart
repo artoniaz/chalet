@@ -6,6 +6,7 @@ import 'package:chalet/config/functions/feed_display_info_helpers.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,19 @@ class FeedInfoContainer extends StatelessWidget {
                           Text(
                             getFeedDisplayInfoModel(feedInfo.role).feedDescription,
                             style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              VerticalSizedBox8(),
+                              Text(
+                                getFeedDisplayAdditionalDescInfo(feedInfo),
+                                style: Theme.of(context).textTheme.headline5!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.goldLeaf,
+                                    ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

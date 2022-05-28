@@ -42,7 +42,7 @@ class _FeedInfoListState extends State<FeedInfoList> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: Dimentions.big),
+                    padding: const EdgeInsets.only(top: Dimentions.big),
                     child: TextDivider(text: 'Nowe'),
                   ),
                   Padding(

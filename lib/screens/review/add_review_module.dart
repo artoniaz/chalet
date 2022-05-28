@@ -71,10 +71,11 @@ class _AddReviewModuleState extends State<AddReviewModule> {
         chaletId: widget.chalet.id,
         chaletName: widget.chalet.name,
         userName: _user!.displayName ?? '',
-        role: FeedInfoRole.rating,
+        role: FeedInfoEvent.rating,
         chaletRating: _chaletRating,
         created: Timestamp.now(),
         congratsSenderList: [],
+        achievementId: '',
       ),
     ));
   }

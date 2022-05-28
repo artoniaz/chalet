@@ -43,12 +43,6 @@ class CustomMultiBlocProvider extends StatelessWidget {
       BlocProvider<ProblemBloc>(
         create: (context) => ProblemBloc(problemRepository: ProblemRepository()),
       ),
-      BlocProvider<AddChaletBloc>(
-        create: (context) => AddChaletBloc(
-          chaletRepository: ChaletRepository(),
-          storageRepository: StorageRepository(),
-        ),
-      ),
       BlocProvider<GeolocationBloc>(
         create: (context) => GeolocationBloc(geolocationRepository: GeolocationRepository()),
       ),
@@ -134,6 +128,13 @@ class CustomMultiBlocProvider extends StatelessWidget {
       ),
       BlocProvider<ValidateQuickReviewBloc>(
         create: (context) => ValidateQuickReviewBloc(addReviewBloc: BlocProvider.of<AddReviewBloc>(context)),
+      ),
+      BlocProvider<AddChaletBloc>(
+        create: (context) => AddChaletBloc(
+          chaletRepository: ChaletRepository(),
+          storageRepository: StorageRepository(),
+          teamFeedInfoBloc: BlocProvider.of<TeamFeedInfoBloc>(context),
+        ),
       ),
     ], child: child);
   }

@@ -46,6 +46,9 @@ exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/review
             const userAchievementsCompleted = user.data().achievementsIds;
             const newNumberReviewsAdded = chaletsReviewsCreatedByUser + 1;
             if (newNumberReviewsAdded > 4 && userAchievementsCompleted.indexOf(sittingKingAchievementName) == -1) {
+                if (user.data().teamId != '' && user.data().teamId != null) {
+                    addTeamFeedInfoOnUserAchievement('memberNewAchievement', user, sittingKingAchievementName);
+                }
                 userAchievementsCompleted.push(sittingKingAchievementName);
                 return userDocRef.update({
                     chaletReviewsNumber: newNumberReviewsAdded,
@@ -97,6 +100,9 @@ exports.updateUserDataOnChaletCreated = functions.firestore.document('/chalets/{
             const userAchievementsCompleted = user.data().achievementsIds;
 
             if (newChaletsAddedNumber > 9 && userAchievementsCompleted.indexOf(achievementName) == -1) {
+                if (user.data().teamId != '' && user.data().teamId != null) {
+                    addTeamFeedInfoOnUserAchievement('memberNewAchievement', user, achievementName);
+                }
                 userAchievementsCompleted.push(achievementName);
                 return userDocRef.update({
                     chaletsAddedNumber: newChaletsAddedNumber,
@@ -109,3 +115,18 @@ exports.updateUserDataOnChaletCreated = functions.firestore.document('/chalets/{
             }
         });
     });
+
+function addTeamFeedInfoOnUserAchievement(teamFeedInfoType, user, achievementId) {
+    const teamFeedDocRef = admin.firestore().collection('teams').doc(user.data().teamId).collection('feedInfos').add({
+        chaletId: '',
+        chaletName: '',
+        chaletRating: 0,
+        congratsSenderList: [],
+        created: admin.firestore.Timestamp.now(),
+        role: teamFeedInfoType,
+        teamId: user.data().teamId,
+        userId: user.data().uid,
+        userName: user.data().displayName,
+        achievementId: achievementId,
+    });
+}

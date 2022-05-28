@@ -1,3 +1,4 @@
+import 'package:chalet/models/feed_info_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ReactToPendingInvitationEvent extends Equatable {
@@ -12,6 +13,7 @@ class AcceptPendingInvitation extends ReactToPendingInvitationEvent {
   final double choosenColor;
   final String? previousTeamId;
   final double? previousTeamColor;
+  final FeedInfoModel? feedInfo;
   AcceptPendingInvitation(
     this.userId,
     this.teamId,
@@ -19,6 +21,7 @@ class AcceptPendingInvitation extends ReactToPendingInvitationEvent {
     this.choosenColor,
     this.previousTeamId,
     this.previousTeamColor,
+    this.feedInfo,
   );
 }
 

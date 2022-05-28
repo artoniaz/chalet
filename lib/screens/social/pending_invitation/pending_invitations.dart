@@ -2,6 +2,7 @@ import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams
 import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams_event.dart';
 import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams_state.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_bloc.dart';
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/team_repository.dart';
@@ -63,6 +64,7 @@ class _PendingInvitationsState extends State<PendingInvitations> {
                             create: (context) => ReactToPendingInvitationBloc(
                               teamRepository: TeamRepository(),
                               userDataRepository: UserDataRepository(),
+                              teamFeedInfoBloc: BlocProvider.of<TeamFeedInfoBloc>(context, listen: false),
                             ),
                             child: PendingTeamInvitationContainer(
                                 team: team,
