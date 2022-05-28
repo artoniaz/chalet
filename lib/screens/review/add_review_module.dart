@@ -154,7 +154,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
           EasyLoading.showError(state.errorMessage);
         }
       },
-      builder: (context, state) => CustomElevatedButton(
+      builder: (context, state) => CustomMainElevatedButton(
           label: 'Zostaw balas',
           backgroundColor: Palette.goldLeaf,
           onPressed: state is AddReviewValidateRatingsLoading

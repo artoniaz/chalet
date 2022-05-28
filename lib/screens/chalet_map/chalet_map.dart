@@ -300,6 +300,19 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                 ),
               ],
             ),
+            floatingActionButton: _panelController.isPanelOpen
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium, vertical: 52.0),
+                        child: AddReviewModule(chalet: _activeChalet!),
+                      ),
+                    ],
+                  )
+                : Container(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           );
         } else
           return Container();

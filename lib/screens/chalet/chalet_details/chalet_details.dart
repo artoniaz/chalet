@@ -5,6 +5,8 @@ import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/services/geolocation_service.dart';
+import 'package:chalet/styles/dimentions.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,6 +92,17 @@ class _ChaletDetailsState extends State<ChaletDetails> {
           ),
         ],
       ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium),
+            child: AddReviewModule(chalet: _chalet!),
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

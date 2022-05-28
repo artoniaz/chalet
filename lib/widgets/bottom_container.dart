@@ -6,7 +6,7 @@ class BottomContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 72.0,
+      height: 102.0,
     );
   }
 }
