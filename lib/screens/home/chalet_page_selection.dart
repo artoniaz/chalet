@@ -39,7 +39,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
   void _getInitData() async {
     _getChaletsBloc = Provider.of<GetChaletsBloc>(context, listen: false);
     _chaletIconBloc = Provider.of<ChaletIconBloc>(context, listen: false);
-    LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
+    LatLng userLocation = Provider.of<GeolocationBloc>(context, listen: false).state.props.first as LatLng;
     _cameraPositionBehaviourSubject = BehaviorSubject<LatLng>.seeded(userLocation);
     _getChaletsBloc.add(GetChalets(_cameraPositionBehaviourSubject));
     _chaletIconBloc.add(GetChaletIcon());
