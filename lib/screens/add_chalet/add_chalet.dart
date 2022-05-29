@@ -4,11 +4,14 @@ import 'package:chalet/blocs/add_chalet/add_chalet_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/add_chalet_nav_pass_args.dart';
+import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/index.dart';
 import 'package:chalet/providers/image_file_list_provider_model.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -110,7 +113,25 @@ class _AddChaletState extends State<AddChalet> {
       if (_chalet.clean > 0 && _chalet.paper > 0 && _chalet.privacy > 0 && imageListModel.images.isNotEmpty) {
         _chalet.creatorName = _user?.displayName ?? 'anonimowy użytkownik';
         _chalet.creatorId = _user?.uid ?? '';
-        _addChaletBloc.add(CreateChalet(_chalet, imageListModel.images));
+        _addChaletBloc.add(CreateChalet(
+          _chalet,
+          imageListModel.images,
+          _user!.teamId == null
+              ? null
+              : FeedInfoModel(
+                  id: '',
+                  teamId: _user!.teamId ?? '',
+                  userId: _user!.uid,
+                  chaletId: _chalet.id,
+                  chaletName: _chalet.name,
+                  userName: _user!.displayName ?? '',
+                  role: FeedInfoEvent.addChalet,
+                  chaletRating: _chalet.numberRating.toDouble(),
+                  created: Timestamp.now(),
+                  congratsSenderList: [],
+                  achievementId: '',
+                ),
+        ));
       } else
         setState(() => isFormAllowed = false);
     }
@@ -201,7 +222,7 @@ class _AddChaletState extends State<AddChalet> {
                                   Divider(),
                                   VerticalSizedBox8(),
                                   Text(
-                                    'Opis budynku',
+                                    'Opis budynku / adres',
                                     style: Theme.of(context).textTheme.headline6!.copyWith(
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -254,14 +275,13 @@ class _AddChaletState extends State<AddChalet> {
                                     onPressed: () => _navigateToLocalizationAndGetChaletLocalization(context),
                                   ),
                                   VerticalSizedBox16(),
-                                  CustomElevatedButtonIcon(
+                                  CustomElevatedButton(
                                     onPressed: state is AddChaletStateLoading ||
                                             state is AddChaletChaletAddedLoadingImages ||
                                             !_isLocalizationChoosen
                                         ? null
                                         : createChalet,
-                                    label: 'Dodaj szalet',
-                                    icon: Icon(Icons.add),
+                                    label: 'Zatwiedź',
                                   ),
                                 ],
                               ),

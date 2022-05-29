@@ -1,5 +1,6 @@
 import 'package:chalet/config/chalet_image_slider_phases.dart';
 import 'package:chalet/models/index.dart';
+import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +49,17 @@ class ChaletPreviewContainer extends StatelessWidget {
                   '${distanceToChalet.toStringAsFixed(0)} m',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
                 ),
+                if (chalet.is24)
+                  Row(
+                    children: [
+                      HorizontalSizedBox16(),
+                      PlatformSvgAsset(
+                        assetName: ConveniencesTypes.is24Green.type,
+                        height: 25.0,
+                        color: Palette.white,
+                      ),
+                    ],
+                  ),
                 HorizontalSizedBox16(),
                 RatingIconLabel(
                   ratingLabel: chalet.rating,

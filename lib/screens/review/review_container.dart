@@ -66,10 +66,6 @@ class ReviewContainer extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                review.reviewDetails!.describtionExtended,
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
             ],
           ),
         if (!isLastReviewOnList) Divider(),

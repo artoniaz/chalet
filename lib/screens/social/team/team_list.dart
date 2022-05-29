@@ -7,6 +7,7 @@ import 'package:chalet/models/team_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/screens/social/team/pending_members_container.dart';
+import 'package:chalet/screens/social/team_stats/team_name_container.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/loading.dart';
@@ -48,11 +49,9 @@ class _TeamListState extends State<TeamList> {
             return Padding(
               padding: const EdgeInsets.fromLTRB(Dimentions.medium, Dimentions.medium, Dimentions.medium, 0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'Brązowi rycerze klanu ${_team.name}',
-                    style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.w700),
-                  ),
+                  TeamNameContainer(teamName: _team.name),
                   VerticalSizedBox16(),
                   Container(
                     height: 102,

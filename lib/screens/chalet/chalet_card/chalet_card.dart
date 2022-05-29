@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ChaletCard extends StatefulWidget {
   final ChaletModel? chalet;
@@ -20,6 +21,7 @@ class ChaletCard extends StatefulWidget {
   final bool isMapEnabled;
   final bool isGalleryEnabled;
   final LatLng userLocation;
+  final PanelController? panelController;
   const ChaletCard({
     Key? key,
     required this.controller,
@@ -27,6 +29,7 @@ class ChaletCard extends StatefulWidget {
     required this.isMapEnabled,
     required this.isGalleryEnabled,
     required this.userLocation,
+    this.panelController,
   }) : super(key: key);
 
   @override
@@ -59,6 +62,10 @@ class _ChaletCardState extends State<ChaletCard> {
     );
   }
 
+  void handlePanelToggleView() {
+    if (!widget.panelController!.isPanelOpen) widget.panelController!.open();
+  }
+
   @override
   void initState() {
     if (widget.chalet != null) _getDistanceToChalet();
@@ -70,17 +77,20 @@ class _ChaletCardState extends State<ChaletCard> {
     final chaletConvenienceWidth = (MediaQuery.of(context).size.width - 2 * Dimentions.big - 3 * Dimentions.medium) / 4;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Dimentions.big,
-        vertical: Dimentions.medium,
+      padding: const EdgeInsets.only(
+        bottom: Dimentions.big,
+        left: Dimentions.medium,
+        right: Dimentions.medium,
       ),
       child: SingleChildScrollView(
         controller: widget.controller,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DragHandle(),
-            VerticalSizedBox8(),
+            InkWell(
+              onTap: widget.panelController == null ? () {} : () => handlePanelToggleView(),
+              child: DragHandle(),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

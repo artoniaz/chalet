@@ -29,6 +29,38 @@ class CustomElevatedButton extends StatelessWidget {
   }
 }
 
+class CustomMainElevatedButton extends StatelessWidget {
+  final Function? onPressed;
+  final String label;
+  final Color? backgroundColor;
+  const CustomMainElevatedButton({
+    Key? key,
+    this.onPressed,
+    required this.label,
+    this.backgroundColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        onPressed: onPressed != null ? () => onPressed!() : null,
+        style: ButtonStyle(
+            elevation: MaterialStateProperty.all(10.0),
+            shadowColor: MaterialStateProperty.all(Palette.goldLeaf),
+            splashFactory: InkSplash.splashFactory,
+            backgroundColor: MaterialStateProperty.all(
+                onPressed == null ? Colors.grey[400] : backgroundColor ?? Palette.chaletBlue)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Dimentions.medium),
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Palette.backgroundWhite),
+            textAlign: TextAlign.center,
+          ),
+        ));
+  }
+}
+
 class CustomElevatedButtonMinor extends StatelessWidget {
   final Function? onPressed;
   final String label;

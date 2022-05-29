@@ -5,10 +5,13 @@ import 'package:chalet/blocs/team/team_bloc.dart';
 import 'package:chalet/blocs/team/team_event.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/models/color_model.dart';
+import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/team_model.dart';
 import 'package:chalet/models/user_model.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -44,6 +47,19 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
         _choosenColor!.bitmapDescriptor,
         _user.teamId,
         _user.choosenColor,
+        FeedInfoModel(
+          id: '',
+          teamId: widget.team.id,
+          userId: _user.uid,
+          chaletId: '',
+          chaletName: '',
+          userName: _user.displayName ?? '',
+          role: FeedInfoEvent.newMember,
+          chaletRating: 0.0,
+          created: Timestamp.now(),
+          congratsSenderList: [],
+          achievementId: '',
+        ),
       ));
 
   void _declineInvitation() => _reactToPendingInvitationBloc.add(DeclinePendingInvitation(widget.team.id, _user.uid));
@@ -127,7 +143,7 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
                   VerticalSizedBox8(),
                   _choosenColor == null
                       ? CustomElevatedButton(
-                          label: 'Wybierz kolor',
+                          label: 'Wybierz swój kolor',
                           onPressed: () => showDialog(
                               context: context,
                               builder: (context) => ColorPickerDialog(

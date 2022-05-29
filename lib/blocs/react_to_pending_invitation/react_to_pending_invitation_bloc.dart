@@ -1,5 +1,7 @@
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_event.dart';
 import 'package:chalet/blocs/react_to_pending_invitation/react_to_pending_invitation_state.dart';
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/blocs/team_feed/team_feed_event.dart';
 import 'package:chalet/repositories/team_repository.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ReactToPendingInvitationBloc extends Bloc<ReactToPendingInvitationEvent, ReactToPendingInvitationState> {
   final TeamRepository teamRepository;
   final UserDataRepository userDataRepository;
+  final TeamFeedInfoBloc teamFeedInfoBloc;
+
   ReactToPendingInvitationBloc({
     required this.teamRepository,
     required this.userDataRepository,
+    required this.teamFeedInfoBloc,
   }) : super(ReactToPendingInvitationStateInitial());
 
   ReactToPendingInvitationStateInitial get initialState => ReactToPendingInvitationStateInitial();
@@ -50,6 +55,7 @@ class ReactToPendingInvitationBloc extends Bloc<ReactToPendingInvitationEvent, R
       }
       await Future.wait(futures);
       yield ReactToPendingInvitationStateAccepted();
+      if (event.feedInfo != null) teamFeedInfoBloc.add(CreateTeamFeedInfo(event.feedInfo!));
     } catch (e) {
       print(e.toString());
       yield ReactToPendingInvitationStateError(e.toString());

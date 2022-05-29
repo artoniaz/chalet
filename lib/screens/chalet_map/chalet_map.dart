@@ -32,6 +32,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   late LatLng _cameraCenterPosition;
   late GoogleMapController _googleMapController;
   late LatLng _userLocation;
+  late Set<Circle> mapCenterCircles;
 
   final markerKey = GlobalKey();
 
@@ -61,19 +62,18 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   //   }
   // }
 
-  late Set<Circle> centerCircle;
-
   void _centerCamera() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(CameraPosition(target: _userLocation, zoom: 15.0)),
     );
     setState(() => _isSearchThisAreaButtonActive = false);
+    removeAreaToLookForCenterCirclePosition();
   }
 
   void _handleSearchThisAreaButton() {
     widget.updateQuery(_cameraCenterPosition);
     setState(() => _isSearchThisAreaButtonActive = false);
-    updateCenterCirclePosition();
+    updateSearchCenterCirclePosition();
   }
 
   void _onCameraIdle() {
@@ -81,8 +81,10 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
       if (_cameraCenterPosition.latitude.toStringAsFixed(5) == _userLocation.latitude.toStringAsFixed(5) &&
           _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5))
         setState(() => _isSearchThisAreaButtonActive = false);
-      else
+      else {
         setState(() => _isSearchThisAreaButtonActive = true);
+        updateAreaToLookForCenterCirclePosition();
+      }
     }
   }
 
@@ -121,8 +123,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     }
   }
 
-  void updateCenterCirclePosition() {
-    centerCircle = Set.from([
+  void updateSearchCenterCirclePosition() {
+    mapCenterCircles = Set.from([
       Circle(
         circleId: CircleId('centerCircle'),
         center: _cameraCenterPosition,
@@ -134,13 +136,26 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     ]);
   }
 
+  void removeAreaToLookForCenterCirclePosition() =>
+      mapCenterCircles.removeWhere((el) => el.circleId == CircleId('centerAreaToLookForCircle'));
+
+  void updateAreaToLookForCenterCirclePosition() {
+    mapCenterCircles.add(Circle(
+      circleId: CircleId('centerAreaToLookForCircle'),
+      center: _cameraCenterPosition,
+      radius: 200,
+      strokeColor: Palette.chaletBlue,
+      strokeWidth: 2,
+    ));
+  }
+
   void getInitData() async {
     LatLng userLocation = context.read<GeolocationBloc>().state.props.first as LatLng;
 
     _cameraCenterPosition = userLocation;
     _userLocation = userLocation;
 
-    updateCenterCirclePosition();
+    updateSearchCenterCirclePosition();
   }
 
   @override
@@ -163,7 +178,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     super.build(context);
     double screenHeight = MediaQuery.of(context).size.height;
     // final _panelHeightClosed = _activeChalet == null ? 0.0 : screenHeight * 0.3;
-    final _panelHeightClosed = _activeChalet == null ? 0.0 : 170.0;
+    final _panelHeightClosed = _activeChalet == null ? 0.0 : 180.0;
     final _panelHeightOpen = screenHeight * 0.6;
     return BlocConsumer<GetChaletsBloc, GetChaletsState>(
       listener: (context, chaletsState) {},
@@ -195,9 +210,10 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                           isMapEnabled: false,
                           isGalleryEnabled: true,
                           userLocation: _userLocation,
+                          panelController: _panelController,
                         ),
                   onPanelSlide: (pos) {
-                    final panelMaxScrollExtend = _panelHeightOpen - 170;
+                    final panelMaxScrollExtend = _panelHeightOpen - 180;
                     double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight + 72.0;
                     // if (_activeChalet != null) btnHeight += screenHeight * 0.2;
                     if (_activeChalet != null) btnHeight += 72.0 + Dimentions.big;
@@ -219,7 +235,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                     myLocationEnabled: true,
                     markers: _createChaletListMarkers(chaletsState.chaletList).toSet(),
                     onTap: _onMapTap,
-                    circles: centerCircle,
+                    circles: mapCenterCircles,
                     polylines: {
                       if (_directionsInfo != null)
                         Polyline(
@@ -288,6 +304,19 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                 ),
               ],
             ),
+            floatingActionButton: _panelController.isAttached && _panelController.isPanelOpen
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium, vertical: 52.0),
+                        child: AddReviewModule(chalet: _activeChalet!),
+                      ),
+                    ],
+                  )
+                : Container(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           );
         } else
           return Container();

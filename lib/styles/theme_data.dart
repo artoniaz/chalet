@@ -10,4 +10,5 @@ ThemeData themeData() => ThemeData(
         backgroundColor: Palette.darkBlue,
       ),
       textTheme: textTheme(),
+      hintColor: Palette.grey.withOpacity(0.5),
     );
