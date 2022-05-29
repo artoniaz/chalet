@@ -32,6 +32,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   late LatLng _cameraCenterPosition;
   late GoogleMapController _googleMapController;
   late LatLng _userLocation;
+  late Set<Circle> mapCenterCircles;
 
   final markerKey = GlobalKey();
 
@@ -61,13 +62,12 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   //   }
   // }
 
-  late Set<Circle> mapCenterCircles;
-
   void _centerCamera() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(CameraPosition(target: _userLocation, zoom: 15.0)),
     );
     setState(() => _isSearchThisAreaButtonActive = false);
+    removeAreaToLookForCenterCirclePosition();
   }
 
   void _handleSearchThisAreaButton() {
@@ -81,10 +81,11 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
       if (_cameraCenterPosition.latitude.toStringAsFixed(5) == _userLocation.latitude.toStringAsFixed(5) &&
           _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5))
         setState(() => _isSearchThisAreaButtonActive = false);
-      else
+      else {
         setState(() => _isSearchThisAreaButtonActive = true);
+        updateAreaToLookForCenterCirclePosition();
+      }
     }
-    updateAreaToLookForCenterCirclePosition();
   }
 
   void _onCameraMove(CameraPosition position) => _cameraCenterPosition = position.target;
@@ -134,6 +135,9 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
       )
     ]);
   }
+
+  void removeAreaToLookForCenterCirclePosition() =>
+      mapCenterCircles.removeWhere((el) => el.circleId == CircleId('centerAreaToLookForCircle'));
 
   void updateAreaToLookForCenterCirclePosition() {
     mapCenterCircles.add(Circle(
@@ -300,7 +304,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                 ),
               ],
             ),
-            floatingActionButton: _panelController.isPanelOpen
+            floatingActionButton: _panelController.isAttached && _panelController.isPanelOpen
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
