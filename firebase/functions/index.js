@@ -81,9 +81,9 @@ exports.updateChaletRatingOnReviewUpdate = functions.firestore.document('/review
 
 
             return chaletDocRef.update({
-                paper: newAvgPaperRating,
-                clean: newAvgCleanRating,
-                privacy: newAvgPrivacyRating,
+                paper: newAvgPaperRating.toFixed(1),
+                clean: newAvgCleanRating.toFixed(1),
+                privacy: newAvgPrivacyRating.toFixed(1),
                 numberDetailedRating: newNumberDetailedRatings
             });
         });

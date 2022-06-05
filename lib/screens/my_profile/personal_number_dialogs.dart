@@ -35,12 +35,12 @@ class PersonalNumberConfirmDialog extends StatelessWidget {
           CustomTextButton(
             onPressed: () async {
               try {
-                await launch('https://www.facebook.com/profile.php?id=100001659348309');
+                await launch('https://sieciaki.pl/warto-wiedziec/zasady-bezpieczenstwa');
               } catch (e) {
                 EasyLoading.showError('Nie udało się otworzyć linku');
               }
             },
-            label: 'Przykładowy link',
+            label: 'https://sieciaki.pl/warto-wiedziec/zasady-bezpieczenstwa',
             color: Palette.ivoryBlack,
           ),
         ],
