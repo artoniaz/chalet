@@ -34,7 +34,7 @@ exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/review
             const newAvgRating = (oldRatingTotal + parseInt(snapshot.data().rating)) / newNumberRatings;
 
             return chaletDocRef.update({
-                rating: newAvgRating,
+                rating: newAvgRating.toFixed(1),
                 numberRating: newNumberRatings
             });
         });
