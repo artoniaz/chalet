@@ -34,7 +34,7 @@ exports.updateChaletRatingOnReviewCreate = functions.firestore.document('/review
             const newAvgRating = (oldRatingTotal + parseInt(snapshot.data().rating)) / newNumberRatings;
 
             return chaletDocRef.update({
-                rating: newAvgRating,
+                rating: newAvgRating.toFixed(1),
                 numberRating: newNumberRatings
             });
         });
@@ -81,9 +81,9 @@ exports.updateChaletRatingOnReviewUpdate = functions.firestore.document('/review
 
 
             return chaletDocRef.update({
-                paper: newAvgPaperRating,
-                clean: newAvgCleanRating,
-                privacy: newAvgPrivacyRating,
+                paper: newAvgPaperRating.toFixed(1),
+                clean: newAvgCleanRating.toFixed(1),
+                privacy: newAvgPrivacyRating.toFixed(1),
                 numberDetailedRating: newNumberDetailedRatings
             });
         });

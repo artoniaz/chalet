@@ -26,6 +26,9 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     if (event is GetMoreReviewsForChalet) {
       yield* _hanleGetMoreReviewsEvent(event);
     }
+    if (event is ResetReviewBloc) {
+      yield* _hanleResetReviewBlocEvent(event);
+    }
   }
 
   Stream<ReviewState> _hanleGetReviewsEvent(GetReviewsEvent event) async* {
@@ -51,5 +54,9 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     } catch (e) {
       yield ReviewStateError(e.toString());
     }
+  }
+
+  Stream<ReviewState> _hanleResetReviewBlocEvent(ResetReviewBloc event) async* {
+    yield ReviewStateInitial();
   }
 }

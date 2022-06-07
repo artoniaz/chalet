@@ -33,7 +33,7 @@ class TeamStatsMemberContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             VerticalSizedBox8(),
-            Text(teamMember.chaletReviewsNumber.toString() + ' Dodanych posiedzeń'),
+            Text(teamMember.chaletReviewsNumber.toString() + ' posiedzeń'),
             VerticalSizedBox8(),
             Text(teamMember.chaletsAddedNumber.toString() + ' Dodanych szaletów'),
           ],

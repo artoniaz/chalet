@@ -53,4 +53,8 @@ build commands
     switch between firebase projects to deploy cloud functions
     firebase deploy --only functions
     https://firebase.google.com/docs/cli
+    change project
+    firebase use [project name]
+    list of firebase projects 
+    firebase projects:list 
 */
