@@ -245,12 +245,9 @@ class _ChaletCardState extends State<ChaletCard> {
             //   ],
             // ),
             Divider(),
-            BlocProvider<ReviewBloc>(
-              create: (context) => ReviewBloc(reviewRepository: ReviewService()),
-              child: ChaletReviewList(
-                chaletId: widget.chalet!.id,
-                scrollReviewList: scrollReviewList,
-              ),
+            ChaletReviewList(
+              chaletId: widget.chalet!.id,
+              scrollReviewList: scrollReviewList,
             ),
             VerticalSizedBox24(),
             Divider(),

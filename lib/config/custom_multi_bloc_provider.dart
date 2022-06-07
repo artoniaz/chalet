@@ -9,6 +9,7 @@ import 'package:chalet/blocs/get_chalets_bloc/get_chalets_bloc.dart';
 import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams_bloc.dart';
 import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
 import 'package:chalet/blocs/problem/problem_bloc.dart';
+import 'package:chalet/blocs/review/review_bloc.dart';
 import 'package:chalet/blocs/send_congrats/send_congrats_bloc.dart';
 import 'package:chalet/blocs/social_map_chalet_list/social_map_chalet_list_bloc.dart';
 import 'package:chalet/blocs/team/team_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:chalet/repositories/chalet_icon_repository.dart';
 import 'package:chalet/repositories/chalet_repository.dart';
 import 'package:chalet/repositories/geolocation_repository.dart';
 import 'package:chalet/repositories/problem_repository.dart';
+import 'package:chalet/repositories/review_repository.dart';
 import 'package:chalet/repositories/storage_repository.dart';
 import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/repositories/team_repository.dart';
@@ -50,12 +52,6 @@ class CustomMultiBlocProvider extends StatelessWidget {
           create: (context) => TeamFeedInfoBloc(
                 teamFeedInfoRepository: TeamFeedInfoRepository(),
               )),
-      BlocProvider<AddReviewBloc>(
-        create: (context) => AddReviewBloc(
-          reviewRepository: ReviewService(),
-          teamFeedInfoBloc: BlocProvider.of<TeamFeedInfoBloc>(context),
-        ),
-      ),
       BlocProvider<UserDataBloc>(
         create: (context) => UserDataBloc(
           userDataRepository: UserDataRepository(),
@@ -125,6 +121,16 @@ class CustomMultiBlocProvider extends StatelessWidget {
       ),
       BlocProvider<DamagingDeviceModelBloc>(
         create: (context) => DamagingDeviceModelBloc(),
+      ),
+      BlocProvider<ReviewBloc>(
+        create: (context) => ReviewBloc(reviewRepository: ReviewRepository()),
+      ),
+      BlocProvider<AddReviewBloc>(
+        create: (context) => AddReviewBloc(
+          reviewRepository: ReviewService(),
+          teamFeedInfoBloc: BlocProvider.of<TeamFeedInfoBloc>(context),
+          reviewBloc: BlocProvider.of<ReviewBloc>(context),
+        ),
       ),
       BlocProvider<ValidateQuickReviewBloc>(
         create: (context) => ValidateQuickReviewBloc(addReviewBloc: BlocProvider.of<AddReviewBloc>(context)),

@@ -1,6 +1,8 @@
 import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_bloc.dart';
 import 'package:chalet/blocs/get_chalets_bloc/get_chalets_state.dart';
+import 'package:chalet/blocs/review/review_bloc.dart';
+import 'package:chalet/blocs/review/review_event.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/directions_model.dart';
@@ -12,6 +14,7 @@ import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:collection/collection.dart';
 
@@ -105,6 +108,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                 _activeChalet = chalet;
                 _directionsInfo = null;
               });
+              Provider.of<ReviewBloc>(context, listen: false).add(ResetReviewBloc());
             },
           ))
       .toList();

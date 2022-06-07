@@ -16,3 +16,5 @@ class GetMoreReviewsForChalet extends ReviewEvent {
   final ReviewModel lastReview;
   GetMoreReviewsForChalet(this.chaletId, this.lastReview) : super();
 }
+
+class ResetReviewBloc extends ReviewEvent {}

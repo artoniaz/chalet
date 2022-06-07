@@ -1,5 +1,7 @@
 import 'package:chalet/blocs/add_review/add_review_event.dart';
 import 'package:chalet/blocs/add_review/add_review_state.dart';
+import 'package:chalet/blocs/review/review_bloc.dart';
+import 'package:chalet/blocs/review/review_event.dart';
 import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
 import 'package:chalet/blocs/team_feed/team_feed_event.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
@@ -12,9 +14,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class AddReviewBloc extends Bloc<AddReviewEvent, AddReviewState> {
   final ReviewRepository reviewRepository;
   final TeamFeedInfoBloc teamFeedInfoBloc;
+  final ReviewBloc reviewBloc;
   AddReviewBloc({
     required this.reviewRepository,
     required this.teamFeedInfoBloc,
+    required this.reviewBloc,
   }) : super(AddReviewStateInitial());
 
   String _currentReviewId = '';
@@ -89,6 +93,7 @@ class AddReviewBloc extends Bloc<AddReviewEvent, AddReviewState> {
       await ReviewService().addDetailsReviewToQuickReview(event.chaletId, event.reviewId, event.reviewDetails);
       EasyLoading.showSuccess('Dodano ocenę szaletu');
       yield AddReviewStateClear();
+      reviewBloc.add(ResetReviewBloc());
     } catch (e) {
       yield AddReviewStateError('Nie udało się dodać oceny.');
     }
