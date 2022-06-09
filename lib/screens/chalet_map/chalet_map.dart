@@ -181,8 +181,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
     double screenHeight = MediaQuery.of(context).size.height;
-    // final _panelHeightClosed = _activeChalet == null ? 0.0 : screenHeight * 0.3;
-    final _panelHeightClosed = _activeChalet == null ? 0.0 : 180.0;
+    final double _fixedButtonsBottomOffsetHight = 180.0;
+    final _panelHeightClosed = _activeChalet == null ? 0.0 : _fixedButtonsBottomOffsetHight;
     final _panelHeightOpen = screenHeight * 0.6;
     return BlocConsumer<GetChaletsBloc, GetChaletsState>(
       listener: (context, chaletsState) {},
@@ -193,22 +193,23 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                 chaletsState.chaletList.firstWhereOrNull((el) => el.id == _activeChalet!.id);
             _activeChalet = _updatedActiveChalet;
           }
-          return Scaffold(
-            body: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                SlidingUpPanel(
-                  isDraggable: _isPanelDraggagle,
-                  controller: _panelController,
-                  minHeight: _panelHeightClosed,
-                  maxHeight: _panelHeightOpen,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
-                  parallaxEnabled: true,
-                  parallaxOffset: 0.5,
-                  color: Palette.backgroundWhite,
-                  panelBuilder: (controller) => _activeChalet == null
-                      ? Container()
-                      : ChaletCard(
+          return Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              SlidingUpPanel(
+                isDraggable: _isPanelDraggagle,
+                controller: _panelController,
+                minHeight: _panelHeightClosed,
+                maxHeight: _panelHeightOpen,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
+                parallaxEnabled: true,
+                parallaxOffset: 0.5,
+                color: Palette.backgroundWhite,
+                panelBuilder: (controller) => _activeChalet == null
+                    ? Container()
+                    : Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: ChaletCard(
                           controller: controller,
                           chalet: _activeChalet,
                           isMapEnabled: false,
@@ -216,111 +217,108 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                           userLocation: _userLocation,
                           panelController: _panelController,
                         ),
-                  onPanelSlide: (pos) {
-                    final panelMaxScrollExtend = _panelHeightOpen - 180;
-                    double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight + 72.0;
-                    // if (_activeChalet != null) btnHeight += screenHeight * 0.2;
-                    if (_activeChalet != null) btnHeight += 72.0 + Dimentions.big;
-                    double navBtnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight + 72.0;
-                    // if (_activeChalet != null) navBtnHeight += screenHeight * 0.2;
-                    if (_activeChalet != null) navBtnHeight += 72.0 + Dimentions.big;
-                    setState(() {
-                      _addButtonHeight = btnHeight;
-                      _centerButtonHeight = navBtnHeight;
-                    });
-                  },
-                  body: GoogleMap(
-                    initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    onMapCreated: _onMapCreated,
-                    onCameraMove: (pos) => _onCameraMove(pos),
-                    onCameraIdle: _onCameraIdle,
-                    myLocationEnabled: true,
-                    markers: _createChaletListMarkers(chaletsState.chaletList).toSet(),
-                    onTap: _onMapTap,
-                    circles: mapCenterCircles,
-                    polylines: {
-                      if (_directionsInfo != null)
-                        Polyline(
-                            polylineId: PolylineId(_activeChalet!.id),
-                            color: Palette.chaletBlue,
-                            width: 5,
-                            points:
-                                _directionsInfo!.polylinePoints.map((el) => LatLng(el.latitude, el.longitude)).toList())
-                    },
-                  ),
-                ),
-                if (_isSearchThisAreaButtonActive)
-                  Positioned(
-                    // 35 is the height value of tab bar
-                    top: Dimentions.large + 35,
-                    left: MediaQuery.of(context).size.width / 2,
-                    child: FractionalTranslation(
-                      translation: Offset(-0.5, 0),
-                      child: CustomTextButtonRounded(
-                        onPressed: _handleSearchThisAreaButton,
-                        label: 'Szukaj na tym obszarze',
+                        floatingActionButton: _panelController.isAttached && _panelController.isPanelOpen
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium, vertical: 52.0),
+                                    child: AddReviewModule(chalet: _activeChalet!),
+                                  ),
+                                ],
+                              )
+                            : Container(),
+                        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
                       ),
+                onPanelSlide: (pos) {
+                  final panelMaxScrollExtend = _panelHeightOpen - _fixedButtonsBottomOffsetHight;
+                  double btnHeight = pos * panelMaxScrollExtend + _addButtonPrimaryHeight + 72.0;
+                  if (_activeChalet != null) btnHeight += 82.0 + Dimentions.big;
+                  double navBtnHeight = pos * panelMaxScrollExtend + _centerButtonPrimaryHeight + 72.0;
+                  if (_activeChalet != null) navBtnHeight += 82.0 + Dimentions.big;
+                  setState(() {
+                    _addButtonHeight = btnHeight;
+                    _centerButtonHeight = navBtnHeight;
+                  });
+                },
+                body: GoogleMap(
+                  initialCameraPosition: CameraPosition(target: _cameraCenterPosition, zoom: 15.0),
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  onMapCreated: _onMapCreated,
+                  onCameraMove: (pos) => _onCameraMove(pos),
+                  onCameraIdle: _onCameraIdle,
+                  myLocationEnabled: true,
+                  markers: _createChaletListMarkers(chaletsState.chaletList).toSet(),
+                  onTap: _onMapTap,
+                  circles: mapCenterCircles,
+                  polylines: {
+                    if (_directionsInfo != null)
+                      Polyline(
+                          polylineId: PolylineId(_activeChalet!.id),
+                          color: Palette.chaletBlue,
+                          width: 5,
+                          points:
+                              _directionsInfo!.polylinePoints.map((el) => LatLng(el.latitude, el.longitude)).toList())
+                  },
+                ),
+              ),
+              if (_isSearchThisAreaButtonActive)
+                Positioned(
+                  // 35 is the height value of tab bar
+                  top: Dimentions.large + 35,
+                  left: MediaQuery.of(context).size.width / 2,
+                  child: FractionalTranslation(
+                    translation: Offset(-0.5, 0),
+                    child: CustomTextButtonRounded(
+                      onPressed: _handleSearchThisAreaButton,
+                      label: 'Szukaj na tym obszarze',
                     ),
                   ),
-                if (_directionsInfo != null)
-                  Positioned(
-                    // 35 is the height value of tab bar
-                    top: Dimentions.large + 85,
-                    left: MediaQuery.of(context).size.width / 2,
-                    child: FractionalTranslation(
-                        translation: Offset(-0.5, 0),
-                        child: Container(
-                          padding: EdgeInsets.all(Dimentions.small),
-                          decoration: BoxDecoration(
-                              color: Palette.backgroundWhite,
-                              borderRadius: new BorderRadius.circular(Dimentions.small)),
-                          child: Text(
-                            'odległość: ${_directionsInfo!.totalDistance}, czas: ${_directionsInfo!.totalDuration}',
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                  color: Palette.ivoryBlack,
-                                ),
-                          ),
-                        )),
-                  ),
-                Positioned(
-                  right: Dimentions.medium,
-                  bottom: _centerButtonHeight,
-                  child: FloatingActionButton(
-                    heroTag: 'chaletMapCenterButton',
-                    backgroundColor: Palette.chaletBlue,
-                    foregroundColor: Palette.white,
-                    onPressed: _centerCamera,
-                    child: Icon(Icons.center_focus_strong),
-                  ),
                 ),
+              if (_directionsInfo != null)
                 Positioned(
-                  right: Dimentions.medium,
-                  bottom: _addButtonHeight,
-                  child: FloatingActionButton(
-                    heroTag: 'chaletMapAddChaletButton',
-                    backgroundColor: Palette.chaletBlue,
-                    foregroundColor: Palette.white,
-                    onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
-                    child: Icon(Icons.add),
-                  ),
+                  // 35 is the height value of tab bar
+                  top: Dimentions.large + 85,
+                  left: MediaQuery.of(context).size.width / 2,
+                  child: FractionalTranslation(
+                      translation: Offset(-0.5, 0),
+                      child: Container(
+                        padding: EdgeInsets.all(Dimentions.small),
+                        decoration: BoxDecoration(
+                            color: Palette.backgroundWhite, borderRadius: new BorderRadius.circular(Dimentions.small)),
+                        child: Text(
+                          'odległość: ${_directionsInfo!.totalDistance}, czas: ${_directionsInfo!.totalDuration}',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                color: Palette.ivoryBlack,
+                              ),
+                        ),
+                      )),
                 ),
-              ],
-            ),
-            floatingActionButton: _panelController.isAttached && _panelController.isPanelOpen
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium, vertical: 52.0),
-                        child: AddReviewModule(chalet: _activeChalet!),
-                      ),
-                    ],
-                  )
-                : Container(),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+              Positioned(
+                right: Dimentions.medium,
+                bottom: _centerButtonHeight,
+                child: FloatingActionButton(
+                  heroTag: 'chaletMapCenterButton',
+                  backgroundColor: Palette.chaletBlue,
+                  foregroundColor: Palette.white,
+                  onPressed: _centerCamera,
+                  child: Icon(Icons.center_focus_strong),
+                ),
+              ),
+              Positioned(
+                right: Dimentions.medium,
+                bottom: _addButtonHeight,
+                child: FloatingActionButton(
+                  heroTag: 'chaletMapAddChaletButton',
+                  backgroundColor: Palette.chaletBlue,
+                  foregroundColor: Palette.white,
+                  onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.ADD_CHALET),
+                  child: Icon(Icons.add),
+                ),
+              ),
+            ],
           );
         } else
           return Container();
