@@ -65,7 +65,7 @@ dependencies:
   flutter_svg: ^1.0.0
   flex_color_picker: ^2.2.0
   device_info_plus: ^3.2.2
-
+  animated_splash_screen: ^1.2.0
 
 dev_dependencies:
   flutter_test:

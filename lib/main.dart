@@ -1,3 +1,4 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:chalet/config/custom_multi_bloc_provider.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/screens/index.dart';
@@ -33,7 +34,10 @@ class MyApp extends StatelessWidget {
           theme: themeData(),
           onGenerateRoute: onGenerateRoute(),
           builder: EasyLoading.init(),
-          home: AuthWrapper(),
+          home: AnimatedSplashScreen(
+            splash: 'assets/poo/poo_happy.png',
+            nextScreen: AuthWrapper(),
+          ),
         ),
       ),
     );
