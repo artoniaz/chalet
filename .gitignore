@@ -31,6 +31,10 @@
 .pub/
 /build/
 /lib/.env.dart
+/android/app/src/develop/google-services.json
+/android/app/src/demo/google-services.json
+/android/app/src/prod/google-services.json
+/android/app/src/google-services.json
 
 # Web related
 lib/generated_plugin_registrant.dart

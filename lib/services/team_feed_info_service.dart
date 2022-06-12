@@ -12,6 +12,7 @@ class TeamFeedInfoService implements TeamFeedInfoRepository {
         .doc(teamId)
         .collection(FEED_INFOS)
         .orderBy('created', descending: true)
+        .limit(20)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => FeedInfoModel.fromJson(doc, doc.id)).toList());
   }

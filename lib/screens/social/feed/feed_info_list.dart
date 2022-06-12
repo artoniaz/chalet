@@ -41,16 +41,27 @@ class _FeedInfoListState extends State<FeedInfoList> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: Dimentions.big),
-                    child: TextDivider(text: 'Nowe'),
-                  ),
+                  if (teamFeedState.feedInfoList.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: Dimentions.big),
+                      child: TextDivider(text: 'Nowe'),
+                    ),
+                  if (teamFeedState.feedInfoList.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: Dimentions.big),
+                      child: TextDivider(text: 'Brak aktywności członków klanu'),
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(Dimentions.medium),
                     child: Column(
                       children: teamFeedState.feedInfoList.map((el) => FeedInfoContainer(feedInfo: el)).toList(),
                     ),
                   ),
+                  if (teamFeedState.feedInfoList.length >= 20)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: Dimentions.big),
+                      child: TextDivider(text: 'Widzisz 20 najnowszych aktywności człownków'),
+                    ),
                 ],
               ),
             );
