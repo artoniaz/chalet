@@ -58,3 +58,7 @@ build commands
     list of firebase projects 
     firebase projects:list 
 */
+/*
+    get ssh key
+    keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+*/
