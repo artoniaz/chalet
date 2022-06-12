@@ -7,6 +7,7 @@ import 'package:chalet/config/functions/dissmis_focus.dart';
 import 'package:chalet/models/color_model.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/dimentions.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:chalet/styles/input_decoration.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   ColorModel? _choosenColor;
+  bool _isTeamNameApproved = false;
+  bool _isAllowApproveButton = false;
 
   void _handleChoosenColor(ColorModel color) {
     setState(() => _choosenColor = color);
@@ -71,28 +74,88 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                 VerticalSizedBox16(),
                 TextFormField(
                   controller: widget.teamNameController,
-                  decoration: textInputDecoration.copyWith(hintText: 'Nazwa klanu'),
+                  decoration: textInputDecoration.copyWith(hintText: 'Nazwa klanu').copyWith(
+                      fillColor:
+                          _isTeamNameApproved && !_isAllowApproveButton ? Palette.chaletBlue : Palette.veryLightGrey),
                   validator: (val) => val!.isEmpty || val.length < 3 ? 'Podaj poprawną nazwę klanu' : null,
-                  onEditingComplete: teamState is TeamStateLoading ? null : _addTeam,
+                  // onEditingComplete: teamState is TeamStateLoading ? null : _addTeam,
                   keyboardType: TextInputType.emailAddress,
+                  readOnly: _isTeamNameApproved,
+                  onChanged: (val) {
+                    print(val);
+                    if (val.length > 0 && !_isAllowApproveButton) setState(() => _isAllowApproveButton = true);
+                    if (val.length == 0 && _isAllowApproveButton) setState(() => _isAllowApproveButton = false);
+                  },
                 ),
                 VerticalSizedBox8(),
-                _choosenColor == null
-                    ? CustomElevatedButton(
-                        label: 'Wybierz kolor',
-                        onPressed: () {
-                          dissmissCurrentFocus(context);
-                          return showDialog(
-                              context: context,
-                              builder: (context) => ColorPickerDialog(
-                                    handleChoosenColor: _handleChoosenColor,
-                                    alreadyChoosenColors: [],
-                                  ));
-                        })
-                    : CustomElevatedButton(
-                        label: 'Dodaj klan',
-                        onPressed: teamState is TeamStateLoading ? null : _addTeam,
+                CustomElevatedButton(
+                    label: _isTeamNameApproved && !_isAllowApproveButton
+                        ? 'Nazwa klanu zatwierdzona'
+                        : 'Potwierdź nazwę klanu',
+                    onPressed: _isAllowApproveButton
+                        ? () => setState(
+                              () {
+                                _isTeamNameApproved = true;
+                                _isAllowApproveButton = false;
+                              },
+                            )
+                        : null),
+                if (_isTeamNameApproved)
+                  Column(
+                    crossAxisAlignment: _choosenColor == null ? CrossAxisAlignment.center : CrossAxisAlignment.stretch,
+                    children: [
+                      VerticalSizedBox16(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _choosenColor == null
+                              ? Text(
+                                  'Wybierz swój kolor',
+                                  style: Theme.of(context).textTheme.headline6,
+                                )
+                              : Text(
+                                  'Wybrany kolor:',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                          HorizontalSizedBox8(),
+                          if (_choosenColor != null)
+                            CustomColorIndicator(
+                              color: _choosenColor!.color,
+                              isSelected: true,
+                              onSelect: () {},
+                            )
+                        ],
                       ),
+                      VerticalSizedBox8(),
+                      _choosenColor == null
+                          ? CustomElevatedButton(
+                              label: 'Wybierz swój kolor',
+                              onPressed: () {
+                                dissmissCurrentFocus(context);
+                                return showDialog(
+                                    context: context,
+                                    builder: (context) => ColorPickerDialog(
+                                          handleChoosenColor: _handleChoosenColor,
+                                          alreadyChoosenColors: [],
+                                        ));
+                              })
+                          : CustomMainElevatedButton(
+                              label: 'Dodaj klan',
+                              onPressed: teamState is TeamStateLoading ? null : _addTeam,
+                              backgroundColor: Palette.goldLeaf,
+                            ),
+                      if (_choosenColor == null)
+                        Column(
+                          children: [
+                            VerticalSizedBox8(),
+                            Text(
+                              'Wybierz swój kolor w użytku wewnątrz klanu. Twoi znajomi z klanu zobaczą Twoje osiągnięcia / Szalety oznaczone tym kolorem.',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ],
+                        )
+                    ],
+                  ),
               ],
             ),
           ),
