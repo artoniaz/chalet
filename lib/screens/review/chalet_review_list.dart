@@ -34,7 +34,7 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
         _reviewList = state.reviewList;
         _displayShowMoreReviewsButton = state.displayShowMoreReviewsButton;
       });
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         widget.scrollReviewList(_itemKey);
       });
     }
@@ -44,7 +44,7 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
         _displayShowMoreReviewsButton = state.displayShowMoreReviewsButton;
         _isLoadingMoreReviews = false;
       });
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         widget.scrollReviewList(_itemKey);
       });
     }
@@ -57,13 +57,9 @@ class _ChaletReviewListState extends State<ChaletReviewList> {
   @override
   void initState() {
     _reviewBloc = BlocProvider.of<ReviewBloc>(context, listen: false);
-    super.initState();
-  }
+    BlocProvider.of<ReviewBloc>(context, listen: false).add(ResetReviewBloc());
 
-  @override
-  void dispose() {
-    _reviewBloc.close();
-    super.dispose();
+    super.initState();
   }
 
   @override

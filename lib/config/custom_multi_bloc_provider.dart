@@ -124,6 +124,7 @@ class CustomMultiBlocProvider extends StatelessWidget {
       ),
       BlocProvider<ReviewBloc>(
         create: (context) => ReviewBloc(reviewRepository: ReviewRepository()),
+        lazy: false,
       ),
       BlocProvider<AddReviewBloc>(
         create: (context) => AddReviewBloc(
