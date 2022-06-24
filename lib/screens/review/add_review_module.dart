@@ -97,11 +97,11 @@ class _AddReviewModuleState extends State<AddReviewModule> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddReviewBloc, AddReviewState>(
       bloc: _addReviewBloc,
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AddReviewValidateRatingsLoading) {
           EasyLoading.show(maskType: EasyLoadingMaskType.clear);
         } else if (state is AddReviewStateQuickRating) {
-          EasyLoading.dismiss();
+          await EasyLoading.dismiss();
           showDialog(
               context: context,
               builder: (context) => QuickRatingDialog(
@@ -130,7 +130,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
                     chaletRating: state.chaletRating,
                   ));
         } else if (state is AddReviewStateQuickRatingConfirm) {
-          EasyLoading.dismiss();
+          await EasyLoading.dismiss();
           showDialog(
               context: context,
               builder: (context) => QuickRatingDialogConfirm(
@@ -141,7 +141,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
                     goToFullReview: _handleGoToFullReviewBtn,
                   ));
         } else if (state is AddReviewStateQuickRatingNotAllowed) {
-          EasyLoading.dismiss();
+          await EasyLoading.dismiss();
           showDialog(
               context: context,
               builder: (context) => NotAllowedDialog(
