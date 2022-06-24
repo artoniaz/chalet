@@ -1,15 +1,12 @@
-import 'package:chalet/blocs/review/review_bloc.dart';
 import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/config/index.dart';
 import 'package:chalet/models/chalet_model.dart';
 import 'package:chalet/screens/chalet/chalet_card/description_card.dart';
 import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
 import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/review_service.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
