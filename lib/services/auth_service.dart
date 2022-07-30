@@ -1,5 +1,6 @@
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
@@ -70,7 +71,13 @@ class AuthService {
       case FacebookLoginStatus.success:
         final FacebookAccessToken fbToken = response.accessToken!;
         final firebaseAuth.AuthCredential credential = firebaseAuth.FacebookAuthProvider.credential(fbToken.token);
-        await _firebaseAuth.signInWithCredential(credential);
+        firebaseAuth.UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          await UserDataRepository().setUserDataOnRegister(
+              userCredential.user!.uid,
+              UserModel.fromData(userCredential.user!.uid, userCredential.user!.email!,
+                  userCredential.user!.displayName ?? '', 'traveller'));
+        }
         break;
       case FacebookLoginStatus.cancel:
         break;

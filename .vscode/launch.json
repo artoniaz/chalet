@@ -62,4 +62,8 @@ build commands
 /*
     get ssh key
     keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+    get release keys
+    keytool -exportcert -alias androidreleasekey -keystore ~/.android/release.keystore | openssl sha1 -binary | openssl base64
+
 */

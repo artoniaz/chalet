@@ -2,4 +2,5 @@
     <string name="app_name">Chalet dev</string>
     <string name="facebook_app_id">281395810538777</string>
     <string name="fb_login_protocol_scheme">fb281395810538777</string>
+    <string name="facebook_client_token">d51c8aa5542fe5e73c71ae3fab5a5c9f</string>
 </resources>
