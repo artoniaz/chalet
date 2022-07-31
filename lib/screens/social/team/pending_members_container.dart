@@ -10,10 +10,12 @@ import 'package:provider/provider.dart';
 
 class PendingMembersContainer extends StatefulWidget {
   final double circleAvatarRadius;
+  final double borderWidth;
 
   const PendingMembersContainer({
     Key? key,
     required this.circleAvatarRadius,
+    required this.borderWidth,
   }) : super(key: key);
 
   @override
@@ -41,7 +43,7 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
                   pendingTeamMembersState.pendingTeamMemberList.isEmpty
               ? Container()
               : Container(
-                  width: (widget.circleAvatarRadius + 5.0) * 2,
+                  width: (widget.circleAvatarRadius + widget.borderWidth) * 2,
                   margin: EdgeInsets.only(right: 6.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

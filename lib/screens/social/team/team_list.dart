@@ -29,6 +29,7 @@ class _TeamListState extends State<TeamList> {
   late UserModel _user;
   late TeamModel _team;
   final double _circleAvatarRadius = 35.0;
+  final double _borderWidth = 2.0;
 
   @override
   void initState() {
@@ -65,10 +66,12 @@ class _TeamListState extends State<TeamList> {
                             )),
                         PendingMembersContainer(
                           circleAvatarRadius: _circleAvatarRadius,
+                          borderWidth: _borderWidth,
                         ),
                         if (teamMembersState.teamMemberList.length < 10 && _team.teamAdminId == _user.uid)
                           AddMemberIcon(
                             circleAvatarRadius: _circleAvatarRadius,
+                            borderWidth: _borderWidth,
                           )
                       ],
                     ),
