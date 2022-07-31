@@ -17,7 +17,7 @@ class ProfileCardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(Dimentions.medium),
+      padding: EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding, vertical: Dimentions.medium),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

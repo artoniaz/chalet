@@ -45,3 +45,5 @@ export 'package:chalet/widgets/color_picker_dialog.dart';
 export 'package:chalet/widgets/custom_color_indicator.dart';
 export 'package:chalet/widgets/custom_loading_builder.dart';
 export 'package:chalet/widgets/user_avatar.dart';
+export 'package:chalet/widgets/main_image.dart';
+export 'package:chalet/widgets/custom_password_text_field.dart';

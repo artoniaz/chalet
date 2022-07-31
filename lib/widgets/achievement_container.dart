@@ -24,7 +24,7 @@ class AchievementContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final String pathFolder = 'achievementsIcons';
     return Container(
-      padding: EdgeInsets.all(Dimentions.small),
+      padding: EdgeInsets.symmetric(vertical: Dimentions.small),
       decoration: BoxDecoration(
         color: isCompleted ? Palette.goldLeaf.withOpacity(0.5) : null,
         border: Border(
@@ -35,14 +35,12 @@ class AchievementContainer extends StatelessWidget {
         ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: PlatformSvgAsset(
               assetName: iconId.name,
               folder: pathFolder,
-              width: 50.0,
-              height: 50.0,
               color: isCompleted ? Palette.goldLeaf : null,
             ),
           ),
@@ -67,7 +65,7 @@ class AchievementContainer extends StatelessWidget {
                   if (!isCompleted)
                     Column(
                       children: [
-                        VerticalSizedBox16(),
+                        VerticalSizedBox8(),
                         Row(
                           children: [
                             Expanded(

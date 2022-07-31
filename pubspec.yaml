@@ -66,6 +66,9 @@ dependencies:
   flex_color_picker: ^2.2.0
   device_info_plus: ^3.2.2
   animated_splash_screen: ^1.2.0
+  custom_line_indicator_bottom_navbar: ^0.0.8
+
+
 
 dev_dependencies:
   flutter_test:

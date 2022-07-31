@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: onGenerateRoute(),
           builder: EasyLoading.init(),
           home: AnimatedSplashScreen(
-            splash: 'assets/poo/poo_happy.png',
+            splash: 'assets/snake/snake_main.png',
             nextScreen: AuthWrapper(),
           ),
         ),

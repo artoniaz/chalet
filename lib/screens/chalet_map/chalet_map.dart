@@ -223,7 +223,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium, vertical: 52.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: Dimentions.horizontalPadding, vertical: 52.0),
                                     child: AddReviewModule(chalet: _activeChalet!),
                                   ),
                                 ],

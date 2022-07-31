@@ -25,7 +25,7 @@ class StatContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(Dimentions.medium),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: PlatformSvgAsset(
@@ -40,6 +40,7 @@ class StatContainer extends StatelessWidget {
               flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     statModel.title,

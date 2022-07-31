@@ -6,7 +6,6 @@ import 'package:chalet/config/functions/feed_display_info_helpers.dart';
 import 'package:chalet/config/functions/timestamp_methods.dart';
 import 'package:chalet/models/feed_info_model.dart';
 import 'package:chalet/models/user_model.dart';
-import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +46,7 @@ class FeedInfoContainer extends StatelessWidget {
             margin: EdgeInsets.only(bottom: Dimentions.big),
             decoration: BoxDecoration(
               border: Border.all(color: Palette.lightGrey),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(Dimentions.medium),
             ),
             child: Column(
               children: [
@@ -61,11 +60,6 @@ class FeedInfoContainer extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // CircleAvatar(
-                              //   radius: 15.0,
-                              //   backgroundImage: AssetImage('assets/poo/poo_happy.png'),
-                              // ),
-                              // HorizontalSizedBox16(),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -106,7 +100,7 @@ class FeedInfoContainer extends StatelessWidget {
                       child: Image(
                         width: 45.0,
                         height: 45.0,
-                        image: AssetImage('assets/poo/poo_happy.png'),
+                        image: AssetImage('assets/snake/snake_main.png'),
                       ),
                     ),
                   ],

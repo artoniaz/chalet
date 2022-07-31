@@ -45,7 +45,7 @@ class CustomMainElevatedButton extends StatelessWidget {
     return ElevatedButton(
         onPressed: onPressed != null ? () => onPressed!() : null,
         style: ButtonStyle(
-            elevation: MaterialStateProperty.all(10.0),
+            elevation: MaterialStateProperty.all(2.0),
             shadowColor: MaterialStateProperty.all(Palette.goldLeaf),
             splashFactory: InkSplash.splashFactory,
             backgroundColor: MaterialStateProperty.all(

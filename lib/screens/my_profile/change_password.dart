@@ -48,12 +48,15 @@ class _ChangePasswordState extends State<ChangePassword> {
       child: Scaffold(
         appBar: CustomAppBars.customAppBarChaletBlue(context, 'Zmień hasło'),
         body: Padding(
-          padding: const EdgeInsets.all(Dimentions.big),
+          padding: const EdgeInsets.symmetric(
+            vertical: Dimentions.medium,
+            horizontal: Dimentions.horizontalPadding,
+          ),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
