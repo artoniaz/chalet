@@ -153,7 +153,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
         }
       },
       builder: (context, state) => CustomMainElevatedButton(
-          label: 'Zostaw balas',
+          label: 'Zamelduj się',
           backgroundColor: Palette.goldLeaf,
           onPressed: state is AddReviewValidateRatingsLoading
               ? null
