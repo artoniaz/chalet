@@ -67,60 +67,67 @@ class _FullRatingDialogState extends State<FullRatingDialog> {
       contentPadding: EdgeInsets.zero,
       content: SingleChildScrollView(
         controller: _scrollController,
-        child: Container(
-          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
-          padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Twoja ogólna ocena',
-                  style: Theme.of(context).textTheme.bodyText2,
-                  textAlign: TextAlign.center,
-                ),
-                CustomRatingBarIndicator(
-                  rating: widget.chaletRating,
-                  itemSize: 30.0,
-                ),
-                VerticalSizedBox16(),
-                Text(
-                  'Oceń szczegóły szaletu',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                VerticalSizedBox16(),
-                RatingBarCol(
-                  label: 'Papier',
-                  handleRatingUpdate: _handlePaperRatingUpdate,
-                ),
-                VerticalSizedBox8(),
-                RatingBarCol(
-                  label: 'Czystość',
-                  handleRatingUpdate: _handleCleanRatingUpdate,
-                ),
-                VerticalSizedBox8(),
-                RatingBarCol(
-                  label: 'Prywatność',
-                  handleRatingUpdate: _handlePrivacyRatingUpdate,
-                ),
-                VerticalSizedBox8(),
-                if (!_isFormValidated)
+        child: BlocListener<AddReviewBloc, AddReviewState>(
+          listener: (context, state) {
+            if (state is AddReviewStateClear) {
+              Navigator.of(context).pop();
+            }
+          },
+          child: Container(
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
+            padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   Text(
-                    'Uzupełnij wszystkie oceny',
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.red),
+                    'Twoja ogólna ocena',
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.center,
                   ),
-                VerticalSizedBox24(),
-                BlocBuilder<AddReviewBloc, AddReviewState>(
-                    bloc: widget.addReviewBloc,
-                    builder: (context, state) {
-                      return ButtonsPopUpRow(
-                        approveButtonLabel: 'Zapisz ocenę',
-                        onPressedApproveButton:
-                            state is AddReviewStateRequestLoading ? null : _addDetailsReviewToQuickReview,
-                      );
-                    }),
-              ],
+                  CustomRatingBarIndicator(
+                    rating: widget.chaletRating,
+                    itemSize: 30.0,
+                  ),
+                  VerticalSizedBox16(),
+                  Text(
+                    'Oceń szczegóły szaletu',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  VerticalSizedBox16(),
+                  RatingBarCol(
+                    label: 'Papier',
+                    handleRatingUpdate: _handlePaperRatingUpdate,
+                  ),
+                  VerticalSizedBox8(),
+                  RatingBarCol(
+                    label: 'Czystość',
+                    handleRatingUpdate: _handleCleanRatingUpdate,
+                  ),
+                  VerticalSizedBox8(),
+                  RatingBarCol(
+                    label: 'Prywatność',
+                    handleRatingUpdate: _handlePrivacyRatingUpdate,
+                  ),
+                  VerticalSizedBox8(),
+                  if (!_isFormValidated)
+                    Text(
+                      'Uzupełnij wszystkie oceny',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.red),
+                    ),
+                  VerticalSizedBox24(),
+                  BlocBuilder<AddReviewBloc, AddReviewState>(
+                      bloc: widget.addReviewBloc,
+                      builder: (context, state) {
+                        return ButtonsPopUpRow(
+                          approveButtonLabel: 'Zapisz ocenę',
+                          onPressedApproveButton:
+                              state is AddReviewStateRequestLoading ? null : _addDetailsReviewToQuickReview,
+                        );
+                      }),
+                ],
+              ),
             ),
           ),
         ),

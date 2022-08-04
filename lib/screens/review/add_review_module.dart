@@ -148,8 +148,6 @@ class _AddReviewModuleState extends State<AddReviewModule> {
                     key: ValueKey(DialogTypes.notAllowedDialog),
                     chaletRating: state.chaletRating,
                   ));
-        } else if (state is AddReviewStateClear) {
-          Navigator.of(context).pop();
         } else if (state is AddReviewStateError) {
           EasyLoading.showError(state.errorMessage);
         }
