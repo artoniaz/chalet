@@ -77,14 +77,17 @@ class _CreateTeamFormState extends State<CreateTeamForm> {
                   decoration: textInputDecoration.copyWith(hintText: 'Nazwa klanu').copyWith(
                       fillColor:
                           _isTeamNameApproved && !_isAllowApproveButton ? Palette.chaletBlue : Palette.veryLightGrey),
-                  validator: (val) => val!.isEmpty || val.length < 3 ? 'Podaj poprawną nazwę klanu' : null,
-                  // onEditingComplete: teamState is TeamStateLoading ? null : _addTeam,
+                  validator: (val) => val!.isEmpty
+                      ? 'Podaj poprawną nazwę klanu'
+                      : val.length <= 3
+                          ? 'Nazwa klanu musi mieć min. 3 znaki'
+                          : null,
                   keyboardType: TextInputType.emailAddress,
                   readOnly: _isTeamNameApproved,
                   onChanged: (val) {
-                    print(val);
-                    if (val.length > 0 && !_isAllowApproveButton) setState(() => _isAllowApproveButton = true);
-                    if (val.length == 0 && _isAllowApproveButton) setState(() => _isAllowApproveButton = false);
+                    if (val.length > 3 && !_isAllowApproveButton)
+                      setState(() => _isAllowApproveButton = true);
+                    else if (val.length <= 3 && _isAllowApproveButton) setState(() => _isAllowApproveButton = false);
                   },
                 ),
                 VerticalSizedBox8(),
