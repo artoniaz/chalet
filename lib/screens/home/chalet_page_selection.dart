@@ -87,7 +87,7 @@ class _ChaletPageSelectionState extends State<ChaletPageSelection> with SingleTi
                     top: Dimentions.small,
                     child: SafeArea(
                       child: FlutterToggleTab(
-                        width: 100.0 - Dimentions.small,
+                        width: 100.0 - Dimentions.toggleTabHorizontalPadding,
                         borderRadius: 30.0,
                         height: 35.0,
                         selectedIndex: _tabController.index,

@@ -48,7 +48,8 @@ class _TeamListState extends State<TeamList> {
           if (teamMembersState is TeamMembersStateLoading) return Loading();
           if (teamMembersState is TeamMembersStateLoaded) {
             return Padding(
-              padding: const EdgeInsets.fromLTRB(Dimentions.medium, Dimentions.medium, Dimentions.medium, 0),
+              padding: const EdgeInsets.fromLTRB(
+                  Dimentions.horizontalPadding, Dimentions.medium, Dimentions.horizontalPadding, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

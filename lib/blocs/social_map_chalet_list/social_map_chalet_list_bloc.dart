@@ -58,6 +58,7 @@ class ChaletListForSocialMapBloc extends Bloc<ChaletListForSocialMapEvent, Chale
                 title: chalet.name,
                 snippet: chalet.creatorName,
               ),
+              onTap: () {},
             ))
         .toList();
 

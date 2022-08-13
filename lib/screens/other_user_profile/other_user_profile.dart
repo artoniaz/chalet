@@ -39,7 +39,11 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(Dimentions.medium),
+              padding: const EdgeInsets.only(
+                top: Dimentions.medium,
+                left: Dimentions.horizontalPadding,
+                right: Dimentions.horizontalPadding,
+              ),
               child: Text(
                 'Statystyki',
                 style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
@@ -47,7 +51,7 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium),
+            padding: const EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
             sliver: StatsGrid(
               chaletReviewsNumber: _userProfile.chaletReviewsNumber,
               chaletAddedNumber: _userProfile.chaletsAddedNumber,
@@ -55,7 +59,10 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(Dimentions.medium),
+              padding: const EdgeInsets.symmetric(
+                horizontal: Dimentions.horizontalPadding,
+                vertical: Dimentions.medium,
+              ),
               child: Text(
                 'Osiągnięcia',
                 style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
@@ -63,7 +70,12 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.fromLTRB(Dimentions.medium, 0, Dimentions.medium, Dimentions.medium),
+            padding: EdgeInsets.fromLTRB(
+              Dimentions.horizontalPadding,
+              0,
+              Dimentions.horizontalPadding,
+              Dimentions.medium,
+            ),
             sliver: AchievementsList(
               user: _userProfile,
             ),

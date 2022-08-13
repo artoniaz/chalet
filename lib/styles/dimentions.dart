@@ -7,4 +7,5 @@ class Dimentions {
   static const double big = 18.0;
   static const double large = 36.0;
   static const double pictureHeight = 225.0;
+  static const double toggleTabHorizontalPadding = 5.0;
 }

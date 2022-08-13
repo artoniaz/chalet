@@ -50,7 +50,10 @@ class _TeamStatsState extends State<TeamStats> {
           if (teamState is TeamStateTeamLoaded)
             return Scaffold(
               body: Container(
-                padding: EdgeInsets.all(Dimentions.medium),
+                padding: EdgeInsets.symmetric(
+                  vertical: Dimentions.medium,
+                  horizontal: Dimentions.horizontalPadding,
+                ),
                 child: SmartRefresher(
                   enablePullDown: true,
                   controller: _refreshController,
