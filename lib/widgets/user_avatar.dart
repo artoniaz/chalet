@@ -21,10 +21,7 @@ class UserAvatar extends StatelessWidget {
       child: CircleAvatar(
         radius: radius,
         backgroundColor: Palette.white,
-        child: PlatformSvgAsset(
-          assetName: avatarId,
-          folder: 'avatarIcons',
-        ),
+        backgroundImage: AssetImage('assets/avatarIcons/$avatarId.jpeg'),
       ),
     );
   }

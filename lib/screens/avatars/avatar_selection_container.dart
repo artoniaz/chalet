@@ -19,25 +19,37 @@ class AvatarSelectionContainer extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         children: [
           CustomAvatar(
-            avatarId: 'sittingKing',
+            avatarId: 'avatar_icon_1',
             currentAvatarId: currentAvatarId,
             onTapAvatar: onTapAvatar,
           ),
           HorizontalSizedBox4(),
           CustomAvatar(
-            avatarId: 'timeSpent',
+            avatarId: 'avatar_icon_2',
             currentAvatarId: currentAvatarId,
             onTapAvatar: onTapAvatar,
           ),
           HorizontalSizedBox4(),
           CustomAvatar(
-            avatarId: 'traveller',
+            avatarId: 'avatar_icon_3',
             currentAvatarId: currentAvatarId,
             onTapAvatar: onTapAvatar,
           ),
           HorizontalSizedBox4(),
           CustomAvatar(
-            avatarId: 'writter',
+            avatarId: 'avatar_icon_4',
+            currentAvatarId: currentAvatarId,
+            onTapAvatar: onTapAvatar,
+          ),
+          HorizontalSizedBox4(),
+          CustomAvatar(
+            avatarId: 'avatar_icon_5',
+            currentAvatarId: currentAvatarId,
+            onTapAvatar: onTapAvatar,
+          ),
+          HorizontalSizedBox4(),
+          CustomAvatar(
+            avatarId: 'avatar_icon_6',
             currentAvatarId: currentAvatarId,
             onTapAvatar: onTapAvatar,
           ),
