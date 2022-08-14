@@ -33,7 +33,7 @@ class AchievementIds {
 List<FeedDisplayInfoModel> feedDisplayInfoModelList = List<FeedDisplayInfoModel>.from([
   FeedDisplayInfoModel(
     feedInfoRole: FeedInfoEvent.rating,
-    feedDescription: 'Wysrał się w kiblu',
+    feedDescription: 'Zameldował się w Szalecie',
   ),
   FeedDisplayInfoModel(
     feedInfoRole: FeedInfoEvent.addChalet,
