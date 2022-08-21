@@ -20,6 +20,8 @@ class FeedInfoContainer extends StatelessWidget {
     required this.feedInfo,
   }) : super(key: key);
 
+  final double _circleAvatarRadius = 35.0;
+
   bool _hasAlreadyBeenCongratulatedByUser(UserModel user) =>
       feedInfo.congratsSenderList.indexWhere((el) => el.userId == user.uid) > -1;
 
@@ -96,12 +98,9 @@ class FeedInfoContainer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Image(
-                        width: 45.0,
-                        height: 45.0,
-                        image: AssetImage('assets/snake/snake_main.png'),
-                      ),
+                    UserAvatar(
+                      avatarId: feedInfo.userAvatarId,
+                      radius: _circleAvatarRadius,
                     ),
                   ],
                 ),
@@ -124,33 +123,37 @@ class FeedInfoContainer extends StatelessWidget {
                     ),
                     Expanded(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                              icon: Icon(
-                                Icons.emoji_emotions,
-                                color: Palette.chaletBlue,
-                                size: 36.0,
-                              ),
-                              onPressed: () => showCustomModalBottomSheet(
-                                    context,
-                                    (context) => Padding(
-                                      padding: const EdgeInsets.all(Dimentions.medium),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Polubienia',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(fontWeight: FontWeight.bold),
-                                          ),
-                                          ...feedInfo.congratsSenderList.map((el) => ListTile(title: Text(el.userName)))
-                                        ],
+                            icon: Icon(
+                              Icons.emoji_emotions,
+                              color: Palette.chaletBlue,
+                              size: 36.0,
+                            ),
+                            onPressed: feedInfo.congratsSenderList.isNotEmpty
+                                ? () => showCustomModalBottomSheet(
+                                      context,
+                                      (context) => Padding(
+                                        padding: const EdgeInsets.all(Dimentions.medium),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Polubienia',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6!
+                                                  .copyWith(fontWeight: FontWeight.bold),
+                                            ),
+                                            ...feedInfo.congratsSenderList
+                                                .map((el) => ListTile(title: Text(el.userName)))
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  )),
+                                    )
+                                : null,
+                          ),
                           Text(
                             feedInfo.congratsSenderList.length.toString(),
                             style: Theme.of(context).textTheme.headline6,

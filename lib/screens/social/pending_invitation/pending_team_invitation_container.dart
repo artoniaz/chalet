@@ -59,6 +59,7 @@ class _PendingTeamInvitationContainerState extends State<PendingTeamInvitationCo
           created: Timestamp.now(),
           congratsSenderList: [],
           achievementId: '',
+          userAvatarId: _user.avatarId ?? '',
         ),
       ));
 

@@ -95,11 +95,13 @@ class _ChaletCardState extends State<ChaletCard> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.chalet!.name,
-                        style: Theme.of(context).textTheme.headline3!.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                      Expanded(
+                        child: Text(
+                          widget.chalet!.name,
+                          style: Theme.of(context).textTheme.headline3!.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
                       ),
                       HorizontalSizedBox4(),
                       if (widget.chalet!.isVerified)

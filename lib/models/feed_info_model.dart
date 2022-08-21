@@ -13,6 +13,7 @@ class FeedInfoModel {
   Timestamp created;
   List<CongratsSenderModel> congratsSenderList;
   String achievementId;
+  String userAvatarId;
 
   FeedInfoModel({
     required this.id,
@@ -26,6 +27,7 @@ class FeedInfoModel {
     required this.created,
     required this.congratsSenderList,
     required this.achievementId,
+    required this.userAvatarId,
   });
 
   factory FeedInfoModel.fromJson(Object? json, String id) {
@@ -42,6 +44,7 @@ class FeedInfoModel {
       congratsSenderList: List<CongratsSenderModel>.from(
           (json as dynamic)["congratsSenderList"].map((item) => CongratsSenderModel.fromJson(item))),
       achievementId: (json as dynamic)['achievementId'] ?? '',
+      userAvatarId: (json as dynamic)['userAvatarId'] ?? '',
     );
   }
 
@@ -56,6 +59,7 @@ class FeedInfoModel {
         'created': created,
         'congratsSenderList': congratsSenderList,
         'achievementId': achievementId,
+        'userAvatarId': userAvatarId,
       };
 }
 

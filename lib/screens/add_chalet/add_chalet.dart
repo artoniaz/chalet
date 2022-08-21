@@ -130,6 +130,7 @@ class _AddChaletState extends State<AddChalet> {
                   created: Timestamp.now(),
                   congratsSenderList: [],
                   achievementId: '',
+                  userAvatarId: _user!.avatarId ?? '',
                 ),
         ));
       } else

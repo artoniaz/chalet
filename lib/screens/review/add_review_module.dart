@@ -76,6 +76,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
         created: Timestamp.now(),
         congratsSenderList: [],
         achievementId: '',
+        userAvatarId: _user!.avatarId ?? '',
       ),
     ));
   }

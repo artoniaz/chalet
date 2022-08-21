@@ -201,7 +201,6 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                 controller: _panelController,
                 minHeight: _panelHeightClosed,
                 maxHeight: _panelHeightOpen,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
                 parallaxEnabled: true,
                 parallaxOffset: 0.5,
                 color: Palette.backgroundWhite,
