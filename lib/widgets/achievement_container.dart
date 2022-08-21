@@ -30,7 +30,7 @@ class AchievementContainer extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: Palette.chaletBlue,
-            width: iconId == achievementsIds.timeSpent ? 0.0 : 2.0,
+            width: 2.0,
           ),
         ),
       ),

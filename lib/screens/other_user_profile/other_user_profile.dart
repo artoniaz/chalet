@@ -55,6 +55,7 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
             sliver: StatsGrid(
               chaletReviewsNumber: _userProfile.chaletReviewsNumber,
               chaletAddedNumber: _userProfile.chaletsAddedNumber,
+              userCreatedTimestamp: _userProfile.created!,
             ),
           ),
           SliverToBoxAdapter(

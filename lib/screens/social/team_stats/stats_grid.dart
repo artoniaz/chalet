@@ -1,17 +1,20 @@
-import 'package:chalet/config/functions/team_stats_calc.dart';
+import 'package:chalet/config/functions/timestamp_methods.dart';
 import 'package:chalet/config/helpers/achievements_ids.dart';
 import 'package:chalet/models/stat_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StatsGrid extends StatelessWidget {
   final int chaletAddedNumber;
   final int chaletReviewsNumber;
+  final Timestamp userCreatedTimestamp;
   const StatsGrid({
     Key? key,
     required this.chaletAddedNumber,
     required this.chaletReviewsNumber,
+    required this.userCreatedTimestamp,
   }) : super(key: key);
 
   @override
@@ -36,8 +39,9 @@ class StatsGrid extends StatelessWidget {
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: '0',
-              subtitle: 'Posiedzień dziennie',
+              title: (chaletReviewsNumber / TimestampHelpers.daysNumberSinceTimestamp(userCreatedTimestamp))
+                  .toStringAsFixed(2),
+              subtitle: 'Posiedzeń dziennie',
             ),
           ),
           StatContainer(
@@ -50,22 +54,18 @@ class StatsGrid extends StatelessWidget {
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: '0',
-              subtitle: 'Posiedzeń tygodniowo',
-            ),
-          ),
-          StatContainer(
-            statModel: StatModel(
-              iconId: achievementsIds.timeSpent,
-              title: timeInChalet(chaletReviewsNumber).toString() + ' min',
-              subtitle: 'Czas spędzony w szaletach',
+              title: (chaletReviewsNumber / TimestampHelpers.monthsNumberSinceTimestamp(userCreatedTimestamp))
+                  .toStringAsFixed(2),
+              subtitle: 'Posiedzień miesięcznie',
             ),
           ),
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: '0',
-              subtitle: 'Posiedzeń miesięcznie',
+              title: (chaletReviewsNumber ~/ TimestampHelpers.yearNumberSinceTimestamp(userCreatedTimestamp))
+                  .toInt()
+                  .toString(),
+              subtitle: 'Posiedzeń rocznie',
             ),
           ),
         ],
