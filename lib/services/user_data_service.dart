@@ -53,7 +53,7 @@ class UserDataService {
       var lookedForUser = await _usersCollection.where('email', isEqualTo: userLookedForEmail).get();
       return lookedForUser.docs.map((el) => UserModel.fromJson(el)).toList().first;
     } catch (e) {
-      throw 'Nie znaleziono użytkownika o podanym adresie email';
+      throw 'Nie znaleziono użytkownika o podanym adresie email. Podaj maila zarejestrowanego użytkownika.';
     }
   }
 
