@@ -90,7 +90,8 @@ flutter:
   assets:
     - assets/chaletIcons/
     - assets/poo/
-    - assets/snake/
+    - assets/snake/png/
+    - assets/snake/svg/
     - assets/map_marker/
     - assets/achievementsIcons/
     - assets/avatarIcons/
@@ -112,6 +113,9 @@ flutter:
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
+    - family: Courgette
+      fonts:
+        - asset: assets/fonts/Courgette-Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

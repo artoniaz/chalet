@@ -1,3 +1,4 @@
+import 'package:chalet/widgets/platform_svg.dart';
 import 'package:flutter/material.dart';
 
 class MainImage extends StatelessWidget {
@@ -5,10 +6,10 @@ class MainImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      width: 120.0,
-      height: 120.0,
-      image: AssetImage('assets/snake/snake_main.png'),
+    return PlatformSvgAsset(
+      assetName: 'snake_with_title_subtitle',
+      folder: 'snake/svg',
+      height: 200.0,
     );
   }
 }

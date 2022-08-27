@@ -69,17 +69,7 @@ class _SignInState extends State<SignIn> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Spacer(),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                MainImage(),
-                                VerticalSizedBox8(),
-                                Text(
-                                  'Szalet - Twoje miejsce',
-                                  style: Theme.of(context).textTheme.headline2,
-                                ),
-                              ],
-                            ),
+                            MainImage(),
                             Spacer(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
