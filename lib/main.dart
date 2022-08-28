@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
           home: AnimatedSplashScreen(
             splash: 'assets/snake/png/snake_with_title_subtitle.png',
             nextScreen: AuthWrapper(),
+            splashIconSize: 300.0,
           ),
         ),
       ),
