@@ -42,14 +42,18 @@ class TeamService {
 
   Future<String> createTeam(String userId, String userName, String teamName, double choosenColor) async {
     try {
-      DocumentReference<Object?> res = await _teamsCollection.add(TeamModel(
+      DocumentReference<Object?> res = await _teamsCollection.add(
+        TeamModel(
           id: '',
           name: teamName,
           teamAdminId: userId,
           teamAdminName: userName,
           membersIds: [userId],
           choosenColors: [choosenColor],
-          pendingMembersIds: []).toJson());
+          pendingMembersIds: [],
+          created: Timestamp.now(),
+        ).toJson(),
+      );
       return res.id;
     } catch (e) {
       throw 'Nie udało się dodać klanu';

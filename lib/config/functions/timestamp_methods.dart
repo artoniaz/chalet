@@ -11,7 +11,8 @@ class TimestampHelpers {
 
   static int monthsNumberSinceTimestamp(Timestamp timestamp) {
     Period periodSinceTimestamp = _getPeriodSinceDateTimeNow(timestamp);
-    return periodSinceTimestamp.years * 12 + periodSinceTimestamp.months;
+    int montsNumber = periodSinceTimestamp.years * 12 + periodSinceTimestamp.months;
+    return montsNumber > 0 ? montsNumber : 1;
   }
 
   static int yearNumberSinceTimestamp(Timestamp timestamp) {

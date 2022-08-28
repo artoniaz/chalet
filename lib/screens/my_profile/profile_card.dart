@@ -191,7 +191,7 @@ class _ProfileCardState extends State<ProfileCard> {
                           sliver: StatsGrid(
                             chaletReviewsNumber: user.chaletReviewsNumber,
                             chaletAddedNumber: user.chaletsAddedNumber,
-                            userCreatedTimestamp: user.created!,
+                            createdTimestamp: user.created!,
                           ),
                         ),
                         SliverToBoxAdapter(

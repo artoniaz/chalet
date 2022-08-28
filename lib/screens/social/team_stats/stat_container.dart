@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 
 class StatContainer extends StatelessWidget {
   final StatModel statModel;
+  final double containerWidth;
   const StatContainer({
     Key? key,
     required this.statModel,
+    required this.containerWidth,
   }) : super(key: key);
 
   @override
@@ -15,7 +17,7 @@ class StatContainer extends StatelessWidget {
     final String pathFolder = 'achievementsIcons';
 
     return Container(
-      width: (MediaQuery.of(context).size.width - Dimentions.medium * 3) / 2,
+      width: containerWidth,
       padding: EdgeInsets.all(Dimentions.small),
       decoration: BoxDecoration(
         border: Border.all(

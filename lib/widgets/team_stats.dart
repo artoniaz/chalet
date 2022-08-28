@@ -69,7 +69,7 @@ class _TeamStatsState extends State<TeamStats> {
                       StatsGrid(
                         chaletReviewsNumber: teamState.team.chaletReviewsNumber ?? 0,
                         chaletAddedNumber: teamState.team.chaletAddedNumber ?? 0,
-                        userCreatedTimestamp: Timestamp.now(),
+                        createdTimestamp: teamState.team.created,
                       ),
                       SliverToBoxAdapter(
                         child: Divider(),

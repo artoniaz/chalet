@@ -9,16 +9,19 @@ import 'package:flutter/material.dart';
 class StatsGrid extends StatelessWidget {
   final int chaletAddedNumber;
   final int chaletReviewsNumber;
-  final Timestamp userCreatedTimestamp;
+  final Timestamp createdTimestamp;
   const StatsGrid({
     Key? key,
     required this.chaletAddedNumber,
     required this.chaletReviewsNumber,
-    required this.userCreatedTimestamp,
+    required this.createdTimestamp,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+    double containerWidth = (MediaQuery.of(context).size.width - Dimentions.medium * 3) / 2;
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(
         vertical: Dimentions.medium,
@@ -35,14 +38,16 @@ class StatsGrid extends StatelessWidget {
               title: chaletAddedNumber.toString(),
               subtitle: 'Dodane szalety',
             ),
+            containerWidth: containerWidth,
           ),
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: (chaletReviewsNumber / TimestampHelpers.daysNumberSinceTimestamp(userCreatedTimestamp))
+              title: (chaletReviewsNumber / TimestampHelpers.daysNumberSinceTimestamp(createdTimestamp))
                   .toStringAsFixed(2),
               subtitle: 'Posiedzeń dziennie',
             ),
+            containerWidth: containerWidth,
           ),
           StatContainer(
             statModel: StatModel(
@@ -50,23 +55,30 @@ class StatsGrid extends StatelessWidget {
               title: chaletReviewsNumber.toString(),
               subtitle: 'Posiedzień',
             ),
+            containerWidth: containerWidth,
           ),
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: (chaletReviewsNumber / TimestampHelpers.monthsNumberSinceTimestamp(userCreatedTimestamp))
-                  .toStringAsFixed(2),
+              title: (chaletReviewsNumber / TimestampHelpers.monthsNumberSinceTimestamp(createdTimestamp))
+                  .toStringAsFixed(1)
+                  .replaceAll(regex, ''),
               subtitle: 'Posiedzień miesięcznie',
             ),
+            containerWidth: containerWidth,
+          ),
+          Container(
+            width: containerWidth,
           ),
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: (chaletReviewsNumber ~/ TimestampHelpers.yearNumberSinceTimestamp(userCreatedTimestamp))
-                  .toInt()
-                  .toString(),
+              title: (chaletReviewsNumber ~/ TimestampHelpers.yearNumberSinceTimestamp(createdTimestamp))
+                  .toStringAsFixed(1)
+                  .replaceAll(regex, ''),
               subtitle: 'Posiedzeń rocznie',
             ),
+            containerWidth: containerWidth,
           ),
         ],
       ),

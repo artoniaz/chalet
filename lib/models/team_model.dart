@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class TeamModel {
   String id;
   String name;
   String teamAdminId;
   String teamAdminName;
+  Timestamp created;
   List<String>? membersIds;
   List<String>? pendingMembersIds;
   int? chaletAddedNumber;
@@ -14,6 +17,7 @@ class TeamModel {
     required this.name,
     required this.teamAdminId,
     required this.teamAdminName,
+    required this.created,
     required this.membersIds,
     required this.pendingMembersIds,
     this.chaletAddedNumber,
@@ -27,6 +31,7 @@ class TeamModel {
       name: (json as dynamic)['name'] ?? '',
       teamAdminId: (json as dynamic)['teamAdminId'] ?? '',
       teamAdminName: (json as dynamic)['teamAdminName'] ?? '',
+      created: (json as dynamic)['created'] ?? '',
       membersIds: (json as dynamic)['membersIds'] == null
           ? []
           : List<String>.from((json as dynamic)['membersIds'].map((el) => el)),
@@ -46,5 +51,6 @@ class TeamModel {
         'membersIds': membersIds,
         'pendingMembersIds': pendingMembersIds,
         'choosenColors': choosenColors,
+        'created': created,
       };
 }
