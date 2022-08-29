@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 class StatContainer extends StatelessWidget {
   final StatModel statModel;
   final double containerWidth;
+  final Color? color;
   const StatContainer({
     Key? key,
     required this.statModel,
     required this.containerWidth,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class StatContainer extends StatelessWidget {
               folder: pathFolder,
               width: 30.0,
               height: 30.0,
+              color: color,
             ),
           ),
           HorizontalSizedBox8(),

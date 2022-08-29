@@ -5,5 +5,9 @@ class StatModel {
   final String title;
   final String subtitle;
 
-  StatModel({required this.iconId, required this.title, required this.subtitle});
+  StatModel({
+    required this.iconId,
+    required this.title,
+    required this.subtitle,
+  });
 }

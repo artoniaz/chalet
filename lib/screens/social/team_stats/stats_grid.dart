@@ -39,6 +39,7 @@ class StatsGrid extends StatelessWidget {
               subtitle: 'Dodane szalety',
             ),
             containerWidth: containerWidth,
+            color: Palette.confirmGreen,
           ),
           StatContainer(
             statModel: StatModel(

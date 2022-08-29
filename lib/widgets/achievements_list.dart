@@ -1,4 +1,3 @@
-import 'package:chalet/config/functions/team_stats_calc.dart';
 import 'package:chalet/config/helpers/achievements_ids.dart';
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/styles/dimentions.dart';
@@ -42,6 +41,7 @@ class AchievementsList extends StatelessWidget {
               subtitle: 'Dodaj 10 Szaletów na mapę',
               currentAchievementIndicator: user.chaletsAddedNumber,
               maxAchievementIndicator: 10,
+              isLast: true,
             ),
           ],
         ),
