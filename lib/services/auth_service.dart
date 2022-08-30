@@ -88,7 +88,7 @@ class AuthService {
                 userCredential.user!.uid,
                 userCredential.user!.email!,
                 userCredential.user!.displayName ?? '',
-                'traveller',
+                'avatar_icon_1',
                 Timestamp.now(),
               ));
         }

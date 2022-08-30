@@ -6,11 +6,13 @@ class UserAvatar extends StatelessWidget {
   final String avatarId;
   final double radius;
   final Color? backgroundColor;
+  final bool isEditable;
   const UserAvatar({
     Key? key,
     required this.avatarId,
     required this.radius,
     this.backgroundColor = Palette.chaletBlue,
+    this.isEditable = false,
   }) : super(key: key);
 
   @override

@@ -98,4 +98,13 @@ class UserDataService {
       throw 'Nie udało się zapisać osiągnięcia.';
     }
   }
+
+  Future<void> updateUserAvatarId(String userId, String avatarId) async {
+    try {
+      await _usersCollection.doc(userId).update({'avatarId': avatarId});
+    } catch (e) {
+      print(e);
+      throw 'Nie udało się zaktualizować awataru.';
+    }
+  }
 }

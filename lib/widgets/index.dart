@@ -47,3 +47,4 @@ export 'package:chalet/widgets/custom_loading_builder.dart';
 export 'package:chalet/widgets/user_avatar.dart';
 export 'package:chalet/widgets/main_image.dart';
 export 'package:chalet/widgets/custom_password_text_field.dart';
+export 'package:chalet/widgets/custom_top_right_postioned_widget.dart';

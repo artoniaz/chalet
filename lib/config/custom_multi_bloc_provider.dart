@@ -1,5 +1,6 @@
 import 'package:chalet/blocs/add_chalet/add_chalet_bloc.dart';
 import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/avatar_selection/avatar_selection_bloc.dart';
 import 'package:chalet/blocs/chalet_icon/chalet_icon_bloc.dart';
 import 'package:chalet/blocs/create_team/create_team_bloc.dart';
 import 'package:chalet/blocs/damaging_model/damaging_model_bloc.dart';
@@ -141,6 +142,11 @@ class CustomMultiBlocProvider extends StatelessWidget {
           chaletRepository: ChaletRepository(),
           storageRepository: StorageRepository(),
           teamFeedInfoBloc: BlocProvider.of<TeamFeedInfoBloc>(context),
+        ),
+      ),
+      BlocProvider<AvatarSelectionBloc>(
+        create: (context) => AvatarSelectionBloc(
+          userDataRepository: UserDataRepository(),
         ),
       ),
     ], child: child);

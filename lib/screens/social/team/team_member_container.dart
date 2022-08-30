@@ -46,27 +46,23 @@ class TeamMemberContainer extends StatelessWidget {
             ]),
           ),
           if (isUserTeamAdmin(_team.teamAdminId, _user.uid) && teamMember.uid != _user.uid)
-            Positioned(
-                top: 0,
-                right: 1.0,
-                child: FractionalTranslation(
-                  translation: Offset(0, 0),
-                  child: CustomRoundedIconButton(
-                      iconData: Icons.delete,
-                      iconSize: 20.0,
-                      onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => CustomAlertDialog(
-                              headline: 'Czy chcesz usunąć tego użytownika z klanu?',
-                              approveFunction: () =>
-                                  Provider.of<DeleteTeamMemberBloc>(context, listen: false).add(DeleteTeamMember(
-                                    _team,
-                                    teamMember.uid,
-                                    _user,
-                                    teamMember.choosenColor!,
-                                  )),
-                              approveFunctionButtonLabel: 'Usuń z klanu'))),
-                )),
+            CustomTopRightPositionedWidget(
+              child: CustomRoundedIconButton(
+                  iconData: Icons.delete,
+                  iconSize: 20.0,
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => CustomAlertDialog(
+                          headline: 'Czy chcesz usunąć tego użytownika z klanu?',
+                          approveFunction: () =>
+                              Provider.of<DeleteTeamMemberBloc>(context, listen: false).add(DeleteTeamMember(
+                                _team,
+                                teamMember.uid,
+                                _user,
+                                teamMember.choosenColor!,
+                              )),
+                          approveFunctionButtonLabel: 'Usuń z klanu'))),
+            ),
         ],
       ),
     );
