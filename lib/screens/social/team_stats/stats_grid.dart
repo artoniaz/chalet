@@ -44,8 +44,10 @@ class StatsGrid extends StatelessWidget {
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: (chaletReviewsNumber / TimestampHelpers.daysNumberSinceTimestamp(createdTimestamp))
-                  .toStringAsFixed(2),
+              title: chaletReviewsNumber > 0
+                  ? (chaletReviewsNumber / TimestampHelpers.daysNumberSinceTimestamp(createdTimestamp))
+                      .toStringAsFixed(2)
+                  : '0',
               subtitle: 'Posiedzeń dziennie',
             ),
             containerWidth: containerWidth,
@@ -74,9 +76,11 @@ class StatsGrid extends StatelessWidget {
           StatContainer(
             statModel: StatModel(
               iconId: achievementsIds.sittingKing,
-              title: (chaletReviewsNumber ~/ TimestampHelpers.yearNumberSinceTimestamp(createdTimestamp))
-                  .toStringAsFixed(1)
-                  .replaceAll(regex, ''),
+              title: chaletReviewsNumber > 0
+                  ? (chaletReviewsNumber ~/ TimestampHelpers.yearNumberSinceTimestamp(createdTimestamp))
+                      .toStringAsFixed(1)
+                      .replaceAll(regex, '')
+                  : '0',
               subtitle: 'Posiedzeń rocznie',
             ),
             containerWidth: containerWidth,
