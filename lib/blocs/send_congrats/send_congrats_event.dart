@@ -1,4 +1,4 @@
-import 'package:chalet/models/feed_info_model.dart';
+import 'package:Challet/models/feed_info_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class SendCongratsEvent extends Equatable {

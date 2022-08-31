@@ -1,8 +1,8 @@
-import 'package:chalet/config/helpers/achievements_ids.dart';
-import 'package:chalet/models/user_model.dart';
-import 'package:chalet/styles/dimentions.dart';
-import 'package:chalet/styles/palette.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/config/helpers/achievements_ids.dart';
+import 'package:Challet/models/user_model.dart';
+import 'package:Challet/styles/dimentions.dart';
+import 'package:Challet/styles/palette.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class AchievementsList extends StatelessWidget {

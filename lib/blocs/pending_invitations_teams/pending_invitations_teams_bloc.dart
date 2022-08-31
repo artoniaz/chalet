@@ -1,7 +1,7 @@
-import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams_event.dart';
-import 'package:chalet/blocs/pending_invitations_teams/pending_invitations_teams_state.dart';
-import 'package:chalet/models/team_model.dart';
-import 'package:chalet/repositories/team_repository.dart';
+import 'package:Challet/blocs/pending_invitations_teams/pending_invitations_teams_event.dart';
+import 'package:Challet/blocs/pending_invitations_teams/pending_invitations_teams_state.dart';
+import 'package:Challet/models/team_model.dart';
+import 'package:Challet/repositories/team_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PendingInvitationsTeamsBloc extends Bloc<PendingInvitationsTeamEvent, PendingInvitationsTeamsState> {

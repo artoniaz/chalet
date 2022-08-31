@@ -1,10 +1,10 @@
-import 'package:chalet/blocs/delete_team_member/delete_team_member_event.dart';
-import 'package:chalet/blocs/delete_team_member/delete_team_member_state.dart';
-import 'package:chalet/blocs/team_members/team_members_bloc.dart';
-import 'package:chalet/blocs/team_members/team_members_event.dart';
-import 'package:chalet/blocs/team_members/team_members_state.dart';
-import 'package:chalet/repositories/team_repository.dart';
-import 'package:chalet/repositories/user_data_repository.dart';
+import 'package:Challet/blocs/delete_team_member/delete_team_member_event.dart';
+import 'package:Challet/blocs/delete_team_member/delete_team_member_state.dart';
+import 'package:Challet/blocs/team_members/team_members_bloc.dart';
+import 'package:Challet/blocs/team_members/team_members_event.dart';
+import 'package:Challet/blocs/team_members/team_members_state.dart';
+import 'package:Challet/repositories/team_repository.dart';
+import 'package:Challet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeleteTeamMemberBloc extends Bloc<DeleteTeamMemberEvent, DeleteTeamMemberState> {

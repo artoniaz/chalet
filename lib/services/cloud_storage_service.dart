@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chalet/models/index.dart';
+import 'package:Challet/models/index.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class CloudStorageService {

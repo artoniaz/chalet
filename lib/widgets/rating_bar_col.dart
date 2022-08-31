@@ -1,4 +1,4 @@
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class RatingBarCol extends StatelessWidget {

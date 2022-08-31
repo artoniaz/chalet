@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:chalet/models/image_model_file.dart';
-import 'package:chalet/models/image_model_url.dart';
-import 'package:chalet/services/chalet_service.dart';
+import 'package:Challet/models/image_model_file.dart';
+import 'package:Challet/models/image_model_url.dart';
+import 'package:Challet/services/chalet_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 

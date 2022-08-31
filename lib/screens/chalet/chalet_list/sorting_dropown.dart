@@ -1,5 +1,5 @@
-import 'package:chalet/screens/chalet/chalet_list/sorting_values.dart';
-import 'package:chalet/widgets/horizontal_sized_boxes.dart';
+import 'package:Challet/screens/chalet/chalet_list/sorting_values.dart';
+import 'package:Challet/widgets/horizontal_sized_boxes.dart';
 import 'package:flutter/material.dart';
 
 class SortingDropdown extends StatelessWidget {

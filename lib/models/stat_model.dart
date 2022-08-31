@@ -1,4 +1,4 @@
-import 'package:chalet/config/helpers/achievements_ids.dart';
+import 'package:Challet/config/helpers/achievements_ids.dart';
 
 class StatModel {
   final achievementsIds iconId;

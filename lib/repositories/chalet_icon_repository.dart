@@ -1,4 +1,4 @@
-import 'package:chalet/services/chalet_icon_service.dart';
+import 'package:Challet/services/chalet_icon_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChaletIconRepository {

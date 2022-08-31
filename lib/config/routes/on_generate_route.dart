@@ -1,5 +1,5 @@
-import 'package:chalet/config/index.dart';
-import 'package:chalet/screens/index.dart';
+import 'package:Challet/config/index.dart';
+import 'package:Challet/screens/index.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 

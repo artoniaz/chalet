@@ -1,4 +1,4 @@
-import 'package:chalet/styles/palette.dart';
+import 'package:Challet/styles/palette.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextButtonRounded extends StatelessWidget {

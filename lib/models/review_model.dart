@@ -1,4 +1,4 @@
-import 'package:chalet/models/review_details_model.dart';
+import 'package:Challet/models/review_details_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReviewModel {

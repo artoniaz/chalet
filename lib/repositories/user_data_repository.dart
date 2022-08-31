@@ -1,6 +1,6 @@
-import 'package:chalet/config/helpers/achievements_ids.dart';
-import 'package:chalet/models/user_model.dart';
-import 'package:chalet/services/index.dart';
+import 'package:Challet/config/helpers/achievements_ids.dart';
+import 'package:Challet/models/user_model.dart';
+import 'package:Challet/services/index.dart';
 
 class UserDataRepository {
   final _userDataService = UserDataService();

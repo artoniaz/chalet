@@ -1,5 +1,5 @@
-import 'package:chalet/models/feed_info_model.dart';
-import 'package:chalet/repositories/team_feed_info_repository.dart';
+import 'package:Challet/models/feed_info_model.dart';
+import 'package:Challet/repositories/team_feed_info_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TeamFeedInfoService implements TeamFeedInfoRepository {

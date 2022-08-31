@@ -1,8 +1,8 @@
-import 'package:chalet/config/index.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/config/index.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
-import 'package:chalet/services/index.dart';
-import 'package:chalet/styles/index.dart';
+import 'package:Challet/services/index.dart';
+import 'package:Challet/styles/index.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ResetPassword extends StatefulWidget {

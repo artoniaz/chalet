@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:chalet/blocs/get_chalets_bloc/get_chalets_event.dart';
-import 'package:chalet/blocs/get_chalets_bloc/get_chalets_state.dart';
-import 'package:chalet/config/functions/sorting_chalet_list.dart';
-import 'package:chalet/models/index.dart';
-import 'package:chalet/repositories/chalet_repository.dart';
-import 'package:chalet/screens/chalet/chalet_list/sorting_values.dart';
+import 'package:Challet/blocs/get_chalets_bloc/get_chalets_event.dart';
+import 'package:Challet/blocs/get_chalets_bloc/get_chalets_state.dart';
+import 'package:Challet/config/functions/sorting_chalet_list.dart';
+import 'package:Challet/models/index.dart';
+import 'package:Challet/repositories/chalet_repository.dart';
+import 'package:Challet/screens/chalet/chalet_list/sorting_values.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GetChaletsBloc extends Bloc<GetChaletsEvent, GetChaletsState> {

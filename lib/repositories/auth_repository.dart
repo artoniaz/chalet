@@ -1,4 +1,4 @@
-import 'package:chalet/services/auth_service.dart';
+import 'package:Challet/services/auth_service.dart';
 
 class AuthRepository {
   final _authService = AuthService();

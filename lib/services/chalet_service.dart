@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:chalet/config/functions/lat_lng_functions.dart';
-import 'package:chalet/models/image_model_url.dart';
-import 'package:chalet/models/index.dart';
+import 'package:Challet/config/functions/lat_lng_functions.dart';
+import 'package:Challet/models/image_model_url.dart';
+import 'package:Challet/models/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

@@ -1,8 +1,8 @@
-import 'package:chalet/blocs/team_member/team_member_bloc.dart';
-import 'package:chalet/blocs/team_member/team_member_event.dart';
-import 'package:chalet/screens/social/create_team/add_member_to_team.dart';
-import 'package:chalet/styles/index.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/blocs/team_member/team_member_bloc.dart';
+import 'package:Challet/blocs/team_member/team_member_event.dart';
+import 'package:Challet/screens/social/create_team/add_member_to_team.dart';
+import 'package:Challet/styles/index.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

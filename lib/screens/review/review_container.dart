@@ -1,7 +1,7 @@
-import 'package:chalet/config/functions/timestamp_methods.dart';
-import 'package:chalet/models/review_model.dart';
-import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/config/functions/timestamp_methods.dart';
+import 'package:Challet/models/review_model.dart';
+import 'package:Challet/screens/chalet/chalet_conveniences_types.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class ReviewContainer extends StatelessWidget {

@@ -1,6 +1,6 @@
-import 'package:chalet/models/feed_display_info_model.dart';
-import 'package:chalet/models/feed_info_model.dart';
-import 'package:chalet/repositories/team_feed_info_repository.dart';
+import 'package:Challet/models/feed_display_info_model.dart';
+import 'package:Challet/models/feed_info_model.dart';
+import 'package:Challet/repositories/team_feed_info_repository.dart';
 
 FeedDisplayInfoModel getFeedDisplayInfoModel(FeedInfoEvent feedInfoRole) =>
     feedDisplayInfoModelList.firstWhere((el) => el.feedInfoRole == feedInfoRole);

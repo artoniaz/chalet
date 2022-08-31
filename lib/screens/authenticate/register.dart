@@ -1,9 +1,9 @@
-import 'package:chalet/config/index.dart';
-import 'package:chalet/screens/avatars/avatar_selection_container.dart';
-import 'package:chalet/services/index.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/config/index.dart';
+import 'package:Challet/screens/avatars/avatar_selection_container.dart';
+import 'package:Challet/services/index.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
-import 'package:chalet/styles/index.dart';
+import 'package:Challet/styles/index.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;

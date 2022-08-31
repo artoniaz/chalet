@@ -1,14 +1,14 @@
-import 'package:chalet/blocs/geolocation/geolocation_bloc.dart';
-import 'package:chalet/config/functions/lat_lng_functions.dart';
-import 'package:chalet/models/add_chalet_nav_pass_args.dart';
-import 'package:chalet/screens/index.dart';
-import 'package:chalet/services/geolocation_service.dart';
-import 'package:chalet/styles/index.dart';
+import 'package:Challet/blocs/geolocation/geolocation_bloc.dart';
+import 'package:Challet/config/functions/lat_lng_functions.dart';
+import 'package:Challet/models/add_chalet_nav_pass_args.dart';
+import 'package:Challet/screens/index.dart';
+import 'package:Challet/services/geolocation_service.dart';
+import 'package:Challet/styles/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:provider/provider.dart';
 
 class AddChaletMap extends StatefulWidget {

@@ -1,7 +1,7 @@
-import 'package:chalet/models/user_model.dart';
-import 'package:chalet/screens/index.dart';
-import 'package:chalet/styles/index.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/models/user_model.dart';
+import 'package:Challet/screens/index.dart';
+import 'package:Challet/styles/index.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class OtherUserProfile extends StatefulWidget {

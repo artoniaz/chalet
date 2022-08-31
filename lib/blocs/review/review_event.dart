@@ -1,4 +1,4 @@
-import 'package:chalet/models/review_model.dart';
+import 'package:Challet/models/review_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ReviewEvent extends Equatable {

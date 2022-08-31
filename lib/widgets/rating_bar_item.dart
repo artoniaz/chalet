@@ -1,4 +1,4 @@
-import 'package:chalet/styles/index.dart';
+import 'package:Challet/styles/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

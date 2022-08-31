@@ -1,6 +1,6 @@
-import 'package:chalet/models/feed_info_model.dart';
-import 'package:chalet/models/review_details_model.dart';
-import 'package:chalet/models/review_model.dart';
+import 'package:Challet/models/feed_info_model.dart';
+import 'package:Challet/models/review_details_model.dart';
+import 'package:Challet/models/review_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AddReviewEvent extends Equatable {

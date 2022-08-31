@@ -1,4 +1,4 @@
-import 'package:chalet/models/user_model.dart';
+import 'package:Challet/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class UserDataEvent extends Equatable {

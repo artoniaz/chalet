@@ -1,7 +1,7 @@
-import 'package:chalet/models/achievement_model.dart';
-import 'package:chalet/models/feed_display_info_model.dart';
-import 'package:chalet/models/feed_info_model.dart';
-import 'package:chalet/services/team_feed_info_service.dart';
+import 'package:Challet/models/achievement_model.dart';
+import 'package:Challet/models/feed_display_info_model.dart';
+import 'package:Challet/models/feed_info_model.dart';
+import 'package:Challet/services/team_feed_info_service.dart';
 
 class TeamFeedInfoRepository {
   final _teamFeedInfoService = TeamFeedInfoService();

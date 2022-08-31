@@ -1,6 +1,6 @@
-import 'package:chalet/models/color_model.dart';
-import 'package:chalet/styles/dimentions.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/models/color_model.dart';
+import 'package:Challet/styles/dimentions.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

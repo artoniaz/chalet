@@ -1,7 +1,7 @@
-import 'package:chalet/blocs/user_data/user_data_bloc.dart';
-import 'package:chalet/blocs/user_data/user_data_state.dart';
-import 'package:chalet/screens/index.dart';
-import 'package:chalet/widgets/loading.dart';
+import 'package:Challet/blocs/user_data/user_data_bloc.dart';
+import 'package:Challet/blocs/user_data/user_data_state.dart';
+import 'package:Challet/screens/index.dart';
+import 'package:Challet/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';

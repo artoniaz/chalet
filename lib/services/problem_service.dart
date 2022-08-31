@@ -1,4 +1,4 @@
-import 'package:chalet/models/problem_model.dart';
+import 'package:Challet/models/problem_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProblemService {

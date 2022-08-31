@@ -1,4 +1,4 @@
-import 'package:chalet/styles/index.dart';
+import 'package:Challet/styles/index.dart';
 import 'package:flutter/material.dart';
 
 class TeamNameContainer extends StatelessWidget {

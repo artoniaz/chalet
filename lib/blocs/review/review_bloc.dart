@@ -1,7 +1,7 @@
-import 'package:chalet/blocs/review/review_event.dart';
-import 'package:chalet/blocs/review/review_state.dart';
-import 'package:chalet/models/review_model.dart';
-import 'package:chalet/repositories/review_repository.dart';
+import 'package:Challet/blocs/review/review_event.dart';
+import 'package:Challet/blocs/review/review_state.dart';
+import 'package:Challet/models/review_model.dart';
+import 'package:Challet/repositories/review_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {

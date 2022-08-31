@@ -1,4 +1,4 @@
-import 'package:chalet/screens/index.dart';
+import 'package:Challet/screens/index.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
@@ -15,8 +15,6 @@ class _AuthenticateState extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
-    return showSignIn
-        ? SignIn(toggleView: toggleView)
-        : Register(toggleView: toggleView);
+    return showSignIn ? SignIn(toggleView: toggleView) : Register(toggleView: toggleView);
   }
 }

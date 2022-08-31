@@ -1,8 +1,8 @@
-import 'package:chalet/blocs/add_review/add_review_bloc.dart';
-import 'package:chalet/blocs/add_review/add_review_event.dart';
-import 'package:chalet/blocs/add_review/add_review_state.dart';
-import 'package:chalet/models/review_details_model.dart';
-import 'package:chalet/widgets/index.dart';
+import 'package:Challet/blocs/add_review/add_review_bloc.dart';
+import 'package:Challet/blocs/add_review/add_review_event.dart';
+import 'package:Challet/blocs/add_review/add_review_state.dart';
+import 'package:Challet/models/review_details_model.dart';
+import 'package:Challet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
