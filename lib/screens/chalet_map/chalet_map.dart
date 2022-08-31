@@ -88,6 +88,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
         setState(() => _isSearchThisAreaButtonActive = false);
       } else {
         setState(() => _isSearchThisAreaButtonActive = true);
+        updateAreaToLookForCenterCirclePosition();
       }
     }
   }
