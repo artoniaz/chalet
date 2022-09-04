@@ -92,7 +92,7 @@ flutter:
     - assets/snake/png/
     - assets/snake/svg/
     - assets/map_marker/
-    - assets/achievementsIcons/
+    - assets/statsIcons/
     - assets/avatarIcons/
 
     # - images/a_dot_ham.jpeg

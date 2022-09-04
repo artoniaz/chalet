@@ -6,19 +6,33 @@ import 'package:time_machine/time_machine.dart';
 class TimestampHelpers {
   static int daysNumberSinceTimestamp(Timestamp timestamp) {
     Period periodSinceTimestamp = _getPeriodSinceDateTimeNow(timestamp);
-    return periodSinceTimestamp.years * 365 + periodSinceTimestamp.months * 30 + periodSinceTimestamp.days;
+    if (_isTimestampCreatedToday(periodSinceTimestamp)) {
+      return 1;
+    } else {
+      return periodSinceTimestamp.years * 365 + periodSinceTimestamp.months * 30 + periodSinceTimestamp.days;
+    }
   }
 
   static int monthsNumberSinceTimestamp(Timestamp timestamp) {
     Period periodSinceTimestamp = _getPeriodSinceDateTimeNow(timestamp);
-    int montsNumber = periodSinceTimestamp.years * 12 + periodSinceTimestamp.months;
-    return montsNumber > 0 ? montsNumber : 1;
+    if (_isTimestampCreatedToday(periodSinceTimestamp)) {
+      return 1;
+    } else {
+      int montsNumber = periodSinceTimestamp.years * 12 + periodSinceTimestamp.months;
+      return montsNumber > 0 ? montsNumber : 1;
+    }
   }
 
   static int yearNumberSinceTimestamp(Timestamp timestamp) {
     Period periodSinceTimestamp = _getPeriodSinceDateTimeNow(timestamp);
-    bool hasNextYearStarted = periodSinceTimestamp.days > 0;
-    return periodSinceTimestamp.years + (hasNextYearStarted ? 1 : 0);
+
+    //this means the timestamp was created today
+    if (_isTimestampCreatedToday(periodSinceTimestamp)) {
+      return 1;
+    } else {
+      bool hasNextYearStarted = periodSinceTimestamp.days > 0;
+      return periodSinceTimestamp.years + (hasNextYearStarted ? 1 : 0);
+    }
   }
 
   static LocalDate _getLocalDateFromTimestamp(Timestamp timestamp) => LocalDate.dateTime(timestamp.toDate());
@@ -26,6 +40,10 @@ class TimestampHelpers {
   static Period _getPeriodSinceDateTimeNow(Timestamp timestamp) {
     LocalDate localDateFromTimestamp = _getLocalDateFromTimestamp(timestamp);
     return LocalDate.dateTime(DateTime.now()).periodSince(localDateFromTimestamp);
+  }
+
+  static bool _isTimestampCreatedToday(Period period) {
+    return period.days == 0 && period.months == 0 && period.years == 0;
   }
 }
 

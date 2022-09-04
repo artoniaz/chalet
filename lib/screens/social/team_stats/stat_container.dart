@@ -16,7 +16,7 @@ class StatContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String pathFolder = 'achievementsIcons';
+    final String pathFolder = 'statsIcons';
 
     return Container(
       width: containerWidth,

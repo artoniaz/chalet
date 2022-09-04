@@ -1,5 +1,5 @@
 import 'package:Challet/config/functions/timestamp_methods.dart';
-import 'package:Challet/config/helpers/achievements_ids.dart';
+import 'package:Challet/config/helpers/stats_ids.dart';
 import 'package:Challet/models/stat_model.dart';
 import 'package:Challet/screens/index.dart';
 import 'package:Challet/styles/index.dart';
@@ -34,27 +34,29 @@ class StatsGrid extends StatelessWidget {
         children: [
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.traveller,
+              iconId: statsIds.traveller,
               title: chaletAddedNumber.toString(),
               subtitle: 'Dodane szalety',
             ),
             containerWidth: containerWidth,
-            color: Palette.confirmGreen,
+            color: Palette.chaletBlue,
           ),
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
+              iconId: statsIds.ratingDaily,
               title: chaletReviewsNumber > 0
                   ? (chaletReviewsNumber / TimestampHelpers.daysNumberSinceTimestamp(createdTimestamp))
                       .toStringAsFixed(2)
+                      .replaceAll(regex, '')
                   : '0',
               subtitle: 'Posiedzeń dziennie',
             ),
             containerWidth: containerWidth,
+            color: Palette.ivoryBlack,
           ),
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
+              iconId: statsIds.sittingKing,
               title: chaletReviewsNumber.toString(),
               subtitle: 'Posiedzień',
             ),
@@ -62,29 +64,27 @@ class StatsGrid extends StatelessWidget {
           ),
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
+              iconId: statsIds.ratingMonthly,
               title: (chaletReviewsNumber / TimestampHelpers.monthsNumberSinceTimestamp(createdTimestamp))
                   .toStringAsFixed(1)
                   .replaceAll(regex, ''),
               subtitle: 'Posiedzień miesięcznie',
             ),
             containerWidth: containerWidth,
+            color: Palette.ivoryBlack,
           ),
-          Container(
-            width: containerWidth,
-          ),
-          StatContainer(
-            statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
-              title: chaletReviewsNumber > 0
-                  ? (chaletReviewsNumber ~/ TimestampHelpers.yearNumberSinceTimestamp(createdTimestamp))
-                      .toStringAsFixed(1)
-                      .replaceAll(regex, '')
-                  : '0',
-              subtitle: 'Posiedzeń rocznie',
-            ),
-            containerWidth: containerWidth,
-          ),
+          // StatContainer(
+          //   statModel: StatModel(
+          //     iconId: achievementsIds.sittingKing,
+          //     title: chaletReviewsNumber > 0
+          //         ? (chaletReviewsNumber.toDouble() / TimestampHelpers.yearNumberSinceTimestamp(createdTimestamp))
+          //             .toStringAsFixed(1)
+          //             .replaceAll(regex, '')
+          //         : '0',
+          //     subtitle: 'Posiedzeń rocznie',
+          //   ),
+          //   containerWidth: containerWidth,
+          // ),
         ],
       ),
     );

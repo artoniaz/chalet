@@ -1,7 +1,7 @@
-import 'package:Challet/config/helpers/achievements_ids.dart';
+import 'package:Challet/config/helpers/stats_ids.dart';
 
 class StatModel {
-  final achievementsIds iconId;
+  final statsIds iconId;
   final String title;
   final String subtitle;
 

@@ -24,7 +24,7 @@ class AchievementContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String pathFolder = 'achievementsIcons';
+    final String pathFolder = 'statsIcons';
     return Container(
       height: 100.0,
       padding: EdgeInsets.symmetric(vertical: Dimentions.small),
@@ -44,7 +44,7 @@ class AchievementContainer extends StatelessWidget {
             child: PlatformSvgAsset(
               assetName: iconId.name,
               folder: pathFolder,
-              color: iconId == achievementsIds.traveller ? Palette.confirmGreen : null,
+              color: iconId == achievementsIds.traveller ? Palette.chaletBlue : null,
             ),
           ),
           Expanded(
