@@ -13,47 +13,18 @@ class AvatarSelectionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const _avatarCounter = 14;
     return Container(
       height: 90,
-      child: ListView(
+      child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        children: [
-          CustomAvatar(
-            avatarId: 'avatar_icon_1',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'avatar_icon_2',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'avatar_icon_3',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'avatar_icon_4',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'avatar_icon_5',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'avatar_icon_6',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-        ],
+        itemBuilder: (context, index) => CustomAvatar(
+          avatarId: 'avatar_icon_${index + 1}',
+          currentAvatarId: currentAvatarId,
+          onTapAvatar: onTapAvatar,
+        ),
+        separatorBuilder: (_, i) => HorizontalSizedBox4(),
+        itemCount: _avatarCounter,
       ),
     );
   }
