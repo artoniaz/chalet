@@ -65,19 +65,19 @@ android {
     productFlavors {
         develop {
             dimension "default"
-            resValue "string", "app_name", "Chalet Dev"
+            resValue "string", "app_name", "Challet Dev"
             applicationIdSuffix ".dev"
             signingConfig signingConfigs.debug
         }
         demo {
             dimension "default"
-            resValue "string", "app_name", "Chalet Demo"
+            resValue "string", "app_name", "Challet Demo"
             applicationIdSuffix ".demo"
             signingConfig signingConfigs.debug
         }
         prod {
             dimension "default"
-            resValue "string", "app_name", "Chalet"
+            resValue "string", "app_name", "Challet"
             applicationId "com.mocode.chalet"
             signingConfig signingConfigs.release
         }
