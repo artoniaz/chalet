@@ -1,8 +1,8 @@
-import 'package:Challet/config/functions/timestamp_methods.dart';
-import 'package:Challet/config/helpers/stats_ids.dart';
-import 'package:Challet/models/stat_model.dart';
-import 'package:Challet/screens/index.dart';
-import 'package:Challet/styles/index.dart';
+import 'package:chalet/config/functions/timestamp_methods.dart';
+import 'package:chalet/config/helpers/stats_ids.dart';
+import 'package:chalet/models/stat_model.dart';
+import 'package:chalet/screens/index.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

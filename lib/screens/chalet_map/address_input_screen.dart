@@ -1,12 +1,12 @@
-import 'package:Challet/services/geolocation_service.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/custom_appBars.dart';
-import 'package:Challet/widgets/custom_elevated_button.dart';
-import 'package:Challet/widgets/horizontal_sized_boxes.dart';
-import 'package:Challet/widgets/vertical_sized_boxes.dart';
+import 'package:chalet/services/geolocation_service.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/custom_appBars.dart';
+import 'package:chalet/widgets/custom_elevated_button.dart';
+import 'package:chalet/widgets/horizontal_sized_boxes.dart';
+import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_place/google_place.dart';
-import 'package:Challet/.env.dart';
+import 'package:chalet/.env.dart';
 
 class AddressInputScreen extends StatefulWidget {
   const AddressInputScreen({Key? key}) : super(key: key);

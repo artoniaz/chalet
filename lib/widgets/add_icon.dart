@@ -1,6 +1,6 @@
-import 'package:Challet/providers/image_file_list_provider_model.dart';
-import 'package:Challet/screens/index.dart';
-import 'package:Challet/styles/index.dart';
+import 'package:chalet/providers/image_file_list_provider_model.dart';
+import 'package:chalet/screens/index.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

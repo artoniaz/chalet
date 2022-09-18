@@ -1,9 +1,9 @@
-import 'package:Challet/blocs/pending_members/pending_members_event.dart';
-import 'package:Challet/blocs/pending_members/pending_members_state.dart';
-import 'package:Challet/blocs/team_member/team_member_state.dart';
-import 'package:Challet/models/user_model.dart';
-import 'package:Challet/repositories/team_repository.dart';
-import 'package:Challet/repositories/user_data_repository.dart';
+import 'package:chalet/blocs/pending_members/pending_members_event.dart';
+import 'package:chalet/blocs/pending_members/pending_members_state.dart';
+import 'package:chalet/blocs/team_member/team_member_state.dart';
+import 'package:chalet/models/user_model.dart';
+import 'package:chalet/repositories/team_repository.dart';
+import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PendingTeamMembersBloc extends Bloc<PendingTeamMembersEvent, PendingTeamMembersState> {

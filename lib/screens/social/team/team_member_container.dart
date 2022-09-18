@@ -1,12 +1,12 @@
-import 'package:Challet/blocs/delete_team_member/delete_team_member_bloc.dart';
-import 'package:Challet/blocs/delete_team_member/delete_team_member_event.dart';
-import 'package:Challet/blocs/team/team_bloc.dart';
-import 'package:Challet/blocs/user_data/user_data_bloc.dart';
-import 'package:Challet/config/functions/check_is_user_admin.dart';
-import 'package:Challet/models/team_model.dart';
-import 'package:Challet/models/user_model.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/blocs/delete_team_member/delete_team_member_bloc.dart';
+import 'package:chalet/blocs/delete_team_member/delete_team_member_event.dart';
+import 'package:chalet/blocs/team/team_bloc.dart';
+import 'package:chalet/blocs/user_data/user_data_bloc.dart';
+import 'package:chalet/config/functions/check_is_user_admin.dart';
+import 'package:chalet/models/team_model.dart';
+import 'package:chalet/models/user_model.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

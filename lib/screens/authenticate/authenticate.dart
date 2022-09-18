@@ -1,4 +1,4 @@
-import 'package:Challet/screens/index.dart';
+import 'package:chalet/screens/index.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {

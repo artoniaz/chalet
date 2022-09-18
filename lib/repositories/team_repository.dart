@@ -1,6 +1,6 @@
-import 'package:Challet/models/team_model.dart';
-import 'package:Challet/models/user_model.dart';
-import 'package:Challet/services/team_service.dart';
+import 'package:chalet/models/team_model.dart';
+import 'package:chalet/models/user_model.dart';
+import 'package:chalet/services/team_service.dart';
 
 class TeamRepository {
   final _teamService = TeamService();

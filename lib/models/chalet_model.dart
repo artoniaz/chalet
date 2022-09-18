@@ -1,4 +1,4 @@
-import 'package:Challet/models/image_model_url.dart';
+import 'package:chalet/models/image_model_url.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class ChaletModel {

@@ -1,5 +1,5 @@
-import 'package:Challet/screens/chalet/chalet_card/input_container.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/screens/chalet/chalet_card/input_container.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class DescriptionCard extends StatelessWidget {

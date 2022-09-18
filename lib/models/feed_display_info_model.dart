@@ -1,4 +1,4 @@
-import 'package:Challet/repositories/team_feed_info_repository.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 
 class FeedDisplayInfoModel {
   final FeedInfoEvent feedInfoRole;

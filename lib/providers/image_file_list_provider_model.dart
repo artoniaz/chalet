@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:Challet/models/image_model_file.dart';
+import 'package:chalet/models/image_model_file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';

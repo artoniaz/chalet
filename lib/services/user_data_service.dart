@@ -1,5 +1,5 @@
-import 'package:Challet/config/helpers/achievements_ids.dart';
-import 'package:Challet/models/index.dart';
+import 'package:chalet/config/helpers/achievements_ids.dart';
+import 'package:chalet/models/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserDataService {

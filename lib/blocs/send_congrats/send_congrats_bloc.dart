@@ -1,6 +1,6 @@
-import 'package:Challet/blocs/send_congrats/send_congrats_event.dart';
-import 'package:Challet/blocs/send_congrats/send_congrats_state.dart';
-import 'package:Challet/repositories/team_feed_info_repository.dart';
+import 'package:chalet/blocs/send_congrats/send_congrats_event.dart';
+import 'package:chalet/blocs/send_congrats/send_congrats_state.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SendCongratsBloc extends Bloc<SendCongratsEvent, SendCongratsState> {

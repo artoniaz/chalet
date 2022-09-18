@@ -1,4 +1,4 @@
-import 'package:Challet/services/geolocation_service.dart';
+import 'package:chalet/services/geolocation_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GeolocationRepository {

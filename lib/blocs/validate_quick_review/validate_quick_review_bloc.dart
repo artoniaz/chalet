@@ -1,7 +1,7 @@
-import 'package:Challet/blocs/add_review/add_review_bloc.dart';
-import 'package:Challet/blocs/add_review/add_review_event.dart';
-import 'package:Challet/blocs/validate_quick_review/validate_quick_review_event.dart';
-import 'package:Challet/blocs/validate_quick_review/validate_quick_review_state.dart';
+import 'package:chalet/blocs/add_review/add_review_bloc.dart';
+import 'package:chalet/blocs/add_review/add_review_event.dart';
+import 'package:chalet/blocs/validate_quick_review/validate_quick_review_event.dart';
+import 'package:chalet/blocs/validate_quick_review/validate_quick_review_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ValidateQuickReviewBloc extends Bloc<ValidateQuickReviewEvent, ValidateQuickReviewState> {

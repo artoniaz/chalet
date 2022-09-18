@@ -1,11 +1,11 @@
-import 'package:Challet/blocs/add_chalet/add_chalet_event.dart';
-import 'package:Challet/blocs/add_chalet/add_chalet_state.dart';
-import 'package:Challet/blocs/team_feed/team_feed_bloc.dart';
-import 'package:Challet/blocs/team_feed/team_feed_event.dart';
-import 'package:Challet/models/image_model_url.dart';
-import 'package:Challet/models/index.dart';
-import 'package:Challet/repositories/chalet_repository.dart';
-import 'package:Challet/repositories/storage_repository.dart';
+import 'package:chalet/blocs/add_chalet/add_chalet_event.dart';
+import 'package:chalet/blocs/add_chalet/add_chalet_state.dart';
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/blocs/team_feed/team_feed_event.dart';
+import 'package:chalet/models/image_model_url.dart';
+import 'package:chalet/models/index.dart';
+import 'package:chalet/repositories/chalet_repository.dart';
+import 'package:chalet/repositories/storage_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddChaletBloc extends Bloc<AddChaletEvent, AddChaletState> {

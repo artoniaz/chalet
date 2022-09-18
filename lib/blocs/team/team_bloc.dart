@@ -1,8 +1,8 @@
-import 'package:Challet/blocs/team/team_event.dart';
-import 'package:Challet/blocs/team/team_state.dart';
-import 'package:Challet/models/team_model.dart';
-import 'package:Challet/repositories/team_repository.dart';
-import 'package:Challet/repositories/user_data_repository.dart';
+import 'package:chalet/blocs/team/team_event.dart';
+import 'package:chalet/blocs/team/team_state.dart';
+import 'package:chalet/models/team_model.dart';
+import 'package:chalet/repositories/team_repository.dart';
+import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TeamBloc extends Bloc<TeamEvent, TeamState> {

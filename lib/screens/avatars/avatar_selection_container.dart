@@ -1,5 +1,5 @@
-import 'package:Challet/screens/avatars/custom_avatar.dart';
-import 'package:Challet/widgets/horizontal_sized_boxes.dart';
+import 'package:chalet/screens/avatars/custom_avatar.dart';
+import 'package:chalet/widgets/horizontal_sized_boxes.dart';
 import 'package:flutter/material.dart';
 
 class AvatarSelectionContainer extends StatelessWidget {

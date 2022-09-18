@@ -1,6 +1,6 @@
-import 'package:Challet/models/feed_info_model.dart';
-import 'package:Challet/models/image_model_file.dart';
-import 'package:Challet/models/index.dart';
+import 'package:chalet/models/feed_info_model.dart';
+import 'package:chalet/models/image_model_file.dart';
+import 'package:chalet/models/index.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AddChaletEvent extends Equatable {

@@ -1,6 +1,6 @@
-import 'package:Challet/services/auth_service.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/services/auth_service.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 

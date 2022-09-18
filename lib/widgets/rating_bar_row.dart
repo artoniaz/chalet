@@ -1,5 +1,5 @@
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class RatingBarRow extends StatelessWidget {

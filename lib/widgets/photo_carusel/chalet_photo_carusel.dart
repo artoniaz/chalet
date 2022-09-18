@@ -1,8 +1,8 @@
-import 'package:Challet/config/chalet_image_slider_phases.dart';
-import 'package:Challet/models/image_model_file.dart';
-import 'package:Challet/models/index.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/config/chalet_image_slider_phases.dart';
+import 'package:chalet/models/image_model_file.dart';
+import 'package:chalet/models/index.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 

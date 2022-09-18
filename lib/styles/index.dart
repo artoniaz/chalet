@@ -1,5 +1,5 @@
-export 'package:Challet/styles/palette.dart';
-export 'package:Challet/styles/theme_data.dart';
-export 'package:Challet/styles/typography.dart';
-export 'package:Challet/styles/input_decoration.dart';
-export 'package:Challet/styles/dimentions.dart';
+export 'package:chalet/styles/palette.dart';
+export 'package:chalet/styles/theme_data.dart';
+export 'package:chalet/styles/typography.dart';
+export 'package:chalet/styles/input_decoration.dart';
+export 'package:chalet/styles/dimentions.dart';

@@ -1,5 +1,5 @@
-import 'package:Challet/models/index.dart';
-import 'package:Challet/services/chalet_service.dart';
+import 'package:chalet/models/index.dart';
+import 'package:chalet/services/chalet_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 

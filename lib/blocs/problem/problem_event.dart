@@ -1,4 +1,4 @@
-import 'package:Challet/models/problem_model.dart';
+import 'package:chalet/models/problem_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProblemEvent extends Equatable {

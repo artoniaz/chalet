@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:Challet/blocs/avatar_selection/avatar_selection_event.dart';
-import 'package:Challet/blocs/avatar_selection/avatar_selection_state.dart';
-import 'package:Challet/repositories/user_data_repository.dart';
+import 'package:chalet/blocs/avatar_selection/avatar_selection_event.dart';
+import 'package:chalet/blocs/avatar_selection/avatar_selection_state.dart';
+import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AvatarSelectionBloc extends Bloc<AvatarSelectionEvent, AvatarSelectionState> {

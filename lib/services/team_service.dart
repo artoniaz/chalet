@@ -1,5 +1,5 @@
-import 'package:Challet/models/index.dart';
-import 'package:Challet/models/team_model.dart';
+import 'package:chalet/models/index.dart';
+import 'package:chalet/models/team_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TeamService {

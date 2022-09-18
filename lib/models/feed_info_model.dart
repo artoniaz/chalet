@@ -1,4 +1,4 @@
-import 'package:Challet/repositories/team_feed_info_repository.dart';
+import 'package:chalet/repositories/team_feed_info_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FeedInfoModel {

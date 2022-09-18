@@ -1,9 +1,9 @@
-import 'package:Challet/blocs/pending_members/pending_members_bloc.dart';
-import 'package:Challet/blocs/pending_members/pending_members_event.dart';
-import 'package:Challet/blocs/pending_members/pending_members_state.dart';
-import 'package:Challet/blocs/team/team_bloc.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/blocs/pending_members/pending_members_bloc.dart';
+import 'package:chalet/blocs/pending_members/pending_members_event.dart';
+import 'package:chalet/blocs/pending_members/pending_members_state.dart';
+import 'package:chalet/blocs/team/team_bloc.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';

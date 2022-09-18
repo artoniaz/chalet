@@ -1,6 +1,6 @@
-import 'package:Challet/models/stat_model.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/models/stat_model.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class StatContainer extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:Challet/config/helpers/stats_ids.dart';
+import 'package:chalet/config/helpers/stats_ids.dart';
 
 class StatModel {
   final statsIds iconId;

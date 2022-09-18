@@ -1,7 +1,7 @@
-import 'package:Challet/blocs/create_team/create_team_event.dart';
-import 'package:Challet/blocs/create_team/create_team_state.dart';
-import 'package:Challet/repositories/team_repository.dart';
-import 'package:Challet/repositories/user_data_repository.dart';
+import 'package:chalet/blocs/create_team/create_team_event.dart';
+import 'package:chalet/blocs/create_team/create_team_state.dart';
+import 'package:chalet/repositories/team_repository.dart';
+import 'package:chalet/repositories/user_data_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateTeamBloc extends Bloc<CreateTeamEvent, CreateTeamState> {

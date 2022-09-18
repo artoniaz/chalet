@@ -1,8 +1,8 @@
-import 'package:Challet/config/index.dart';
-import 'package:Challet/models/screen_arg.dart';
-import 'package:Challet/models/user_model.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/vertical_sized_boxes.dart';
+import 'package:chalet/config/index.dart';
+import 'package:chalet/models/screen_arg.dart';
+import 'package:chalet/models/user_model.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
 
 class TeamStatsMemberContainer extends StatelessWidget {

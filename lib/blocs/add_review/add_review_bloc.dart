@@ -1,13 +1,13 @@
-import 'package:Challet/blocs/add_review/add_review_event.dart';
-import 'package:Challet/blocs/add_review/add_review_state.dart';
-import 'package:Challet/blocs/review/review_bloc.dart';
-import 'package:Challet/blocs/review/review_event.dart';
-import 'package:Challet/blocs/team_feed/team_feed_bloc.dart';
-import 'package:Challet/blocs/team_feed/team_feed_event.dart';
-import 'package:Challet/config/functions/timestamp_methods.dart';
-import 'package:Challet/models/review_model.dart';
-import 'package:Challet/repositories/review_repository.dart';
-import 'package:Challet/services/review_service.dart';
+import 'package:chalet/blocs/add_review/add_review_event.dart';
+import 'package:chalet/blocs/add_review/add_review_state.dart';
+import 'package:chalet/blocs/review/review_bloc.dart';
+import 'package:chalet/blocs/review/review_event.dart';
+import 'package:chalet/blocs/team_feed/team_feed_bloc.dart';
+import 'package:chalet/blocs/team_feed/team_feed_event.dart';
+import 'package:chalet/config/functions/timestamp_methods.dart';
+import 'package:chalet/models/review_model.dart';
+import 'package:chalet/repositories/review_repository.dart';
+import 'package:chalet/services/review_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 

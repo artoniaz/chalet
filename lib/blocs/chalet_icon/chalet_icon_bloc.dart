@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:Challet/blocs/chalet_icon/chalet_icon_event.dart';
-import 'package:Challet/blocs/chalet_icon/chalet_icon_state.dart';
-import 'package:Challet/repositories/chalet_icon_repository.dart';
+import 'package:chalet/blocs/chalet_icon/chalet_icon_event.dart';
+import 'package:chalet/blocs/chalet_icon/chalet_icon_state.dart';
+import 'package:chalet/repositories/chalet_icon_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

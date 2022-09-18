@@ -1,4 +1,4 @@
-import 'package:Challet/widgets/platform_svg.dart';
+import 'package:chalet/widgets/platform_svg.dart';
 import 'package:flutter/material.dart';
 
 class MainImage extends StatelessWidget {

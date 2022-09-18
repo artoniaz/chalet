@@ -1,14 +1,14 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:Challet/config/custom_multi_bloc_provider.dart';
-import 'package:Challet/config/index.dart';
-import 'package:Challet/screens/index.dart';
-import 'package:Challet/services/index.dart';
+import 'package:chalet/config/custom_multi_bloc_provider.dart';
+import 'package:chalet/config/index.dart';
+import 'package:chalet/screens/index.dart';
+import 'package:chalet/services/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:Challet/styles/index.dart';
+import 'package:chalet/styles/index.dart';
 import 'package:flutter/services.dart';
 
 void main() async {

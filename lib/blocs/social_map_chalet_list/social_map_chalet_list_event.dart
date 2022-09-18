@@ -1,4 +1,4 @@
-import 'package:Challet/models/index.dart';
+import 'package:chalet/models/index.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ChaletListForSocialMapEvent extends Equatable {

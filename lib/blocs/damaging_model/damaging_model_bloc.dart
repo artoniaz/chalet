@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:Challet/blocs/damaging_model/damaging_model_event.dart';
-import 'package:Challet/blocs/damaging_model/damaging_model_state.dart';
+import 'package:chalet/blocs/damaging_model/damaging_model_event.dart';
+import 'package:chalet/blocs/damaging_model/damaging_model_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 

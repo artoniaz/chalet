@@ -1,8 +1,8 @@
-import 'package:Challet/config/chalet_image_slider_phases.dart';
-import 'package:Challet/models/index.dart';
-import 'package:Challet/screens/chalet/chalet_conveniences_types.dart';
-import 'package:Challet/styles/index.dart';
-import 'package:Challet/widgets/index.dart';
+import 'package:chalet/config/chalet_image_slider_phases.dart';
+import 'package:chalet/models/index.dart';
+import 'package:chalet/screens/chalet/chalet_conveniences_types.dart';
+import 'package:chalet/styles/index.dart';
+import 'package:chalet/widgets/index.dart';
 import 'package:flutter/material.dart';
 
 class ChaletPreviewContainer extends StatelessWidget {

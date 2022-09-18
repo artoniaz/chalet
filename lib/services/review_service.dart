@@ -1,6 +1,6 @@
-import 'package:Challet/models/review_details_model.dart';
-import 'package:Challet/models/review_model.dart';
-import 'package:Challet/repositories/review_repository.dart';
+import 'package:chalet/models/review_details_model.dart';
+import 'package:chalet/models/review_model.dart';
+import 'package:chalet/repositories/review_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReviewService implements ReviewRepository {

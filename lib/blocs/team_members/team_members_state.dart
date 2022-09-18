@@ -1,4 +1,4 @@
-import 'package:Challet/models/user_model.dart';
+import 'package:chalet/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 class TeamMembersState extends Equatable {

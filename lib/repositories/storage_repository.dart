@@ -1,6 +1,6 @@
-import 'package:Challet/models/image_model_file.dart';
-import 'package:Challet/models/image_model_url.dart';
-import 'package:Challet/services/storage_service.dart';
+import 'package:chalet/models/image_model_file.dart';
+import 'package:chalet/models/image_model_url.dart';
+import 'package:chalet/services/storage_service.dart';
 
 class StorageRepository {
   final _storageService = StorageService();

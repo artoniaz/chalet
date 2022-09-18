@@ -1,6 +1,6 @@
-import 'package:Challet/models/review_details_model.dart';
-import 'package:Challet/models/review_model.dart';
-import 'package:Challet/services/review_service.dart';
+import 'package:chalet/models/review_details_model.dart';
+import 'package:chalet/models/review_model.dart';
+import 'package:chalet/services/review_service.dart';
 
 class ReviewRepository {
   final _reviewService = ReviewService();

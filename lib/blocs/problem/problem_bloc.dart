@@ -1,6 +1,6 @@
-import 'package:Challet/blocs/problem/problem_event.dart';
-import 'package:Challet/blocs/problem/problem_state.dart';
-import 'package:Challet/repositories/problem_repository.dart';
+import 'package:chalet/blocs/problem/problem_event.dart';
+import 'package:chalet/blocs/problem/problem_state.dart';
+import 'package:chalet/repositories/problem_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProblemBloc extends Bloc<ProblemEvent, ProblemState> {

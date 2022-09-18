@@ -1,6 +1,6 @@
-import 'package:Challet/config/functions/get_distance.dart';
-import 'package:Challet/config/functions/lat_lng_functions.dart';
-import 'package:Challet/models/index.dart';
+import 'package:chalet/config/functions/get_distance.dart';
+import 'package:chalet/config/functions/lat_lng_functions.dart';
+import 'package:chalet/models/index.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void sortChaletsByRatingDesc(List<ChaletModel> chalets) => chalets.sort((a, b) => b.rating.compareTo(a.rating));
