@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chalet</string>
+    <string name="app_name">Challet</string>
     <string name="facebook_app_id">281395810538777</string>
     <string name="fb_login_protocol_scheme">fb281395810538777</string>
 </resources>
