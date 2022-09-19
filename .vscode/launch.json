@@ -60,7 +60,7 @@ build commands
     firebase projects:list 
 */
 /*
-    get ssh key
+    get ssh debug key
     keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
 
     get debug keys
@@ -68,6 +68,10 @@ build commands
     password: android
 
     get release keys
-    keytool -exportcert -alias androidreleasekey -keystore ~/.android/release.keystore | openssl sha1 -binary | openssl base64
+    relese key used for facebook login is stored in google sha-1 fingerprint. 
+    you should get your sha-1 and convert it to base64. Can be done using this link:
+    https://emn178.github.io/online-tools/base64_encode.html
+
+
 
 */
