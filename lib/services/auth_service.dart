@@ -1,6 +1,5 @@
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
-import 'package:chalet/widgets/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -130,6 +129,9 @@ class AuthService {
   //sign out
   Future<void> signOut() async {
     try {
+      if (await fb.isLoggedIn) {
+        fb.logOut();
+      }
       await _firebaseAuth.signOut();
     } catch (e) {
       print(e.toString());
