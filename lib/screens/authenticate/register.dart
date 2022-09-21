@@ -25,6 +25,8 @@ class _RegisterState extends State<Register> {
   String error = '';
 
   bool isLoading = false;
+  bool _isPasswordVisible = false;
+  bool _isRepeatPasswordVisible = false;
 
   void _onTapAvatar(String choosenAvatarId) {
     setState(() => avatarId = choosenAvatarId);
@@ -56,6 +58,9 @@ class _RegisterState extends State<Register> {
     }
   }
 
+  void _changePasswordVisible() => setState(() => _isPasswordVisible = !_isPasswordVisible);
+  void _changeRepeatPasswordVisible() => setState(() => _isRepeatPasswordVisible = !_isRepeatPasswordVisible);
+
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
@@ -65,75 +70,78 @@ class _RegisterState extends State<Register> {
             onTap: () => dissmissCurrentFocus(context),
             child: Scaffold(
                 body: SingleChildScrollView(
-              child: SafeArea(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding, vertical: Dimentions.large),
-                  child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Image(
-                            width: 80.0,
-                            height: 80.0,
-                            image: AssetImage('assets/poo/poo_happy.png'),
-                          ),
-                          VerticalSizedBox16(),
-                          TextFormField(
-                            controller: _emailController,
-                            decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                            validator: (val) =>
-                                val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
-                            onEditingComplete: () => node.nextFocus(),
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          VerticalSizedBox16(),
-                          TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'Pseudonim'),
-                            validator: (val) => val!.length < 3 ? 'Pseudonim musi zawierać minimum 3 znaki' : null,
-                            controller: nickController,
-                            onEditingComplete: () => node.nextFocus(),
-                          ),
-                          VerticalSizedBox16(),
-                          TextFormField(
-                            controller: passwordController,
-                            decoration: textInputDecoration.copyWith(hintText: 'Hasło'),
-                            obscureText: true,
-                            validator: (val) => val!.length < 6 ? 'Hasło musi zawierać minimum 6 znaków' : null,
-                            onEditingComplete: () => registerWithEmailAndPassword(),
-                          ),
-                          VerticalSizedBox16(),
-                          TextFormField(
-                            controller: passwordRepeatController,
-                            decoration: textInputDecoration.copyWith(hintText: 'Powtórz hasło'),
-                            obscureText: true,
-                            validator: (val) => val != passwordController.text ? 'Podane hasła nie są zgodne' : null,
-                            onEditingComplete: () => registerWithEmailAndPassword(),
-                          ),
-                          VerticalSizedBox16(),
-                          AvatarSelectionContainer(
-                            currentAvatarId: avatarId,
-                            onTapAvatar: _onTapAvatar,
-                          ),
-                          VerticalSizedBox16(),
-                          CustomElevatedButton(
-                            label: 'Utwórz nowe konto',
-                            onPressed: registerWithEmailAndPassword,
-                          ),
-                          if (error.isNotEmpty) VerticalSizedBox16(),
-                          Text(
-                            error,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.errorRed),
-                          ),
-                          if (error.isNotEmpty) VerticalSizedBox16(),
-                          CustomTextButton(
-                            onPressed: widget.toggleView,
-                            label: 'Masz już konto? Zaloguj się.',
-                            color: Palette.ivoryBlack,
-                          )
-                        ],
-                      )),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding, vertical: 0.0),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Spacer(),
+                            MainImage(),
+                            Spacer(),
+                            TextFormField(
+                              controller: _emailController,
+                              decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                              validator: (val) =>
+                                  val!.isEmpty || !val.contains('@') ? 'Podaj poprawny adres email' : null,
+                              onEditingComplete: () => node.nextFocus(),
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                            VerticalSizedBox16(),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: 'Pseudonim'),
+                              validator: (val) => val!.length < 3 ? 'Pseudonim musi zawierać minimum 3 znaki' : null,
+                              controller: nickController,
+                              onEditingComplete: () => node.nextFocus(),
+                            ),
+                            VerticalSizedBox16(),
+                            CustomPaswordTextField(
+                              textEditingController: passwordController,
+                              onEditingComplete: registerWithEmailAndPassword,
+                              passwordVisible: _isPasswordVisible,
+                              handlePasswordVisibleChange: _changePasswordVisible,
+                            ),
+                            VerticalSizedBox16(),
+                            CustomPaswordTextField(
+                              textEditingController: passwordRepeatController,
+                              onEditingComplete: registerWithEmailAndPassword,
+                              passwordVisible: _isRepeatPasswordVisible,
+                              handlePasswordVisibleChange: _changeRepeatPasswordVisible,
+                            ),
+                            VerticalSizedBox16(),
+                            AvatarSelectionContainer(
+                              currentAvatarId: avatarId,
+                              onTapAvatar: _onTapAvatar,
+                            ),
+                            VerticalSizedBox16(),
+                            CustomElevatedButton(
+                              label: 'Utwórz nowe konto',
+                              onPressed: registerWithEmailAndPassword,
+                            ),
+                            if (error.isNotEmpty)
+                              Column(
+                                children: [
+                                  VerticalSizedBox16(),
+                                  Text(
+                                    error,
+                                    style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Palette.errorRed),
+                                  ),
+                                  VerticalSizedBox16(),
+                                ],
+                              ),
+                            Spacer(),
+                            CustomTextButton(
+                              onPressed: widget.toggleView,
+                              label: 'Masz już konto? Zaloguj się.',
+                              color: Palette.ivoryBlack,
+                            )
+                          ],
+                        )),
+                  ),
                 ),
               ),
             )),

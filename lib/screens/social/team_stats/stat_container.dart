@@ -5,17 +5,21 @@ import 'package:flutter/material.dart';
 
 class StatContainer extends StatelessWidget {
   final StatModel statModel;
+  final double containerWidth;
+  final Color? color;
   const StatContainer({
     Key? key,
     required this.statModel,
+    required this.containerWidth,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final String pathFolder = 'achievementsIcons';
+    final String pathFolder = 'statsIcons';
 
     return Container(
-      width: (MediaQuery.of(context).size.width - Dimentions.medium * 3) / 2,
+      width: containerWidth,
       padding: EdgeInsets.all(Dimentions.small),
       decoration: BoxDecoration(
         border: Border.all(
@@ -25,7 +29,7 @@ class StatContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(Dimentions.medium),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: PlatformSvgAsset(
@@ -33,6 +37,7 @@ class StatContainer extends StatelessWidget {
               folder: pathFolder,
               width: 30.0,
               height: 30.0,
+              color: color,
             ),
           ),
           HorizontalSizedBox8(),
@@ -40,6 +45,7 @@ class StatContainer extends StatelessWidget {
               flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     statModel.title,

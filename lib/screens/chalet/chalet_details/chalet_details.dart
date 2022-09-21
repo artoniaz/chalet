@@ -97,7 +97,7 @@ class _ChaletDetailsState extends State<ChaletDetails> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium),
+            padding: const EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
             child: AddReviewModule(chalet: _chalet!),
           ),
         ],

@@ -38,4 +38,7 @@ class UserDataRepository {
 
   Future<void> addCompletedAchievement(String userId, achievementsIds completedAchievement) =>
       _userDataService.addCompletedAchievement(userId, completedAchievement);
+
+  Future<void> updateUserAvatarId(String userId, String avatarId) =>
+      _userDataService.updateUserAvatarId(userId, avatarId);
 }

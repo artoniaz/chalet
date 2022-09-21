@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AddChaletRoot extends StatelessWidget {
@@ -62,7 +63,7 @@ class _AddChaletState extends State<AddChalet> {
     creatorId: '',
   );
 
-  String? _chaletLocalizationAddress;
+  LatLng? _chaletLocalizationLatLag;
   bool _isLocalizationChoosen = false;
   bool isFormAllowed = true;
 
@@ -97,7 +98,7 @@ class _AddChaletState extends State<AddChalet> {
         await Navigator.push(context, MaterialPageRoute(builder: (context) => AddChaletMap()));
     if (chaletLocalizationArgs != null) {
       setState(() {
-        _chaletLocalizationAddress = chaletLocalizationArgs.chaletAddress.street;
+        _chaletLocalizationLatLag = chaletLocalizationArgs.chaletLocalization;
         _isLocalizationChoosen = true;
         _chalet.position = Geoflutterfire().point(
           latitude: chaletLocalizationArgs.chaletLocalization.latitude,
@@ -130,6 +131,7 @@ class _AddChaletState extends State<AddChalet> {
                   created: Timestamp.now(),
                   congratsSenderList: [],
                   achievementId: '',
+                  userAvatarId: _user!.avatarId ?? '',
                 ),
         ));
       } else
@@ -259,9 +261,9 @@ class _AddChaletState extends State<AddChalet> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          _chaletLocalizationAddress == null
+                                          _chaletLocalizationLatLag == null
                                               ? 'Wybierz lokalizację'
-                                              : 'Lokalizacja Szaletu: $_chaletLocalizationAddress',
+                                              : 'Lokalizacja wybrana poprawnie',
                                           style: Theme.of(context).textTheme.headline6!.copyWith(
                                                 fontWeight: FontWeight.w700,
                                               ),
@@ -271,7 +273,7 @@ class _AddChaletState extends State<AddChalet> {
                                   ),
                                   VerticalSizedBox8(),
                                   CustomElevatedButton(
-                                    label: _chaletLocalizationAddress == null ? 'Lokalizacja' : 'Zmień lokalizację',
+                                    label: _chaletLocalizationLatLag == null ? 'Lokalizacja' : 'Zmień lokalizację',
                                     onPressed: () => _navigateToLocalizationAndGetChaletLocalization(context),
                                   ),
                                   VerticalSizedBox16(),
@@ -281,7 +283,7 @@ class _AddChaletState extends State<AddChalet> {
                                             !_isLocalizationChoosen
                                         ? null
                                         : createChalet,
-                                    label: 'Zatwiedź',
+                                    label: 'Zatwiedź dodawanie Szaletu',
                                   ),
                                 ],
                               ),

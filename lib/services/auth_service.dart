@@ -1,5 +1,6 @@
 import 'package:chalet/models/user_model.dart';
 import 'package:chalet/repositories/user_data_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
@@ -46,7 +47,15 @@ class AuthService {
       firebaseAuth.UserCredential res =
           await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       final userId = res.user!.uid;
-      UserDataRepository().setUserDataOnRegister(userId, UserModel.fromData(userId, email, nick, avatarId));
+      UserDataRepository().setUserDataOnRegister(
+          userId,
+          UserModel.fromData(
+            userId,
+            email,
+            nick,
+            avatarId,
+            Timestamp.now(),
+          ));
     } catch (e) {
       if (e is firebaseAuth.FirebaseAuthException) {
         if (e.code == 'invalid-email') {
@@ -70,7 +79,18 @@ class AuthService {
       case FacebookLoginStatus.success:
         final FacebookAccessToken fbToken = response.accessToken!;
         final firebaseAuth.AuthCredential credential = firebaseAuth.FacebookAuthProvider.credential(fbToken.token);
-        await _firebaseAuth.signInWithCredential(credential);
+        firebaseAuth.UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          await UserDataRepository().setUserDataOnRegister(
+              userCredential.user!.uid,
+              UserModel.fromData(
+                userCredential.user!.uid,
+                userCredential.user!.email!,
+                userCredential.user!.displayName ?? '',
+                'avatar_icon_1',
+                Timestamp.now(),
+              ));
+        }
         break;
       case FacebookLoginStatus.cancel:
         break;
@@ -109,6 +129,9 @@ class AuthService {
   //sign out
   Future<void> signOut() async {
     try {
+      if (await fb.isLoggedIn) {
+        fb.logOut();
+      }
       await _firebaseAuth.signOut();
     } catch (e) {
       print(e.toString());

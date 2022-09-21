@@ -6,25 +6,24 @@ class UserAvatar extends StatelessWidget {
   final String avatarId;
   final double radius;
   final Color? backgroundColor;
+  final bool isEditable;
   const UserAvatar({
     Key? key,
     required this.avatarId,
     required this.radius,
     this.backgroundColor = Palette.chaletBlue,
+    this.isEditable = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: radius + 5,
+      radius: radius + 2,
       backgroundColor: backgroundColor,
       child: CircleAvatar(
         radius: radius,
         backgroundColor: Palette.white,
-        child: PlatformSvgAsset(
-          assetName: avatarId,
-          folder: 'avatarIcons',
-        ),
+        backgroundImage: AssetImage('assets/avatarIcons/$avatarId.jpeg'),
       ),
     );
   }

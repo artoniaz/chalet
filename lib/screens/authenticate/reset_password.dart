@@ -51,11 +51,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Image(
-                          width: 80.0,
-                          height: 80.0,
-                          image: AssetImage('assets/poo/poo_happy.png'),
-                        ),
+                        MainImage(),
                         VerticalSizedBox16(),
                         TextFormField(
                           controller: _emailController,

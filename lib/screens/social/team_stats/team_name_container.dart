@@ -12,14 +12,10 @@ class TeamNameContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(Dimentions.medium),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimentions.medium),
-        color: Palette.chaletBlue,
-      ),
       child: Text(
         teamName,
         style: Theme.of(context).textTheme.headline2!.copyWith(
-              color: Palette.white,
+              color: Palette.ivoryBlack,
             ),
         textAlign: TextAlign.center,
       ),

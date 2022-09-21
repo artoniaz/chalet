@@ -76,6 +76,7 @@ class _AddReviewModuleState extends State<AddReviewModule> {
         created: Timestamp.now(),
         congratsSenderList: [],
         achievementId: '',
+        userAvatarId: _user!.avatarId ?? '',
       ),
     ));
   }
@@ -148,14 +149,12 @@ class _AddReviewModuleState extends State<AddReviewModule> {
                     key: ValueKey(DialogTypes.notAllowedDialog),
                     chaletRating: state.chaletRating,
                   ));
-        } else if (state is AddReviewStateClear) {
-          Navigator.of(context).pop();
         } else if (state is AddReviewStateError) {
           EasyLoading.showError(state.errorMessage);
         }
       },
       builder: (context, state) => CustomMainElevatedButton(
-          label: 'Zostaw balas',
+          label: 'Zamelduj się',
           backgroundColor: Palette.goldLeaf,
           onPressed: state is AddReviewValidateRatingsLoading
               ? null

@@ -14,8 +14,8 @@ class PlatformSvgAsset extends StatelessWidget {
   const PlatformSvgAsset({
     Key? key,
     required this.assetName,
-    this.width,
-    this.height,
+    this.width = 45.0,
+    this.height = 45.0,
     this.fit = BoxFit.contain,
     this.color,
     this.alignment = Alignment.center,

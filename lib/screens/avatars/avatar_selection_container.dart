@@ -13,35 +13,18 @@ class AvatarSelectionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const _avatarCounter = 14;
     return Container(
       height: 90,
-      child: ListView(
+      child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        children: [
-          CustomAvatar(
-            avatarId: 'sittingKing',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'timeSpent',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'traveller',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-          HorizontalSizedBox4(),
-          CustomAvatar(
-            avatarId: 'writter',
-            currentAvatarId: currentAvatarId,
-            onTapAvatar: onTapAvatar,
-          ),
-        ],
+        itemBuilder: (context, index) => CustomAvatar(
+          avatarId: 'avatar_icon_${index + 1}',
+          currentAvatarId: currentAvatarId,
+          onTapAvatar: onTapAvatar,
+        ),
+        separatorBuilder: (_, i) => HorizontalSizedBox4(),
+        itemCount: _avatarCounter,
       ),
     );
   }

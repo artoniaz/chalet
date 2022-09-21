@@ -45,6 +45,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   final _panelController = PanelController();
   static const _addButtonPrimaryHeight = Dimentions.medium;
   static const _centerButtonPrimaryHeight = 80.0;
+  static const _centerCircleRadius = 500.0;
   double _addButtonHeight = _addButtonPrimaryHeight + 72.0;
   double _centerButtonHeight = _centerButtonPrimaryHeight + 72.0;
   Directions? _directionsInfo;
@@ -69,8 +70,9 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(CameraPosition(target: _userLocation, zoom: 15.0)),
     );
-    setState(() => _isSearchThisAreaButtonActive = false);
+    setState(() => _cameraCenterPosition = _userLocation);
     removeAreaToLookForCenterCirclePosition();
+    _handleSearchThisAreaButton();
   }
 
   void _handleSearchThisAreaButton() {
@@ -82,9 +84,9 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
   void _onCameraIdle() {
     if (_activeChalet == null) {
       if (_cameraCenterPosition.latitude.toStringAsFixed(5) == _userLocation.latitude.toStringAsFixed(5) &&
-          _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5))
+          _cameraCenterPosition.longitude.toStringAsFixed(5) == _userLocation.longitude.toStringAsFixed(5)) {
         setState(() => _isSearchThisAreaButtonActive = false);
-      else {
+      } else {
         setState(() => _isSearchThisAreaButtonActive = true);
         updateAreaToLookForCenterCirclePosition();
       }
@@ -132,7 +134,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
       Circle(
         circleId: CircleId('centerCircle'),
         center: _cameraCenterPosition,
-        radius: 200,
+        radius: _centerCircleRadius,
         fillColor: Palette.chaletBlue.withOpacity(0.2),
         strokeColor: Palette.chaletBlue,
         strokeWidth: 2,
@@ -147,7 +149,7 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
     mapCenterCircles.add(Circle(
       circleId: CircleId('centerAreaToLookForCircle'),
       center: _cameraCenterPosition,
-      radius: 200,
+      radius: _centerCircleRadius,
       strokeColor: Palette.chaletBlue,
       strokeWidth: 2,
     ));
@@ -201,7 +203,6 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                 controller: _panelController,
                 minHeight: _panelHeightClosed,
                 maxHeight: _panelHeightOpen,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
                 parallaxEnabled: true,
                 parallaxOffset: 0.5,
                 color: Palette.backgroundWhite,
@@ -223,7 +224,8 @@ class _ChaletMapState extends State<ChaletMap> with AutomaticKeepAliveClientMixi
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium, vertical: 52.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: Dimentions.horizontalPadding, vertical: 52.0),
                                     child: AddReviewModule(chalet: _activeChalet!),
                                   ),
                                 ],

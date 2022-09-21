@@ -1,21 +1,27 @@
-import 'package:chalet/config/functions/team_stats_calc.dart';
-import 'package:chalet/config/helpers/achievements_ids.dart';
+import 'package:chalet/config/functions/timestamp_methods.dart';
+import 'package:chalet/config/helpers/stats_ids.dart';
 import 'package:chalet/models/stat_model.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/styles/index.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StatsGrid extends StatelessWidget {
   final int chaletAddedNumber;
   final int chaletReviewsNumber;
+  final Timestamp createdTimestamp;
   const StatsGrid({
     Key? key,
     required this.chaletAddedNumber,
     required this.chaletReviewsNumber,
+    required this.createdTimestamp,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+    double containerWidth = (MediaQuery.of(context).size.width - Dimentions.medium * 3) / 2;
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(
         vertical: Dimentions.medium,
@@ -28,46 +34,57 @@ class StatsGrid extends StatelessWidget {
         children: [
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.traveller,
+              iconId: statsIds.traveller,
               title: chaletAddedNumber.toString(),
               subtitle: 'Dodane szalety',
             ),
+            containerWidth: containerWidth,
+            color: Palette.chaletBlue,
           ),
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
-              title: '0',
-              subtitle: 'Posiedzień dziennie',
+              iconId: statsIds.ratingDaily,
+              title: chaletReviewsNumber > 0
+                  ? (chaletReviewsNumber / TimestampHelpers.daysNumberSinceTimestamp(createdTimestamp))
+                      .toStringAsFixed(2)
+                      .replaceAll(regex, '')
+                  : '0',
+              subtitle: 'Posiedzeń dziennie',
             ),
+            containerWidth: containerWidth,
+            color: Palette.ivoryBlack,
           ),
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
+              iconId: statsIds.sittingKing,
               title: chaletReviewsNumber.toString(),
               subtitle: 'Posiedzień',
             ),
+            containerWidth: containerWidth,
           ),
           StatContainer(
             statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
-              title: '0',
-              subtitle: 'Posiedzeń tygodniowo',
+              iconId: statsIds.ratingMonthly,
+              title: (chaletReviewsNumber / TimestampHelpers.monthsNumberSinceTimestamp(createdTimestamp))
+                  .toStringAsFixed(1)
+                  .replaceAll(regex, ''),
+              subtitle: 'Posiedzień miesięcznie',
             ),
+            containerWidth: containerWidth,
+            color: Palette.ivoryBlack,
           ),
-          StatContainer(
-            statModel: StatModel(
-              iconId: achievementsIds.timeSpent,
-              title: timeInChalet(chaletReviewsNumber).toString() + ' min',
-              subtitle: 'Czas spędzony w szaletach',
-            ),
-          ),
-          StatContainer(
-            statModel: StatModel(
-              iconId: achievementsIds.sittingKing,
-              title: '0',
-              subtitle: 'Posiedzeń miesięcznie',
-            ),
-          ),
+          // StatContainer(
+          //   statModel: StatModel(
+          //     iconId: achievementsIds.sittingKing,
+          //     title: chaletReviewsNumber > 0
+          //         ? (chaletReviewsNumber.toDouble() / TimestampHelpers.yearNumberSinceTimestamp(createdTimestamp))
+          //             .toStringAsFixed(1)
+          //             .replaceAll(regex, '')
+          //         : '0',
+          //     subtitle: 'Posiedzeń rocznie',
+          //   ),
+          //   containerWidth: containerWidth,
+          // ),
         ],
       ),
     );

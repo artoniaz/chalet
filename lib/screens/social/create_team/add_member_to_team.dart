@@ -102,7 +102,7 @@ class _AddMemberToTeamState extends State<AddMemberToTeam> {
                 ),
                 VerticalSizedBox8(),
                 Text(
-                  'Podaj maila',
+                  'Podaj maila zarejestrowanego użytkownika aplikacji',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 VerticalSizedBox16(),

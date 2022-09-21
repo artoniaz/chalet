@@ -16,7 +16,7 @@ class NotAllowedDialog extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       content: Container(
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
-        padding: EdgeInsets.fromLTRB(24.0, 50.0, 24.0, 24.0),
+        padding: EdgeInsets.fromLTRB(Dimentions.horizontalPadding, 24.0, Dimentions.horizontalPadding, 16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -1,9 +1,13 @@
-import 'package:chalet/config/helpers/achievements_ids.dart';
+import 'package:chalet/config/helpers/stats_ids.dart';
 
 class StatModel {
-  final achievementsIds iconId;
+  final statsIds iconId;
   final String title;
   final String subtitle;
 
-  StatModel({required this.iconId, required this.title, required this.subtitle});
+  StatModel({
+    required this.iconId,
+    required this.title,
+    required this.subtitle,
+  });
 }

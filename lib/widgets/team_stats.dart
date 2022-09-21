@@ -9,6 +9,7 @@ import 'package:chalet/screens/social/team_stats/team_name_container.dart';
 import 'package:chalet/styles/dimentions.dart';
 import 'package:chalet/styles/index.dart';
 import 'package:chalet/widgets/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,10 @@ class _TeamStatsState extends State<TeamStats> {
           if (teamState is TeamStateTeamLoaded)
             return Scaffold(
               body: Container(
-                padding: EdgeInsets.all(Dimentions.medium),
+                padding: EdgeInsets.symmetric(
+                  vertical: Dimentions.medium,
+                  horizontal: Dimentions.horizontalPadding,
+                ),
                 child: SmartRefresher(
                   enablePullDown: true,
                   controller: _refreshController,
@@ -65,6 +69,7 @@ class _TeamStatsState extends State<TeamStats> {
                       StatsGrid(
                         chaletReviewsNumber: teamState.team.chaletReviewsNumber ?? 0,
                         chaletAddedNumber: teamState.team.chaletAddedNumber ?? 0,
+                        createdTimestamp: teamState.team.created,
                       ),
                       SliverToBoxAdapter(
                         child: Divider(),

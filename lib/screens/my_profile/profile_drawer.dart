@@ -28,7 +28,10 @@ class ProfileDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Padding(
-        padding: const EdgeInsets.all(Dimentions.medium),
+        padding: const EdgeInsets.symmetric(
+          vertical: Dimentions.medium,
+          horizontal: Dimentions.horizontalPadding,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,11 +42,7 @@ class ProfileDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   DrawerHeader(
-                    child: Image(
-                      width: 80.0,
-                      height: 80.0,
-                      image: AssetImage('assets/poo/poo_happy.png'),
-                    ),
+                    child: MainImage(),
                   ),
                   CustomElevatedButton(
                     label: 'Edytuj dane',
@@ -96,8 +95,8 @@ class ProfileDrawer extends StatelessWidget {
                         : CircularProgressIndicator(
                             strokeWidth: 2.0,
                           ),
-                    Container(
-                      height: 72.0,
+                    BottomContainer(
+                      height: 42.0,
                     ),
                   ],
                 ),

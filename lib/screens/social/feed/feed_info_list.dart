@@ -52,7 +52,10 @@ class _FeedInfoListState extends State<FeedInfoList> {
                       child: TextDivider(text: 'Brak aktywności członków klanu'),
                     ),
                   Padding(
-                    padding: const EdgeInsets.all(Dimentions.medium),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: Dimentions.medium,
+                      horizontal: Dimentions.horizontalPadding,
+                    ),
                     child: Column(
                       children: teamFeedState.feedInfoList.map((el) => FeedInfoContainer(feedInfo: el)).toList(),
                     ),

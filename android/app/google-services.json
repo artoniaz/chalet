@@ -14,13 +14,29 @@
       },
       "oauth_client": [
         {
+          "client_id": "280637907854-g5qn6k61s70489vbr013fj12dhpofgpq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mocode.chalet",
+            "certificate_hash": "5566bf4c349f0dd3523f7847f48e34166863ada9"
+          }
+        },
+        {
+          "client_id": "280637907854-ks2s7rprp22gj5h97r6msp8eb052mnkt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mocode.chalet",
+            "certificate_hash": "66685032a63241b8df848f7224e4e7c60b7d0a39"
+          }
+        },
+        {
           "client_id": "280637907854-m4eb9spaq3vahj1sd8shi993jsfur2tf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAVdEGAsNTU_Um6lfBa0oV6TMLx0YiyJfU"
+          "current_key": "AIzaSyCm78NJ7Q7WSLyT21wHlC2DDYcdrzy1Wqc"
         }
       ],
       "services": {

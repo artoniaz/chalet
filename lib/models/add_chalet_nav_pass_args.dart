@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AddChaletNavigationPassingArgs {
   final LatLng chaletLocalization;
-  final Placemark chaletAddress;
+  // final Placemark chaletAddress;
 
-  AddChaletNavigationPassingArgs({required this.chaletLocalization, required this.chaletAddress});
+  AddChaletNavigationPassingArgs({required this.chaletLocalization});
 }

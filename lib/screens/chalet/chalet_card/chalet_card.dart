@@ -76,8 +76,8 @@ class _ChaletCardState extends State<ChaletCard> {
     return Padding(
       padding: const EdgeInsets.only(
         bottom: Dimentions.big,
-        left: Dimentions.medium,
-        right: Dimentions.medium,
+        left: Dimentions.horizontalPadding,
+        right: Dimentions.horizontalPadding,
       ),
       child: SingleChildScrollView(
         controller: widget.controller,
@@ -95,11 +95,13 @@ class _ChaletCardState extends State<ChaletCard> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.chalet!.name,
-                        style: Theme.of(context).textTheme.headline3!.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                      Expanded(
+                        child: Text(
+                          widget.chalet!.name,
+                          style: Theme.of(context).textTheme.headline3!.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
                       ),
                       HorizontalSizedBox4(),
                       if (widget.chalet!.isVerified)
@@ -242,14 +244,17 @@ class _ChaletCardState extends State<ChaletCard> {
             //   ],
             // ),
             Divider(),
+            VerticalSizedBox16(),
             ChaletReviewList(
               chaletId: widget.chalet!.id,
               scrollReviewList: scrollReviewList,
             ),
-            VerticalSizedBox24(),
+            VerticalSizedBox16(),
             Divider(),
+            VerticalSizedBox16(),
             CustomElevatedButton(
               label: 'Zgłoś problem',
+              backgroundColor: Palette.goldLeaf,
               onPressed: () => Navigator.pushNamed(context, RoutesDefinitions.SHARE_PROBLEM,
                   arguments: ReportProblemArgs(
                     chaletId: widget.chalet!.id,

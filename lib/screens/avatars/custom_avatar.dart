@@ -15,7 +15,7 @@ class CustomAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double radius = 40.0;
+    final double radius = 35.0;
     return GestureDetector(
       onTap: () => onTapAvatar(avatarId),
       child: Stack(

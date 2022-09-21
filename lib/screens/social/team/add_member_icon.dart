@@ -8,9 +8,11 @@ import 'package:provider/provider.dart';
 
 class AddMemberIcon extends StatelessWidget {
   final double circleAvatarRadius;
+  final double borderWidth;
   const AddMemberIcon({
     Key? key,
     required this.circleAvatarRadius,
+    required this.borderWidth,
   }) : super(key: key);
 
   _onComplete(BuildContext context) => Provider.of<TeamMemberBloc>(context, listen: false).add(ResetTeamMemberBloc());
@@ -20,7 +22,7 @@ class AddMemberIcon extends StatelessWidget {
     return Column(
       children: [
         CircleAvatar(
-          radius: circleAvatarRadius + 5.0,
+          radius: circleAvatarRadius + borderWidth,
           backgroundColor: Palette.chaletBlue,
           child: IconButton(
             onPressed: () => showCustomModalBottomSheet(
@@ -28,7 +30,7 @@ class AddMemberIcon extends StatelessWidget {
               (context) => AddMemberToTeam(),
               _onComplete(context),
             ),
-            iconSize: circleAvatarRadius + 20.0,
+            iconSize: circleAvatarRadius + 15.0,
             icon: Icon(
               Icons.add,
               color: Palette.white,

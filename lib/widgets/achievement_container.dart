@@ -10,6 +10,7 @@ class AchievementContainer extends StatelessWidget {
   final String subtitle;
   final int? currentAchievementIndicator;
   final int? maxAchievementIndicator;
+  final bool isLast;
   const AchievementContainer({
     Key? key,
     required this.isCompleted,
@@ -18,38 +19,39 @@ class AchievementContainer extends StatelessWidget {
     required this.subtitle,
     this.currentAchievementIndicator,
     this.maxAchievementIndicator,
+    this.isLast = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final String pathFolder = 'achievementsIcons';
+    final String pathFolder = 'statsIcons';
     return Container(
-      padding: EdgeInsets.all(Dimentions.small),
+      height: 100.0,
+      padding: EdgeInsets.symmetric(vertical: Dimentions.small),
       decoration: BoxDecoration(
-        color: isCompleted ? Palette.goldLeaf.withOpacity(0.5) : null,
+        color: isCompleted ? Palette.goldLeaf.withOpacity(0.4) : null,
         border: Border(
           bottom: BorderSide(
             color: Palette.chaletBlue,
-            width: iconId == achievementsIds.timeSpent ? 0.0 : 2.0,
+            width: isLast ? 0.0 : 2.0,
           ),
         ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: PlatformSvgAsset(
               assetName: iconId.name,
               folder: pathFolder,
-              width: 50.0,
-              height: 50.0,
-              color: isCompleted ? Palette.goldLeaf : null,
+              color: iconId == achievementsIds.traveller ? Palette.chaletBlue : null,
             ),
           ),
           Expanded(
               flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     title,
@@ -64,10 +66,23 @@ class AchievementContainer extends StatelessWidget {
                           color: Palette.grey,
                         ),
                   ),
+                  if (isCompleted)
+                    Column(
+                      children: [
+                        VerticalSizedBox8(),
+                        Text(
+                          'Zdobyto',
+                          style: Theme.of(context).textTheme.headline6!.copyWith(
+                                color: Palette.confirmGreen,
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                      ],
+                    ),
                   if (!isCompleted)
                     Column(
                       children: [
-                        VerticalSizedBox16(),
+                        VerticalSizedBox8(),
                         Row(
                           children: [
                             Expanded(

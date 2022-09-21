@@ -53,7 +53,7 @@ class UserDataService {
       var lookedForUser = await _usersCollection.where('email', isEqualTo: userLookedForEmail).get();
       return lookedForUser.docs.map((el) => UserModel.fromJson(el)).toList().first;
     } catch (e) {
-      throw 'Nie znaleziono użytkownika o podanym adresie email';
+      throw 'Nie znaleziono użytkownika o podanym adresie email. Podaj maila zarejestrowanego użytkownika.';
     }
   }
 
@@ -96,6 +96,15 @@ class UserDataService {
       });
     } catch (e) {
       throw 'Nie udało się zapisać osiągnięcia.';
+    }
+  }
+
+  Future<void> updateUserAvatarId(String userId, String avatarId) async {
+    try {
+      await _usersCollection.doc(userId).update({'avatarId': avatarId});
+    } catch (e) {
+      print(e);
+      throw 'Nie udało się zaktualizować awataru.';
     }
   }
 }

@@ -30,13 +30,14 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: CustomMultiBlocProvider(
         child: MaterialApp(
-          title: 'Chalet app - find your own Chalet!',
+          title: 'Challet - znajdź swoje miejsce',
           theme: themeData(),
           onGenerateRoute: onGenerateRoute(),
           builder: EasyLoading.init(),
           home: AnimatedSplashScreen(
-            splash: 'assets/poo/poo_happy.png',
+            splash: 'assets/snake/png/snake_with_title_subtitle.png',
             nextScreen: AuthWrapper(),
+            splashIconSize: 200.0,
           ),
         ),
       ),

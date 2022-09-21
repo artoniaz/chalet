@@ -25,9 +25,10 @@ class _SignInState extends State<SignIn> {
   String email = '';
   String error = '';
 
+  bool _isPasswordVisible = false;
   bool isLoading = false;
 
-  Future signUpWIthEmailAndPassword() async {
+  Future signUpWithEmailAndPassword() async {
     if (_formKey.currentState!.validate()) {
       setState(() => isLoading = true);
       email = email.trim();
@@ -44,6 +45,8 @@ class _SignInState extends State<SignIn> {
     }
   }
 
+  void _changePasswordVisible() => setState(() => _isPasswordVisible = !_isPasswordVisible);
+
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
@@ -58,20 +61,16 @@ class _SignInState extends State<SignIn> {
                 height: MediaQuery.of(context).size.height,
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Dimentions.horizontalPadding, vertical: Dimentions.large),
+                    padding: const EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding, vertical: 0),
                     child: Form(
                         key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            Image(
-                              width: 80.0,
-                              height: 80.0,
-                              image: AssetImage('assets/poo/poo_happy.png'),
-                            ),
+                            Spacer(),
+                            MainImage(),
+                            Spacer(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -84,17 +83,16 @@ class _SignInState extends State<SignIn> {
                                   keyboardType: TextInputType.emailAddress,
                                 ),
                                 VerticalSizedBox16(),
-                                TextFormField(
-                                  controller: passwordController,
-                                  decoration: textInputDecoration.copyWith(hintText: 'Hasło'),
-                                  obscureText: true,
-                                  validator: (val) => val!.length < 6 ? 'Hasło musi zawierać minimum 6 znaków' : null,
-                                  onEditingComplete: () => signUpWIthEmailAndPassword(),
+                                CustomPaswordTextField(
+                                  textEditingController: passwordController,
+                                  onEditingComplete: signUpWithEmailAndPassword,
+                                  passwordVisible: _isPasswordVisible,
+                                  handlePasswordVisibleChange: _changePasswordVisible,
                                 ),
                                 VerticalSizedBox16(),
                                 CustomElevatedButton(
                                   label: 'Zaloguj się',
-                                  onPressed: signUpWIthEmailAndPassword,
+                                  onPressed: signUpWithEmailAndPassword,
                                 ),
                                 Row(children: <Widget>[
                                   Expanded(child: Divider()),
@@ -114,8 +112,10 @@ class _SignInState extends State<SignIn> {
                                 ),
                               ],
                             ),
+                            Spacer(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 SignInButton(
                                   Buttons.Facebook,

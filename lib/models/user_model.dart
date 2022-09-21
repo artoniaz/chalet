@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserModel {
@@ -11,6 +12,7 @@ class UserModel {
   final List<String> achievementsIds;
   final double? choosenColor;
   final String? avatarId;
+  final Timestamp? created;
   const UserModel({
     required this.uid,
     required this.email,
@@ -22,6 +24,7 @@ class UserModel {
     required this.achievementsIds,
     this.choosenColor,
     this.avatarId,
+    this.created,
   });
 
   factory UserModel.fromJson(Object? json) {
@@ -34,6 +37,7 @@ class UserModel {
       chaletsAddedNumber: (json as dynamic)['chaletsAddedNumber']?.toInt() ?? 0,
       chaletReviewsNumber: (json as dynamic)['chaletReviewsNumber']?.toInt() ?? 0,
       choosenColor: (json as dynamic)['choosenColor']?.toDouble() ?? 0.0,
+      created: (json as dynamic)['created'] ?? '',
       pendingInvitationsIds: (json as dynamic)['pendingInvitationsIds'] == null
           ? []
           : List<String>.from((json as dynamic)['pendingInvitationsIds'].map((el) => el)),
@@ -50,13 +54,14 @@ class UserModel {
     );
   }
 
-  factory UserModel.fromData(String uid, String email, String name, String avatarId) {
+  factory UserModel.fromData(String uid, String email, String name, String avatarId, Timestamp created) {
     return UserModel(
       uid: uid,
       email: email,
       displayName: name,
       avatarId: avatarId,
       achievementsIds: [],
+      created: created,
     );
   }
 
@@ -71,5 +76,6 @@ class UserModel {
         'achievementsIds': achievementsIds,
         'choosenColor': choosenColor,
         'avatarId': avatarId,
+        'created': created,
       };
 }

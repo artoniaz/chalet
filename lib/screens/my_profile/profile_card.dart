@@ -175,7 +175,11 @@ class _ProfileCardState extends State<ProfileCard> {
                           ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.all(Dimentions.medium),
+                            padding: const EdgeInsets.only(
+                              top: Dimentions.medium,
+                              left: Dimentions.horizontalPadding,
+                              right: Dimentions.horizontalPadding,
+                            ),
                             child: Text(
                               'Statystyki',
                               style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
@@ -183,15 +187,19 @@ class _ProfileCardState extends State<ProfileCard> {
                           ),
                         ),
                         SliverPadding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimentions.medium),
+                          padding: const EdgeInsets.symmetric(horizontal: Dimentions.horizontalPadding),
                           sliver: StatsGrid(
                             chaletReviewsNumber: user.chaletReviewsNumber,
                             chaletAddedNumber: user.chaletsAddedNumber,
+                            createdTimestamp: user.created!,
                           ),
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.all(Dimentions.medium),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Dimentions.horizontalPadding,
+                              vertical: Dimentions.medium,
+                            ),
                             child: Text(
                               'Osiągnięcia',
                               style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.w700),
@@ -199,7 +207,12 @@ class _ProfileCardState extends State<ProfileCard> {
                           ),
                         ),
                         SliverPadding(
-                          padding: EdgeInsets.fromLTRB(Dimentions.medium, 0, Dimentions.medium, Dimentions.medium),
+                          padding: EdgeInsets.fromLTRB(
+                            Dimentions.horizontalPadding,
+                            0,
+                            Dimentions.horizontalPadding,
+                            Dimentions.medium,
+                          ),
                           sliver: BlocBuilder<UserDataBloc, UserDataState>(
                             bloc: Provider.of<UserDataBloc>(context, listen: false),
                             builder: (context, userState) {
@@ -216,7 +229,11 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                     SlidingUpPanel(
                       padding: EdgeInsets.fromLTRB(
-                          Dimentions.medium, Dimentions.large, Dimentions.medium, Dimentions.medium),
+                        Dimentions.horizontalPadding,
+                        Dimentions.large,
+                        Dimentions.horizontalPadding,
+                        Dimentions.medium,
+                      ),
                       backdropEnabled: true,
                       borderRadius: BorderRadius.vertical(top: Radius.circular(48.0)),
                       minHeight: 0.0,

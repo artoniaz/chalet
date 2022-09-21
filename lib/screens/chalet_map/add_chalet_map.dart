@@ -21,7 +21,7 @@ class AddChaletMap extends StatefulWidget {
 class _AddChaletMapState extends State<AddChaletMap> {
   late GoogleMapController _googleMapController;
   late LatLng _chaletLatLngPosition;
-  late Placemark _chaletAddressPlacemark;
+  // late Placemark _chaletAddressPlacemark;
   late LatLng _initialUserPosition;
   Marker? _chaletMarker;
   bool _isCameraLoading = true;
@@ -31,8 +31,8 @@ class _AddChaletMapState extends State<AddChaletMap> {
   double _middleMarkerAnimationMove = 0.0;
 
   void navigateBackAndPassChaletLocalization() {
-    AddChaletNavigationPassingArgs passingArgs = new AddChaletNavigationPassingArgs(
-        chaletLocalization: _chaletLatLngPosition, chaletAddress: _chaletAddressPlacemark);
+    AddChaletNavigationPassingArgs passingArgs =
+        new AddChaletNavigationPassingArgs(chaletLocalization: _chaletLatLngPosition);
     Navigator.pop(context, passingArgs);
   }
 
@@ -47,11 +47,11 @@ class _AddChaletMapState extends State<AddChaletMap> {
 
   void _getInitialCameraPositon() async {
     LatLng initPos = context.read<GeolocationBloc>().state.props.first as LatLng;
-    List<Placemark> addresses = await GeolocationService().getAddressfromCoords(initPos);
+    // List<Placemark> addresses = await GeolocationService().getAddressfromCoords(initPos);
     setState(() {
       _initialUserPosition = initPos;
       _chaletLatLngPosition = initPos;
-      _chaletAddressPlacemark = addresses.first;
+      // _chaletAddressPlacemark = addresses.first;
       _isCameraLoading = false;
     });
   }
@@ -70,10 +70,10 @@ class _AddChaletMapState extends State<AddChaletMap> {
   void _onCameraMove(CameraPosition position) => _chaletLatLngPosition = position.target;
 
   void _onCameraIdle() async {
-    List<Placemark> addresses = await GeolocationService().getAddressfromCoords(_chaletLatLngPosition);
+    // List<Placemark> addresses = await GeolocationService().getAddressfromCoords(_chaletLatLngPosition);
     setState(() {
       _isCameraBackToUserLocationBtnActive = !compareLatLng(_initialUserPosition, _chaletLatLngPosition);
-      if (addresses[0].street!.toLowerCase() != 'unnamed road') _chaletAddressPlacemark = addresses[0];
+      // if (addresses[0].street!.toLowerCase() != 'unnamed road') _chaletAddressPlacemark = addresses[0];
       _middleMarkerAnimationMove = 0.0;
     });
   }
@@ -174,29 +174,29 @@ class _AddChaletMapState extends State<AddChaletMap> {
                               textAlign: TextAlign.center,
                             ),
                             VerticalSizedBox8(),
-                            Divider(),
-                            VerticalSizedBox8(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(Icons.south),
-                                    HorizontalSizedBox4(),
-                                    Text(
-                                      _chaletAddressPlacemark.street.toString(),
-                                      style:
-                                          Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.w600),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () => navigateToAddressInputScreen(),
-                                ),
-                              ],
-                            ),
+                            // Divider(),
+                            // VerticalSizedBox8(),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     // Row(
+                            //     //   children: [
+                            //     //     Icon(Icons.south),
+                            //     //     HorizontalSizedBox4(),
+                            //     //     Text(
+                            //     //       _chaletAddressPlacemark.street.toString(),
+                            //     //       style:
+                            //     //           Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.w600),
+                            //     //       textAlign: TextAlign.left,
+                            //     //     ),
+                            //     //   ],
+                            //     // ),
+                            //     // IconButton(
+                            //     //   icon: Icon(Icons.edit),
+                            //     //   onPressed: () => navigateToAddressInputScreen(),
+                            //     // ),
+                            //   ],
+                            // ),
                             VerticalSizedBox8(),
                             CustomElevatedButton(
                               label: 'Potwierdź',
