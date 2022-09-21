@@ -46,7 +46,6 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
                   width: (widget.circleAvatarRadius + widget.borderWidth) * 2,
                   margin: EdgeInsets.only(right: 6.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       BlocBuilder<PendingTeamMembersBloc, PendingTeamMembersState>(
                           bloc: _pendingTeamMembersBloc,
@@ -76,11 +75,9 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
                                         color: Palette.white,
                                         onPressed: () => showCustomModalBottomSheet(
                                           context,
-                                          (context) => Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: Dimentions.medium,
-                                            ),
-                                            child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                          (context) => Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
                                               Text(
                                                 'Zaproszenia oczekujące na akceptację',
                                                 style: Theme.of(context)
@@ -96,11 +93,11 @@ class _PendingMembersContainerState extends State<PendingMembersContainer> {
                                                     ),
                                                     title: Text(el.displayName ?? ''),
                                                   ))
-                                            ]),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                      radius: widget.circleAvatarRadius + 5.0,
+                                      radius: widget.circleAvatarRadius + widget.borderWidth,
                                     ),
                                     VerticalSizedBox8(),
                                     Text(
