@@ -5,8 +5,7 @@ import 'package:chalet/widgets/custom_elevated_button.dart';
 import 'package:chalet/widgets/horizontal_sized_boxes.dart';
 import 'package:chalet/widgets/vertical_sized_boxes.dart';
 import 'package:flutter/material.dart';
-import 'package:google_place/google_place.dart';
-import 'package:chalet/.env.dart';
+// import 'package:google_place/google_place.dart';
 
 class AddressInputScreen extends StatefulWidget {
   const AddressInputScreen({Key? key}) : super(key: key);
@@ -17,12 +16,12 @@ class AddressInputScreen extends StatefulWidget {
 
 class _AddressInputScreenState extends State<AddressInputScreen> {
   String _searchedAddress = '';
-  List<AutocompletePrediction>? _placePredictions = [];
+  List<dynamic>? _placePredictions = [];
 
   void _getPredictionsFromAddress(String address) async {
-    AutocompleteResponse? risult =
-        await GooglePlace(googleAPIKey).autocomplete.get(_searchedAddress, language: 'pl', region: 'pl');
-    setState(() => _placePredictions = risult!.predictions);
+    // AutocompleteResponse? risult =
+    //     await GooglePlace('googleAPIKey').autocomplete.get(_searchedAddress, language: 'pl', region: 'pl');
+    // setState(() => _placePredictions = risult!.predictions);
   }
 
   void _getLocationsFromPrediction(String predictionDesc) async {

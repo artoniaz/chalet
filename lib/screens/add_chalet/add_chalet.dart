@@ -15,7 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -100,7 +100,7 @@ class _AddChaletState extends State<AddChalet> {
       setState(() {
         _chaletLocalizationLatLag = chaletLocalizationArgs.chaletLocalization;
         _isLocalizationChoosen = true;
-        _chalet.position = Geoflutterfire().point(
+        _chalet.position = GeoFlutterFire().point(
           latitude: chaletLocalizationArgs.chaletLocalization.latitude,
           longitude: chaletLocalizationArgs.chaletLocalization.longitude,
         );

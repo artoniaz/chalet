@@ -1,7 +1,8 @@
 import 'package:chalet/models/directions_model.dart';
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:chalet/.env.dart';
+import 'package:chalet/.env';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DirectionsRepository {
   static const String _baseUrl = 'https://maps.googleapis.com/maps/api/directions/json?';
@@ -18,7 +19,7 @@ class DirectionsRepository {
       final response = await _dio!.get(_baseUrl, queryParameters: {
         'origin': '${origin.latitude},${origin.longitude}',
         'destination': '${destination.latitude},${destination.longitude}',
-        'key': googleAPIKey,
+        'key': dotenv.env['googleAPIKey'],
       });
       return Directions.fromMap(response.data);
     } catch (e) {

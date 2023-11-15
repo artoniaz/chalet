@@ -5,6 +5,7 @@ import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/repositories/geolocation_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
   final GeolocationRepository geolocationRepository;

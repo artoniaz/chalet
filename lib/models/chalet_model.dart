@@ -1,5 +1,5 @@
 import 'package:chalet/models/image_model_url.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:geoflutterfire2/geoflutterfire2.dart';
 
 class ChaletModel {
   String id;

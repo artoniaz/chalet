@@ -4,7 +4,7 @@ import 'package:chalet/config/functions/lat_lng_functions.dart';
 import 'package:chalet/models/image_model_url.dart';
 import 'package:chalet/models/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -12,7 +12,7 @@ class ChaletService {
   // collection reference
   final CollectionReference chaletCollection = FirebaseFirestore.instance.collection("chalets");
 
-  Geoflutterfire geo = Geoflutterfire();
+  GeoFlutterFire geo = GeoFlutterFire();
 
   Stream<List<ChaletModel>> getChaletStream(BehaviorSubject<LatLng> subject) {
     return subject.switchMap((center) {

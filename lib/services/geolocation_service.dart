@@ -11,8 +11,9 @@ class GeolocationService extends ChangeNotifier {
 
   Future<LatLng> getUserLocation() async {
     try {
+      LocationSettings locationSettings = LocationSettings(accuracy: LocationAccuracy.best);
       Position pos =
-          await geo.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).timeout(const Duration(seconds: 5));
+          await geo.getCurrentPosition(locationSettings: locationSettings).timeout(const Duration(seconds: 5));
       return LatLng(pos.latitude, pos.longitude);
     } on TimeoutException catch (e) {
       print(e);
@@ -24,7 +25,7 @@ class GeolocationService extends ChangeNotifier {
   }
 
   Stream<LatLng> get currentUserLocation => geo
-      .getPositionStream(desiredAccuracy: LocationAccuracy.high, distanceFilter: 10)
+      .getPositionStream(locationSettings: LocationSettings(accuracy: LocationAccuracy.best, distanceFilter: 10))
       .map((el) => LatLng(el.latitude, el.longitude));
 
   Future<List<Placemark>> getAddressfromCoords(LatLng cords) async {

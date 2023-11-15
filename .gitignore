@@ -30,7 +30,7 @@
 .pub-cache/
 .pub/
 /build/
-/lib/.env.dart
+/lib/.env
 /android/app/src/develop/google-services.json
 /android/app/src/demo/google-services.json
 /android/app/src/prod/google-services.json
