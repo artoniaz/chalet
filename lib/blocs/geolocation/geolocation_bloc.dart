@@ -31,13 +31,28 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
 
   Stream<GeolocationState> _handleGetUserLocalization(GetUserGeolocation event) async* {
     userLocationSubscription?.cancel();
-    userLocationSubscription = geolocationRepository.getUserLocation().listen(
-      (userLocation) => add(UpdateUserGeolocation(userLocation)),
-      onError: (e) async* {
-        yield GeolocationStateError(
-            errorMessage: 'Błąd pobierania listy wydarzeń dla klanu', userLocation: LatLng(52.237049, 21.017532));
-      },
-    );
+    bool locationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!locationServiceEnabled) {
+      yield GeolocationStateError(
+          errorMessage: 'Lokalizacja na tym urządzeniu jest wyłaczona.', userLocation: LatLng(52.237049, 21.017532));
+    }
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        yield GeolocationStateError(errorMessage: 'Domyślna lokalizacja', userLocation: LatLng(52.237049, 21.017532));
+      }
+    }
+    if (permission == LocationPermission.always) {
+      userLocationSubscription = geolocationRepository.getUserLocation().listen(
+        (userLocation) => add(UpdateUserGeolocation(userLocation)),
+        onError: (e) async* {
+          yield GeolocationStateError(
+              errorMessage: 'Błąd pobierania listy wydarzeń dla klanu', userLocation: LatLng(52.237049, 21.017532));
+        },
+      );
+    }
   }
 
   Stream<GeolocationState> _handleUpdateUserLocalization(UpdateUserGeolocation event) async* {
