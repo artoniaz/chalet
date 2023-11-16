@@ -44,7 +44,7 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
         yield GeolocationStateError(errorMessage: 'Domyślna lokalizacja', userLocation: LatLng(52.237049, 21.017532));
       }
     }
-    if (permission == LocationPermission.always) {
+    if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
       userLocationSubscription = geolocationRepository.getUserLocation().listen(
         (userLocation) => add(UpdateUserGeolocation(userLocation)),
         onError: (e) async* {
