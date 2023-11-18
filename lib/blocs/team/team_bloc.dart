@@ -46,7 +46,6 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
   }
 
   Stream<TeamState> _handleUpdateTeamStatsEvent(UpdateTeamStats event) async* {
-    yield TeamStateLoading();
     try {
       TeamModel teamModel = team;
       teamModel.chaletAddedNumber = event.chaletAddedNumber;
