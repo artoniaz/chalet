@@ -6,7 +6,10 @@ abstract class GeolocationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetUserGeolocation extends GeolocationEvent {}
+class GetUserGeolocation extends GeolocationEvent {
+  final bool hasUserSeenLocationInfoScreen;
+  GetUserGeolocation({required this.hasUserSeenLocationInfoScreen});
+}
 
 class UpdateUserGeolocation extends GeolocationEvent {
   final LatLng userGeolocation;

@@ -30,6 +30,7 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
   }
 
   Stream<GeolocationState> _handleGetUserLocalization(GetUserGeolocation event) async* {
+    yield GeolocationStateLoading();
     userLocationSubscription?.cancel();
     bool locationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!locationServiceEnabled) {
@@ -38,7 +39,10 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
     }
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied && !event.hasUserSeenLocationInfoScreen) {
+      yield GeolocationStateInfoScreen();
+    }
+    if (permission == LocationPermission.denied && event.hasUserSeenLocationInfoScreen) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         yield GeolocationStateError(errorMessage: 'Domyślna lokalizacja', userLocation: LatLng(52.237049, 21.017532));

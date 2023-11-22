@@ -129,9 +129,10 @@ class AuthService {
   //sign out
   Future<void> signOut() async {
     try {
-      if (await fb.isLoggedIn) {
-        fb.logOut();
-      }
+      //TODO: bug. Do poprawy
+      // if (await fb.isLoggedIn) {
+      //   fb.logOut();
+      // }
       await _firebaseAuth.signOut();
     } catch (e) {
       print(e.toString());

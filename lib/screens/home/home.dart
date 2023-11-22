@@ -6,6 +6,7 @@ import 'package:chalet/blocs/geolocation/geolocation_state.dart';
 import 'package:chalet/blocs/user_data/user_data_bloc.dart';
 import 'package:chalet/blocs/user_data/user_data_event.dart';
 import 'package:chalet/blocs/user_data/user_data_state.dart';
+import 'package:chalet/screens/home/geolocation_info_screen.dart';
 import 'package:chalet/screens/index.dart';
 import 'package:chalet/widgets/index.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseUser;
@@ -33,7 +34,7 @@ class _HomeState extends State<Home> {
     firebaseUser.User? user = Provider.of<firebaseUser.User?>(context, listen: false);
     _geolocatinBloc = Provider.of<GeolocationBloc>(context, listen: false);
     _userDataBloc = Provider.of<UserDataBloc>(context, listen: false);
-    _geolocatinBloc.add(GetUserGeolocation());
+    _geolocatinBloc.add(GetUserGeolocation(hasUserSeenLocationInfoScreen: false));
     _userDataBloc.add(GetUserData(user!.uid));
     Provider.of<DamagingDeviceModelBloc>(context, listen: false).add(CheckDamagingDeviceModelEvent());
     super.initState();
@@ -58,6 +59,9 @@ class _HomeState extends State<Home> {
                 }
               },
               builder: (context, geolocationState) {
+                if (geolocationState is GeolocationStateInfoScreen) {
+                  return GeoLocationInfoScreen();
+                }
                 if (geolocationState is GeolocationStateInitial ||
                     geolocationState is GeolocationStateLoading ||
                     userDataState is UserDataStateLoading)

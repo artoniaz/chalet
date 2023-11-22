@@ -26,3 +26,5 @@ class GeolocationStateError extends GeolocationState {
   List<Object> get props => [userLocation];
   GeolocationStateError({required this.errorMessage, required this.userLocation});
 }
+
+class GeolocationStateInfoScreen extends GeolocationState {}
